@@ -1,0 +1,33 @@
+<div class="row" data-ng-repeat="movie in movies">
+    <div class="col-sm-2"></div>
+    <div class="col-sm-8 no-padding">
+        <div class="panel panel-default">
+            <div class="panel-body">
+                <div class="no-padding no-margin no-border" style="background: #EEEEEE; overflow: hidden;">
+                    <a class="row" href="{{'#/movie/view/' + movie._id}}">
+                        <div class="col-sm-3 no-padding">
+                            <div style="max-height: 200px; overflow: hidden;">
+                                <img src="{{movie.Poster}}" class="full-width">
+                            </div>
+                        </div>
+                        <blockquote class="col-sm-9 no-border">
+                            <h2 class="bold">{{movie.Title}}</h2>
+                            <p>{{movie.Released}}</p>
+                            <small>{{movie.Genres}}</small>
+                            <small>{{movie.Runtime}} min</small>
+                        </blockquote>  
+                    </a>
+                    <hr class="no-margin">
+                    <blockquote class="row no-padding no-margin no-border">
+                       <div class="col-xs-12 col-sm-4"><button class="btn btn-link full-width"><h1 class="no-margin">{{movie.ImdbRating | number: 1}}</h1></button></div>
+                        <div class="col-xs-3 col-sm-2"><button class="btn btn-link full-width" title="Add To Watchlist"><span class="glyphicon glyphicon-plus movie-action-icon"></span><br><small class="ellipsis">Add To Watchlist</small></button></div>
+                        <div class="col-xs-3 col-sm-2"><button class="btn btn-link full-width" title="Mark As Watched"><span class="glyphicon glyphicon-ok movie-action-icon"></span><br><small class="ellipsis">Mark As Watched</small></button></div>
+                        <div class="col-xs-3 col-sm-2"><button class="btn btn-link full-width" title="Like This Movie"><span class="glyphicon glyphicon-heart movie-action-icon"></span><br><small class="ellipsis">Like This Movie</small></button></div>
+                        <div class="col-xs-3 col-sm-2"><button class="btn btn-link full-width" title="Play Trailer"><span class="glyphicon glyphicon-play movie-action-icon"></span><br><small class="ellipsis">Play Trailer</small></button></div>
+                    </blockquote>
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class="col-sm-2"></div>
+</div>

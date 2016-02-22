@@ -1,0 +1,66 @@
+<div>
+   <div class="row">
+       <div class="col-sm-1"></div>
+       <div class="col-sm-10 no-padding" data-ng-if="movie">
+            <div class="panel panel-default">
+                <div class="panel-body">
+                    <div class="no-padding no-margin no-border" style="background: #EEEEEE; overflow: hidden;">
+                        <a class="row" href="{{'#/movie/view/' + movie._id}}">
+                            <div class="col-sm-4 no-padding">
+                                <div style="max-height: 300px; overflow: hidden;">
+                                    <img src="{{movie.Poster}}" class="full-width">
+                                </div>
+                            </div>
+                            <blockquote class="col-sm-8 no-border">
+                                <h1 class="bold">{{movie.Title}}</h1>
+                                <p>{{movie.Released}}</p>
+                                <small>{{movie.Genres}}</small>
+                                <small>{{movie.Runtime}} min</small>
+                            </blockquote>  
+                        </a>
+                        <hr class="no-margin">
+                        <blockquote class="row no-padding no-margin no-border">
+                            <div class="col-xs-12 col-sm-4"><button class="btn btn-link full-width"><h1 class="no-margin">{{movie.ImdbRating | number: 1}}</h1></button></div>
+                            <div class="clearfix visible-xs"></div>
+                            <hr class="no-margin visible-xs">
+                            <div class="col-xs-3 col-sm-2"><button class="btn btn-link full-width toggle-icon-{{movie.addedToWatchlist}}" title="Add To Watchlist" data-ng-click="addToWatchlist()"><span class="glyphicon glyphicon-plus movie-action-icon"></span><br><small class="ellipsis">Add To Watchlist</small></button></div>
+                            <div class="col-xs-3 col-sm-2"><button class="btn btn-link full-width toggle-icon-{{movie.addedToWatched}}" title="Mark As Watched" data-ng-click="addToWatched()"><span class="glyphicon glyphicon-ok movie-action-icon"></span><br><small class="ellipsis">Mark As Watched</small></button></div>
+                            <div class="col-xs-3 col-sm-2"><button class="btn btn-link full-width toggle-icon-{{movie.addedToLiked}}" title="Like This Movie" data-ng-click="addToLiked()"><span class="glyphicon glyphicon-heart movie-action-icon"></span><br><small class="ellipsis">Like This Movie</small></button></div>
+                            <div class="col-xs-3 col-sm-2"><button class="btn btn-link full-width toggle-icon-false" title="Play Trailer" data-ng-click="playTrailer()"><span class="glyphicon glyphicon-play movie-action-icon"></span><br><small class="ellipsis">Play Trailer</small></button></div>
+                        </blockquote>
+                        <div class="well no-margin">
+                            <label for="title" data-ng-if="movie.Plot">Plot : </label>
+                            <p class="justified" data-ng-if="movie.Plot">{{movie.Plot}}</p>
+                            <label for="title" data-ng-if="movie.Awards">Awards : </label>
+                            <p class="justified" data-ng-if="movie.Awards" data-ng-if="movie.Awards">{{movie.Awards}}</p>
+                        </div>
+                        <div style="padding: 5px;">
+                            <a class="btn btn-danger" data-ng-if="movie.Rated">{{movie.Rated}}</a>
+                            <a class="btn btn-primary" data-ng-if="movie.BoxOffice">{{movie.BoxOffice}}</a>
+                            <a href="{{movie.ImdbID}}" target="_blank" class="btn btn-warning" data-ng-if="movie.ImdbID">IMDB</a>
+                        </div>
+                        <div class="well no-margin">
+                           <label for="title">Actors</label>
+                            <ul class="pager no-margin">
+                                <li data-ng-repeat="actor in movie.Actors" class="previous"><a href="#">{{actor}}</a></li>
+                            </ul>
+                        </div>
+                        <div class="well no-margin">
+                           <label for="title">Directors</label>
+                            <ul class="pager no-margin">
+                                <li data-ng-repeat="director in movie.Directors" class="previous"><a href="#">{{director}}</a></li>
+                            </ul>
+                        </div>
+                        <div class="well no-margin">
+                            <label for="title">Writers</label>
+                            <ul class="pager no-margin">
+                                <li data-ng-repeat="writer in movie.Writers" class="previous"><a href="#">{{writer}}</a></li>
+                            </ul>
+                        </div>
+                    </div>
+                </div>
+            </div>
+       </div>
+       <div class="col-sm-1"></div>
+   </div>
+</div>

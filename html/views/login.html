@@ -1,0 +1,17 @@
+<div style="margin-top: -20px; margin-bottom: -50px;">
+	<form class="form-signin thumbnail" data-ng-submit="login()" data-ng-model="loginForm">
+		<h1 class="center no-padding" style="font-size: 120px;"><span class="glyphicon glyphicon-user round" style="background: lightgray; padding: 30px;"></span></h1>
+		<label for="inputEmail" class="sr-only">Email address</label>
+		<input data-ng-model="email" type="text" name="email" class="form-control" placeholder="Username" required autofocus>
+		<label for="inputPassword" class="sr-only">Password</label>
+		<input data-ng-model="password" type="password" name="password" class="form-control" placeholder="Password" required>
+		<div class="row">
+			<div class="col-xs-12">
+				<input type="submit" class="btn btn-lg btn-primary btn-block" type="button" value="Log in" />
+			</div>
+			<div class="col-xs-12">
+				<button class="btn btn-lg btn-link btn-block" type="button" data-ng-click="register()">Register</button>
+			</div>
+		</div>
+	</form>
+</div>
