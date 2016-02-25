@@ -37,24 +37,24 @@
                         <div style="padding: 5px;">
                             <a class="btn btn-danger" data-ng-if="movie.Rated">{{movie.Rated}}</a>
                             <a class="btn btn-primary" data-ng-if="movie.BoxOffice">{{movie.BoxOffice}}</a>
-                            <a href="{{movie.ImdbID}}" target="_blank" class="btn btn-warning" data-ng-if="movie.ImdbID">IMDB</a>
+                            <a href="{{'http://www.imdb.com/title/' + movie.ImdbID}}" target="_blank" class="btn btn-warning" data-ng-if="movie.ImdbID"><i class="glyphicon glyphicon-new-window"></i> IMDB</a>
                         </div>
                         <div class="well no-margin">
                            <label for="title">Actors</label>
                             <ul class="pager no-margin">
-                                <li data-ng-repeat="actor in movie.Actors" class="previous"><a href="#">{{actor}}</a></li>
+                                <li data-ng-repeat="actor in movie.Actors" class="previous"><a href="#" class="navbar-item" style="margin: 1px;">{{actor}}</a></li>
                             </ul>
                         </div>
                         <div class="well no-margin">
                            <label for="title">Directors</label>
                             <ul class="pager no-margin">
-                                <li data-ng-repeat="director in movie.Directors" class="previous"><a href="#">{{director}}</a></li>
+                                <li data-ng-repeat="director in movie.Directors" class="previous"><a href="#" class="navbar-item" style="margin: 1px;">{{director}}</a></li>
                             </ul>
                         </div>
                         <div class="well no-margin">
                             <label for="title">Writers</label>
                             <ul class="pager no-margin">
-                                <li data-ng-repeat="writer in movie.Writers" class="previous"><a href="#">{{writer}}</a></li>
+                                <li data-ng-repeat="writer in movie.Writers" class="previous"><a href="#" class="navbar-item" style="margin: 1px;">{{writer}}</a></li>
                             </ul>
                         </div>
                     </div>

@@ -178,6 +178,10 @@ hr {
     background: #3B5999;
     color: lightgrey;
 }
+.logo:focus{
+    background: #2A4888;
+    color: white;
+}
 .navbar-item{
     background: #3B5999;
     color: lightgrey;
@@ -185,6 +189,10 @@ hr {
 .navbar-item:hover{
     background: #2A4888;
     color: white;
+}
+.navbar-item:focus{
+    background: #3B5999;
+    color: lightgrey;
 }
 #sidebar-footer {
   background-color:#444;

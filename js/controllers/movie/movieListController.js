@@ -45,6 +45,9 @@ app.registerCtrl('movieListController', ['$scope', '$http', function($scope, $ht
                     movies.forEach(function(object){
                         object.Genres = object.Genres.join(", ");
                         object.Released = moment(object.Released).format('MMMM Do YYYY');
+                        object.addedToWatchlist = false;
+                        object.addedToWatched = false;
+                        object.addedToLiked = false;
                         $scope.movies.push(object);
                     });
                 }else{
@@ -62,5 +65,35 @@ app.registerCtrl('movieListController', ['$scope', '$http', function($scope, $ht
         }
     );
     /* End Movie */
+    
+    $scope.addToWatchlist = function($index){
+        if ($scope.movies[$index].addedToWatchlist){
+            $scope.movies[$index].addedToWatchlist = false;
+        }else{
+            $scope.movies[$index].addedToWatchlist = true;
+        }
+        $scope.$apply();
+    };
+    
+    $scope.addToWatched = function($index){
+        if ($scope.movies[$index].addedToWatched){
+            $scope.movies[$index].addedToWatched = false;
+        }else{
+            $scope.movies[$index].addedToWatched = true;
+        }
+        $scope.$apply();
+    };
+    
+    $scope.addToLiked = function($index){
+        if ($scope.movies[$index].addedToLiked){
+            $scope.movies[$index].addedToLiked = false;
+        }else{
+            $scope.movies[$index].addedToLiked = true;
+        }
+        $scope.$apply();
+    };
+    
+    $scope.playTrailer = function($index){
+    };
     
 }]);

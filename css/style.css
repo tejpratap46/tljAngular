@@ -54,6 +54,9 @@
 .no-border {
 	border: 0px;
 }
+.no-radius {
+	border-radius: 0px;
+}
 .center-vertical {
 	vertical-align: middle;
 }
@@ -109,13 +112,25 @@ blockquote {
 }
 
 .toggle-icon-false:hover{
-    color: #646464;
+    color: #868686;
+}
+
+.toggle-icon-false:focus{
+    color: #868686;
 }
 
 .toggle-icon-true{
-    color: #337AB7true;
+    color: #337AB7;
 }
 
 .toggle-icon-true:hover{
-    color: #23527C;
+    color: #337AB7;
+}
+
+.toggle-icon-true:focus{
+    color: #337AB7;
+}
+
+.toggle-icon-true:focus{
+    color: #337AB7;
 }

@@ -49,9 +49,6 @@ app.registerCtrl('movieViewController', ['$scope', '$http', '$routeParams', func
             $('.notification').text('Oops! something went wrong').show('fast').delay(3000).hide('fast');
         }
     );
-    /* End Movie */
-    
-    /* addToWatchlist */
     
     $scope.addToWatchlist = function(){
         if ($scope.movie.addedToWatchlist){
@@ -62,10 +59,6 @@ app.registerCtrl('movieViewController', ['$scope', '$http', '$routeParams', func
         $scope.$apply();
     }
     
-    /* End, addToWatchlist */
-    
-    /* addToWatched */
-    
     $scope.addToWatched = function(){
         if ($scope.movie.addedToWatched){
             $scope.movie.addedToWatched = false;
@@ -73,11 +66,7 @@ app.registerCtrl('movieViewController', ['$scope', '$http', '$routeParams', func
             $scope.movie.addedToWatched = true;
         }
         $scope.$apply();
-    }
-    
-    /* End, addToWatched */
-    
-    /* addToLiked */
+    };
     
     $scope.addToLiked = function(){
         if ($scope.movie.addedToLiked){
@@ -86,15 +75,9 @@ app.registerCtrl('movieViewController', ['$scope', '$http', '$routeParams', func
             $scope.movie.addedToLiked = true;
         }
         $scope.$apply();
-    }
-    
-    /* End, addToLiked */
-    
-    /* playTrailer */
+    };
     
     $scope.playTrailer = function(){
-    }
-    
-    /* End, playTrailer */
+    };
     
 }]);

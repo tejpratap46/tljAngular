@@ -38,6 +38,9 @@ app.registerCtrl('homeController', ['$scope', '$http', function($scope, $http) {
                         object.UpdatedAt = moment(object.UpdatedAt).format('MMMM Do YYYY, h:mm a');
                         object.Movie.Genres = object.Movie.Genres.join(", ");
                         object.Movie.Released = moment(object.Movie.Released).format('MMMM Do YYYY');
+                        object.Movie.addedToWatchlist = false;
+                        object.Movie.addedToWatched = false;
+                        object.Movie.addedToLiked = false;
                         if (object.LikedBy.indexOf(localStorage.getItem(prefUserId)) >= 0){
                             object.LikedClass = "primary";
                             console.log("Liked");
@@ -161,5 +164,35 @@ app.registerCtrl('homeController', ['$scope', '$http', function($scope, $http) {
         );
     }
     /* Like/Un-Like Feed */
+    
+    $scope.addToWatchlist = function($index){
+        if ($scope.feed[$index].Movie.addedToWatchlist){
+            $scope.feed[$index].Movie.addedToWatchlist = false;
+        }else{
+            $scope.feed[$index].Movie.addedToWatchlist = true;
+        }
+        $scope.$apply();
+    };
+    
+    $scope.addToWatched = function($index){
+        if ($scope.feed[$index].Movie.addedToWatched){
+            $scope.feed[$index].Movie.addedToWatched = false;
+        }else{
+            $scope.feed[$index].Movie.addedToWatched = true;
+        }
+        $scope.$apply();
+    };
+    
+    $scope.addToLiked = function($index){
+        if ($scope.feed[$index].Movie.addedToLiked){
+            $scope.feed[$index].Movie.addedToLiked = false;
+        }else{
+            $scope.feed[$index].Movie.addedToLiked = true;
+        }
+        $scope.$apply();
+    };
+    
+    $scope.playTrailer = function($index){
+    };
     
 }]);
