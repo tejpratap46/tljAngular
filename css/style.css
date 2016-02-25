@@ -120,17 +120,13 @@ blockquote {
 }
 
 .toggle-icon-true{
-    color: #337AB7;
+/*    color: #337AB7;*/
 }
 
 .toggle-icon-true:hover{
-    color: #337AB7;
+/*    color: #337AB7;*/
 }
 
 .toggle-icon-true:focus{
-    color: #337AB7;
-}
-
-.toggle-icon-true:focus{
-    color: #337AB7;
+/*    color: #337AB7;*/
 }

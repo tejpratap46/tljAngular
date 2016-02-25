@@ -42,10 +42,10 @@ app.registerCtrl('homeController', ['$scope', '$http', function($scope, $http) {
                         object.Movie.addedToWatched = false;
                         object.Movie.addedToLiked = false;
                         if (object.LikedBy.indexOf(localStorage.getItem(prefUserId)) >= 0){
-                            object.LikedClass = "primary";
+                            object.IsLiked = true;
                             console.log("Liked");
                         }else{
-                            object.LikedClass = "default";
+                            object.IsLiked = false;
                             console.log("Not-liked");
                         }
                         $scope.feed.push(object);
@@ -142,10 +142,10 @@ app.registerCtrl('homeController', ['$scope', '$http', function($scope, $http) {
                     var data = response.data;
                     if (data.Status){
                         if (data.LikedPost){
-                            $scope.feed[index].LikedClass = "primary";
+                            $scope.feed[index].IsLiked = true;
                             $scope.feed[index].LikesCount = $scope.feed[index].LikesCount + 1;
                         }else{
-                            $scope.feed[index].LikedClass = "default";
+                            $scope.feed[index].IsLiked = false;
                             $scope.feed[index].LikesCount = $scope.feed[index].LikesCount - 1;
                         }
                     }else{
