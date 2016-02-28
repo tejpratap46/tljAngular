@@ -23,7 +23,8 @@ app.registerCtrl('movieListController', ['$scope', '$http', function($scope, $ht
             "Released": 1
         },
         "skip": 0,
-        "limit": 10
+        "limit": 10,
+        "userid": localStorage.getItem(prefUserId)
     };
 
     var config = {
@@ -38,16 +39,13 @@ app.registerCtrl('movieListController', ['$scope', '$http', function($scope, $ht
             // success callback
             try {
                 var data = response.data;
-                console.log(data);
                 $scope.movies = [];
+                console.log(data);
                 if (data.Status){
                     var movies = data.Movies;
                     movies.forEach(function(object){
                         object.Genres = object.Genres.join(", ");
                         object.Released = moment(object.Released).format('MMMM Do YYYY');
-                        object.addedToWatchlist = false;
-                        object.addedToWatched = false;
-                        object.addedToLiked = false;
                         $scope.movies.push(object);
                     });
                 }else{
@@ -72,6 +70,7 @@ app.registerCtrl('movieListController', ['$scope', '$http', function($scope, $ht
         }else{
             $scope.movies[$index].addedToWatchlist = true;
         }
+        $scope.addToList = addToList($index, "Watchlist", "");
         $scope.$apply();
     };
     
@@ -81,6 +80,7 @@ app.registerCtrl('movieListController', ['$scope', '$http', function($scope, $ht
         }else{
             $scope.movies[$index].addedToWatched = true;
         }
+        $scope.addToList = addToList($index, "Watched", "");
         $scope.$apply();
     };
     
@@ -90,10 +90,54 @@ app.registerCtrl('movieListController', ['$scope', '$http', function($scope, $ht
         }else{
             $scope.movies[$index].addedToLiked = true;
         }
+        $scope.addToList = addToList($index, "Liked", "");
         $scope.$apply();
     };
     
     $scope.playTrailer = function($index){
     };
+    
+    function addToList(index, listName, caption){
+        var movie = $scope.movies[index];
+        var data = {
+            "movieid": movie._id,
+            "userid": localStorage.getItem(prefUserId),
+            "listName": listName,
+            "caption": caption
+        };
+
+        var config = {
+            headers : {
+                'Content-Type': 'application/json'
+            }
+        }
+
+        $http.post(hostAddress + '/api/list/listAddMovie', data, config)
+        .then(
+            function(response){
+                // success callback
+                try {
+                    var data = response.data;
+                    if (data.Status){
+                        if (data.MovieAdded){
+                            console.log(data);
+                        }else{
+                            console.log(data);
+                        }
+                    }else{
+                        $('.notification').text(data.Error).show('fast').delay(3000).hide('fast');
+                    }
+                } catch(err) {
+                    console.log(err);
+                } finally {
+                    $scope.$apply();
+                }
+            }, 
+            function(error){
+                // failure callback
+                $('.notification').text('Oops! something went wrong').show('fast').delay(3000).hide('fast');
+            }
+        );
+    }
     
 }]);

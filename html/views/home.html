@@ -1,6 +1,26 @@
 <div>
     <div class="col-md-2"></div>
     <div class="col-md-8">
+        <div class="well well-sm"> 
+            <form class="form-horizontal" role="form">
+                <h4>What's New</h4>
+                <div class="form-group" style="padding:14px;">
+                    <textarea class="form-control" placeholder="Update your status"></textarea>
+                </div>
+                <button class="btn btn-primary pull-right" type="button">Post</button>
+                <ul class="list-inline">
+                    <li>
+                        <a href=""><i class="glyphicon glyphicon-upload"></i></a>
+                    </li>
+                    <li>
+                        <a href=""><i class="glyphicon glyphicon-camera"></i></a>
+                    </li>
+                    <li>
+                        <a href=""><i class="glyphicon glyphicon-map-marker"></i></a>
+                    </li>
+                </ul>
+            </form>
+        </div>
         <div class="panel panel-default" data-ng-repeat="post in feed track by $index">
             <div class="panel-heading">
 <!--                <a href="#" class="pull-right">View all</a>-->
@@ -49,9 +69,9 @@
                     <div class="input-group">
                         <div class="input-group-btn">
                             <button class="btn btn-link" title="like" data-ng-mouseup="likePost($index)"><span class="glyphicon glyphicon-heart toggle-icon-{{post.IsLiked}}"></span></button>
-                            <button class="btn btn-link" title="share"><i class="glyphicon glyphicon-share toggle-icon-false"></i></button>
+<!--                            <button class="btn btn-link" title="share"><i class="glyphicon glyphicon-share toggle-icon-false"></i></button>-->
                         </div>
-                        <input class="form-control" placeholder="Add a comment.." type="text" data-ng-model="post.AddComment">
+                        <input class="form-control no-border" placeholder="Add a comment.." type="text" data-ng-model="post.AddComment">
                     </div>
                 </form>
             </div>
