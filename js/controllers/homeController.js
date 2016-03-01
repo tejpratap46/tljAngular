@@ -2,15 +2,15 @@ var app = angular.module(appName);
 
 app.registerCtrl('homeController', ['$scope', '$http', function($scope, $http) {
     $scope.noDataFound = false;
-    
+
     /* Get User Feed, must be rich */
     var data = {
         "userid": localStorage.getItem(prefUserId),
         "select": {
             "Comments": 0
         },
-        "selectMovieFields" : "_id Title Released Poster ImdbRating Genres",
-        "selectUserFields" : "_id Name",
+        "selectMovieFields": "_id Title Released Poster ImdbRating Genres",
+        "selectUserFields": "_id Name",
         "sort": {
             "CreatedAt": -1
         },
@@ -19,179 +19,160 @@ app.registerCtrl('homeController', ['$scope', '$http', function($scope, $http) {
     };
 
     var config = {
-        headers : {
+        headers: {
             'Content-Type': 'application/json'
         }
     }
 
     $http.post(hostAddress + '/api/user/userFeed', data, config)
-    .then(
-        function(response){
-            // success callback
-            try {
+        .then(
+            function(response) {
+                // success callback
                 var data = response.data;
-                if (data.Status){
+                if (data.Status) {
                     $scope.feed = [];
                     var feed = data.Feed;
-                    feed.forEach(function(object){
+                    feed.forEach(function(object) {
                         object.UpdatedAtFromNow = moment(object.UpdatedAt).fromNow();
                         object.UpdatedAt = moment(object.UpdatedAt).format('MMMM Do YYYY, h:mm a');
                         object.Movie.Genres = object.Movie.Genres.join(", ");
                         object.Movie.Released = moment(object.Movie.Released).format('MMMM Do YYYY');
-                        if (object.LikedBy.indexOf(localStorage.getItem(prefUserId)) >= 0){
+                        if (object.LikedBy.indexOf(localStorage.getItem(prefUserId)) >= 0) {
                             object.IsLiked = true;
                             console.log("Liked");
-                        }else{
+                        } else {
                             object.IsLiked = false;
                             console.log("Not-liked");
                         }
                         $scope.feed.push(object);
                     });
-                }else{
+                } else {
                     $scope.noDataFound = true;
                 }
-            } catch(err) {
-                console.log(err);
-            } finally {
-                $scope.$apply();
+            },
+            function(error) {
+                // failure callback
+                $('.notification').text('Oops! something went wrong').show('fast').delay(3000).hide('fast');
             }
-        }, 
-        function(error){
-            // failure callback
-            $('.notification').text('Oops! something went wrong').show('fast').delay(3000).hide('fast');
-        }
-    );
+        );
     /* End User Feed */
-    
+
     /* Add Comment on post */
-    $scope.addComment = function(index){
-        console.log('add comment called');
-        var post = $scope.feed[index];
-        var data = {
-            "postid": post._id,
-            "userid": localStorage.getItem(prefUserId),
-            "text": post.AddComment
-        };
+    $scope.addComment = function(index) {
+            console.log('add comment called');
+            var post = $scope.feed[index];
+            var data = {
+                "postid": post._id,
+                "userid": localStorage.getItem(prefUserId),
+                "text": post.AddComment
+            };
 
-        var config = {
-            headers : {
-                'Content-Type': 'application/json'
-            }
-        }
-
-        $http.post(hostAddress + '/api/list/listAddCommentPost', data, config)
-        .then(
-            function(response){
-                // success callback
-                try {
-                    var data = response.data;
-                    if (data.Status){
-                        if ($scope.feed[index].Comments){
-                            // All Ok Do Nothing
-                        }else{
-                            $scope.feed[index].Comments = [];
-                        }
-                        $scope.feed[index].Comments.push({
-                            User: {
-                                Name: localStorage.getItem(prefName)
-                            },
-                            Text: $scope.feed[index].AddComment
-                        });
-                        $scope.feed[index].CommentsCount = $scope.feed[index].CommentsCount + 1;
-                        $scope.feed[index].AddComment = "";
-                    }else{
-                        $scope.noDataFound = true;
-                    }
-                } catch(err) {
-                    console.log(err);
-                } finally {
-                    $scope.$apply();
+            var config = {
+                headers: {
+                    'Content-Type': 'application/json'
                 }
-            }, 
-            function(error){
-                // failure callback
-                $('.notification').text('Oops! something went wrong').show('fast').delay(3000).hide('fast');
             }
-        );
-    }
-    /* End Add Comment */
-    
+
+            $http.post(hostAddress + '/api/list/listAddCommentPost', data, config)
+                .then(
+                    function(response) {
+                        // success callback
+                        var data = response.data;
+                        if (data.Status) {
+                            if ($scope.feed[index].Comments) {
+                                // All Ok Do Nothing
+                            } else {
+                                $scope.feed[index].Comments = [];
+                            }
+                            $scope.feed[index].Comments.push({
+                                User: {
+                                    Name: localStorage.getItem(prefName)
+                                },
+                                Text: $scope.feed[index].AddComment
+                            });
+                            $scope.feed[index].CommentsCount = $scope.feed[index].CommentsCount + 1;
+                            $scope.feed[index].AddComment = "";
+                        } else {
+                            $scope.noDataFound = true;
+                        }
+                    },
+                    function(error) {
+                        // failure callback
+                        $('.notification').text('Oops! something went wrong').show('fast').delay(3000).hide('fast');
+                    }
+                );
+        }
+        /* End Add Comment */
+
     /* Like/Un-Like post */
-    $scope.likePost = function(index){
-        var post = $scope.feed[index];
-        var data = {
-            "postid": post._id,
-            "userid": localStorage.getItem(prefUserId),
-        };
+    $scope.likePost = function(index) {
+            var post = $scope.feed[index];
+            var data = {
+                "postid": post._id,
+                "userid": localStorage.getItem(prefUserId),
+            };
 
-        var config = {
-            headers : {
-                'Content-Type': 'application/json'
-            }
-        }
-
-        $http.post(hostAddress + '/api/list/listLikePost', data, config)
-        .then(
-            function(response){
-                // success callback
-                try {
-                    var data = response.data;
-                    if (data.Status){
-                        if (data.LikedPost){
-                            $scope.feed[index].IsLiked = true;
-                            $scope.feed[index].LikesCount = $scope.feed[index].LikesCount + 1;
-                        }else{
-                            $scope.feed[index].IsLiked = false;
-                            $scope.feed[index].LikesCount = $scope.feed[index].LikesCount - 1;
-                        }
-                    }else{
-                        $scope.noDataFound = true;
-                    }
-                } catch(err) {
-                    console.log(err);
-                } finally {
-                    $scope.$apply();
+            var config = {
+                headers: {
+                    'Content-Type': 'application/json'
                 }
-            }, 
-            function(error){
-                // failure callback
-                $('.notification').text('Oops! something went wrong').show('fast').delay(3000).hide('fast');
             }
-        );
-    }
-    /* Like/Un-Like Feed */
-    
-    $scope.addToWatchlist = function($index){
-        if ($scope.feed[$index].Movie.addedToWatchlist){
+
+            $http.post(hostAddress + '/api/list/listLikePost', data, config)
+                .then(
+                    function(response) {
+                        // success callback
+                        var data = response.data;
+                        if (data.Status) {
+                            if (data.LikedPost) {
+                                $scope.feed[index].IsLiked = true;
+                                $scope.feed[index].LikesCount = $scope.feed[index].LikesCount + 1;
+                            } else {
+                                $scope.feed[index].IsLiked = false;
+                                $scope.feed[index].LikesCount = $scope.feed[index].LikesCount - 1;
+                            }
+                        } else {
+                            $scope.noDataFound = true;
+                        }
+                    },
+                    function(error) {
+                        // failure callback
+                        $('.notification').text('Oops! something went wrong').show('fast').delay(3000).hide('fast');
+                    }
+                );
+        }
+        /* Like/Un-Like Feed */
+
+    $scope.addToWatchlist = function($index) {
+        if ($scope.feed[$index].Movie.addedToWatchlist) {
             $scope.feed[$index].Movie.addedToWatchlist = false;
-        }else{
+        } else {
             $scope.feed[$index].Movie.addedToWatchlist = true;
         }
-        $scope.$apply();
+        $scope.addToList = addToList($index, "Liked", "");
     };
-    
-    $scope.addToWatched = function($index){
-        if ($scope.feed[$index].Movie.addedToWatched){
+
+    $scope.addToWatched = function($index) {
+        if ($scope.feed[$index].Movie.addedToWatched) {
             $scope.feed[$index].Movie.addedToWatched = false;
-        }else{
+        } else {
             $scope.feed[$index].Movie.addedToWatched = true;
         }
-        $scope.$apply();
+        $scope.addToList = addToList($index, "Liked", "");
     };
-    
-    $scope.addToLiked = function($index){
-        if ($scope.feed[$index].Movie.addedToLiked){
+
+    $scope.addToLiked = function($index) {
+        if ($scope.feed[$index].Movie.addedToLiked) {
             $scope.feed[$index].Movie.addedToLiked = false;
-        }else{
+        } else {
             $scope.feed[$index].Movie.addedToLiked = true;
         }
-        $scope.$apply();
+        $scope.addToList = addToList($index, "Liked", "");
     };
-    
-    $scope.playTrailer = function($index){
-    };
-    
-    function addToList(index, listName, caption){
+
+    $scope.playTrailer = function($index) {};
+
+    function addToList(index, listName, caption) {
         var post = $scope.feed[index];
         var data = {
             "movieid": post.Movie._id,
@@ -201,39 +182,33 @@ app.registerCtrl('homeController', ['$scope', '$http', function($scope, $http) {
         };
 
         var config = {
-            headers : {
+            headers: {
                 'Content-Type': 'application/json'
             }
         }
 
         $http.post(hostAddress + '/api/list/listAddMovie', data, config)
-        .then(
-            function(response){
-                // success callback
-                try {
+            .then(
+                function(response) {
+                    // success callback
                     var data = response.data;
-                    if (data.Status){
-                        if (data.MovieAdded){
+                    if (data.Status) {
+                        if (data.MovieAdded) {
                             $scope.feed[index].IsLiked = true;
                             $scope.feed[index].LikesCount = $scope.feed[index].LikesCount + 1;
-                        }else{
+                        } else {
                             $scope.feed[index].IsLiked = false;
                             $scope.feed[index].LikesCount = $scope.feed[index].LikesCount - 1;
                         }
-                    }else{
+                    } else {
                         $('.notification').text(data.Error).show('fast').delay(3000).hide('fast');
                     }
-                } catch(err) {
-                    console.log(err);
-                } finally {
-                    $scope.$apply();
+                },
+                function(error) {
+                    // failure callback
+                    $('.notification').text('Oops! something went wrong').show('fast').delay(3000).hide('fast');
                 }
-            }, 
-            function(error){
-                // failure callback
-                $('.notification').text('Oops! something went wrong').show('fast').delay(3000).hide('fast');
-            }
-        );
+            );
     }
-    
+
 }]);

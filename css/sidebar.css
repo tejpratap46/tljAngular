@@ -171,7 +171,8 @@ hr {
 */
 .logo{
     background: #2A4888;
-    font-size: 40px;
+    font-size: 33px;
+    padding: 0px 20px;
     color: white;
 }
 .logo:hover{
@@ -218,10 +219,6 @@ h1,h2,h3 {
 	background-color: #fff;
 }
 
-.btn-primary,.label-primary,.list-group-item.active, .list-group-item.active:hover, .list-group-item.active:focus  {
-	background-color:#3B5999;
-    color:#fffffe;
-}
 .btn-default {
     color:#666666;
     text-shadow:0 0 1px rgba(0,0,0,.3);

@@ -58,7 +58,6 @@ app.registerCtrl('movieViewController', ['$scope', '$http', '$routeParams', func
     .then(
         function(response){
             // success callback
-            try {
                 var data = response.data;
                 console.log(data);
                 if (data.Status){
@@ -69,11 +68,6 @@ app.registerCtrl('movieViewController', ['$scope', '$http', '$routeParams', func
                     });
                     $scope.movie = movies[0];
                 }
-            } catch(err) {
-                console.log(err);
-            } finally {
-                $scope.$apply();
-            }
         },
         function(error){
             // failure callback
@@ -88,7 +82,6 @@ app.registerCtrl('movieViewController', ['$scope', '$http', '$routeParams', func
             $scope.movie.addedToWatchlist = true;
         }
         $scope.addToList = addToList("Watchlist", "");
-        $scope.$apply();
     }
     
     $scope.addToWatched = function(){
@@ -98,7 +91,6 @@ app.registerCtrl('movieViewController', ['$scope', '$http', '$routeParams', func
             $scope.movie.addedToWatched = true;
         }
         $scope.addToList = addToList("Watched", "");
-        $scope.$apply();
     };
     
     $scope.addToLiked = function(){
@@ -108,7 +100,6 @@ app.registerCtrl('movieViewController', ['$scope', '$http', '$routeParams', func
             $scope.movie.addedToLiked = true;
         }
         $scope.addToList = addToList("Liked", "");
-        $scope.$apply();
     };
     
     $scope.playTrailer = function(){
@@ -133,7 +124,6 @@ app.registerCtrl('movieViewController', ['$scope', '$http', '$routeParams', func
         .then(
             function(response){
                 // success callback
-                try {
                     var data = response.data;
                     if (data.Status){
                         if (data.MovieAdded){
@@ -144,11 +134,6 @@ app.registerCtrl('movieViewController', ['$scope', '$http', '$routeParams', func
                     }else{
                         $('.notification').text(data.Error).show('fast').delay(3000).hide('fast');
                     }
-                } catch(err) {
-                    console.log(err);
-                } finally {
-                    $scope.$apply();
-                }
             }, 
             function(error){
                 // failure callback

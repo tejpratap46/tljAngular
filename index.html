@@ -1,114 +1,121 @@
 <!DOCTYPE html>
 <html lang="en" data-ng-app="tlj">
 
-    <head>
-        <meta charset="utf-8">
-        <meta http-equiv="X-UA-Compatible" content="IE=edge">
-        <meta name="viewport" content="width=device-width, user-scalable=no" />
-        <meta name="description" content="My OPD">
-        <link rel="icon" href="favicon.ico">
-        <title>TLJ</title>
-        <link rel="stylesheet" href="https://bootswatch.com/flatly/bootstrap.min.css">
-        <!--    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.6/css/bootstrap.min.css">-->
-        <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/angular-loading-bar/0.8.0/loading-bar.min.css">
-        <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/font-awesome/4.5.0/css/font-awesome.min.css">
-        <!--
+<head>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, user-scalable=no" />
+    <meta name="description" content="My OPD">
+    <link rel="icon" href="favicon.ico">
+    <title>TLJ</title>
+    <link rel="stylesheet" href="https://bootswatch.com/readable/bootstrap.min.css">
+    <!--<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.6/css/bootstrap.min.css">-->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/angular-loading-bar/0.8.0/loading-bar.min.css">
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/font-awesome/4.5.0/css/font-awesome.min.css">
+    <!--
         <link rel="stylesheet" href="css/libs/bootstrap.min.css"><link rel="stylesheet" href="css/libs/loading-bar.min.css">
     -->
-        <link rel="stylesheet" href="css/style.css">
-        <link rel="stylesheet" href="css/signin.css">
-        <link rel="stylesheet" href="css/sidebar.css">
-    </head>
-    
-    <body>
-        <div class="wrapper">
-            <div class="box">
-                <div class="row row-offcanvas row-offcanvas-left">
-                    <!-- sidebar -->
-                    <div class="column col-sm-2 hidden-xs sidebar-offcanvas" data-ng-controller="sidebarController" id="sidebar">
-                        <ul class="nav">
-                            <li>
-                                <a href="#/user">
-                                    <div>
-                                        <h1 class="center">
-                                                                                        <img src="https://cdn0.iconfinder.com/data/icons/user-pictures/100/male-256.png" alt="Avatar" class="img-circle" style="max-width: 100%;">
-                                                                                        </h1> </div>
-                                </a>
-                            </li>
-                            <li data-ng-repeat="option in mainOptions">
-                                <a href="{{option.href}}" class="bold"> <i class="{{option.glyphicon}}" data-toggle="offcanvas"></i> {{option.title}} </a>
-                            </li>
-                            <hr class="hidden-xs">
-                            <p style="padding: 10px;" class="bold hidden-xs">Genres</p>
-                            <li data-ng-repeat="genre in genres" class="hidden-xs">
-                                <a href="{{genre.href}}"> <i class="{{genre.glyphicon}}"></i> {{genre.title}} </a>
-                            </li>
-                        </ul>
-                    </div>
-                    <!-- /sidebar -->
-                    <!-- main right col -->
-                    <div class="column col-sm-10 col-xs-12" id="main">
-                        <!-- top nav -->
-                        <div class="navbar navbar-blue navbar-static-top" data-ng-controller="navigationController" id="navbar">
-                            <div class="navbar-header">
-                                <!--
-                                <button class="navbar-toggle" type="button" data-toggle="collapse" data-target=".navbar-collapse"><span class="sr-only">Toggle</span><span class="icon-bar"></span><span class="icon-bar"></span><span class="icon-bar"></span></button>
-                                -->
-                                <span class="navbar-brand glyphicon glyphicon-menu-hamburger visible-xs menu-button" data-toggle="offcanvas"></span>
-                                <a href="#/" class="navbar-brand logo bold" style="padding-top: 10px;">b</a>
-                                <a href="#/" class="navbar-brand navbar-item"> <span class="glyphicon glyphicon-globe"></span> </a>
-                                <a href="#/" class="navbar-brand navbar-item"> <span class="glyphicon glyphicon-cog"></span> </a>
-                            </div>
-                            <nav class="collapse navbar-collapse" role="navigation">
-                                <form class="navbar-form navbar-left">
-                                    <div class="input-group">
-                                        <input data-ng-change="searchMovie()" type="text" class="form-control" placeholder="{{searchBoxPlaceholder}}" data-ng-model="searchData" data-ng-blur="searchBoxBlur()" data-ng-click="searchBoxClick()">
-                                        <div class="input-group-btn">
-                                            <button class="btn btn-default" type="submit"> <i class="glyphicon glyphicon-search"></i> </button>
-                                        </div>
-                                    </div>
-                                </form>
-                                <ul class="nav navbar-nav"></ul>
-                                <ul class="nav navbar-nav navbar-right" style="margin-right: 0px;" data-ng-bind-html="userMenu"></ul>
-                            </nav>
-                            <form class="navbar-form-xs">
+    <link rel="stylesheet" href="css/style.css">
+    <link rel="stylesheet" href="css/signin.css">
+    <link rel="stylesheet" href="css/sidebar.css"> </head>
+
+<body>
+    <div class="wrapper">
+        <div class="box">
+            <div class="row row-offcanvas row-offcanvas-left">
+                <!-- sidebar -->
+                <div class="column col-sm-2 hidden-xs sidebar-offcanvas" data-ng-controller="sidebarController" id="sidebar">
+                    <ul class="nav">
+                        <li>
+                            <a href="#/user">
+                                <div>
+                                    <h1 class="center">
+                                    <img src="https://cdn0.iconfinder.com/data/icons/user-pictures/100/male-256.png" alt="Avatar" class="img-circle" style="max-width: 100%;">
+                                    </h1>
+                                </div>
+                            </a>
+                        </li>
+                        <li data-ng-repeat="option in mainOptions">
+                            <a href="{{option.href}}" class="bold"> <i class="{{option.glyphicon}}" data-toggle="offcanvas"></i> {{option.title}} </a>
+                        </li>
+                        <hr class="hidden-xs">
+                        <p style="padding: 10px;" class="bold hidden-xs">Genres</p>
+                        <li data-ng-repeat="genre in genres" class="hidden-xs">
+                            <a href="{{genre.href}}"> <i class="{{genre.glyphicon}}"></i> {{genre.title}} </a>
+                        </li>
+                    </ul>
+                </div>
+                <!-- /sidebar -->
+                <!-- main right col -->
+                <div class="column col-sm-10 col-xs-12" id="main">
+                    <!-- top nav -->
+                    <div class="navbar navbar-blue navbar-static-top" data-ng-controller="navigationController" id="navbar">
+                        <div class="navbar-header">
+                            <span class="navbar-brand glyphicon glyphicon-menu-hamburger visible-xs" data-toggle="offcanvas"></span>
+                            <!--<a href="#/" class="navbar-brand logo bold">b</a>-->
+                            <a href="#/" class="navbar-brand navbar-item"> <span class="glyphicon glyphicon-flash"></span> </a>
+                            <a href="#/" class="navbar-brand navbar-item"> <span class="glyphicon glyphicon-globe"></span> </a>
+                            <a href="#/" class="navbar-brand navbar-item"> <span class="glyphicon glyphicon-cog"></span> </a>
+                            <a href="#/user" class="navbar-brand navbar-item visible-xs pull-right"> <span class="glyphicon glyphicon-user"></span> </a>
+                        </div>
+                        <nav class="collapse navbar-collapse" role="navigation">
+                            <form class="navbar-form navbar-left">
                                 <div class="input-group">
-                                    <input data-ng-change="searchMovie()" type="text" class="form-control no-radius" placeholder="{{searchBoxPlaceholder}}" data-ng-model="searchData" data-ng-blur="searchBoxBlur()" data-ng-click="searchBoxClick()">
+                                    <input data-ng-change="searchMovie()" type="text" class="form-control" placeholder="{{searchBoxPlaceholder}}" data-ng-model="searchData"
+                                    data-ng-blur="searchBoxBlur()" data-ng-click="searchBoxClick()">
+                                    <ul class="dropdown-menu full-width">
+                                        <li data-ng-repeat="movie in searchResults" class="ellipsis"><a href="{{'#/movie/view/' + movie._id}}">{{movie.Title}}</a></li>
+                                    </ul>
                                     <div class="input-group-btn">
-                                        <button class="btn btn-default no-radius" type="submit"> <i class="glyphicon glyphicon-search"></i> </button>
+                                        <button class="btn btn-default" type="submit"> <i class="glyphicon glyphicon-search"></i> </button>
                                     </div>
                                 </div>
                             </form>
-                        </div>
-                        <!-- /top nav -->
-                        <div>
-                            <div class="full col-sm-9 no-padding" style="paddin-left: 0px; padding-right: 0px;">
-                                <!-- content -->
-                                <div id="view" data-ng-view></div>
+                            <ul class="nav navbar-nav"></ul>
+                            <ul class="nav navbar-nav navbar-right" style="margin-right: 0px;" data-ng-bind-html="userMenu"></ul>
+                        </nav>
+                        <form class="navbar-form-xs">
+                            <div class="input-group">
+                                <input data-ng-change="searchMovie()" type="text" class="form-control no-radius" placeholder="{{searchBoxPlaceholder}}" data-ng-model="searchData"
+                                data-ng-blur="searchBoxBlur()" data-ng-click="searchBoxClick()">
+                                <ul class="dropdown-menu full-width">
+                                    <li data-ng-repeat="movie in searchResults" class="ellipsis"><a href="{{'#/movie/view/' + movie._id}}"">{{movie.Title}}</a></li>
+                                </ul>
+                                <div class="input-group-btn">
+                                    <button class="btn btn-default no-radius" type="submit"> <i class="glyphicon glyphicon-search"></i> </button>
+                                </div>
                             </div>
-                            <!-- /col-9 -->
-                        </div>
-                        <!-- /padding -->
+                        </form>
                     </div>
-                    <!-- /main -->
+                    <!-- /top nav -->
+                    <div>
+                        <div class="full col-sm-9 no-padding" style="paddin-left: 0px; padding-right: 0px;">
+                            <!-- content -->
+                            <div id="view" data-ng-view></div>
+                        </div>
+                        <!-- /col-9 -->
+                    </div>
+                    <!-- /padding -->
                 </div>
+                <!-- /main -->
             </div>
         </div>
-        <div class="notification"></div>
-    </body>
-    <!--
+    </div>
+    <div class="notification"></div>
+</body>
+<!--
       <script src="https://ajax.googleapis.com/ajax/libs/jquery/2.1.4/jquery.min.js"></script><script src="https://ajax.googleapis.com/ajax/libs/angularjs/1.5.0/angular.min.js"></script><script src="https://ajax.googleapis.com/ajax/libs/angularjs/1.5.0/angular-route.min.js"></script><script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.6/js/bootstrap.min.js"></script><script src="https://cdnjs.cloudflare.com/ajax/libs/angular-loading-bar/0.8.0/loading-bar.min.js"></script><script src="https://cdnjs.cloudflare.com/ajax/libs/moment.js/2.11.2/moment.min.js"></script>
     -->
-    <script src="js/libs/jquery.min.js"></script>
-    <script src="js/libs/angular.min.js"></script>
-    <script src="js/libs/angular-route.min.js"></script>
-    <script src="js/libs/loading-bar.min.js"></script>
-    <script src="js/libs/bootstrap.min.js"></script>
-    <script src="js/libs/moment.min.js"></script>
-    <script src="js/config.js"></script>
-    <script src="js/app.js"></script>
-    <script src="js/controllers/sidebarController.js"></script>
-    <script src="js/controllers/navigationController.js"></script>
-    <script src="js/script.js"></script>
+<script src="js/libs/jquery.min.js"></script>
+<script src="js/libs/angular.min.js"></script>
+<script src="js/libs/angular-route.min.js"></script>
+<script src="js/libs/loading-bar.min.js"></script>
+<script src="js/libs/bootstrap.min.js"></script>
+<script src="js/libs/moment.min.js"></script>
+<script src="js/config.js"></script>
+<script src="js/app.js"></script>
+<script src="js/controllers/sidebarController.js"></script>
+<script src="js/controllers/navigationController.js"></script>
+<script src="js/script.js"></script>
 
 </html>
