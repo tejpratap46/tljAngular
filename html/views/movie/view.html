@@ -42,19 +42,19 @@
                         <div class="well no-margin">
                            <label for="title">Actors</label>
                             <ul class="pager no-margin">
-                                <li data-ng-repeat="actor in movie.Actors" class="previous"><a href="#" class="navbar-item" style="margin: 1px;">{{actor}}</a></li>
+                                <li data-ng-repeat="actor in movie.Actors" class="previous"><a href="{{'#/movie/list/Actors:' + actor}}" class="navbar-item" style="margin: 1px;">{{actor}}</a></li>
                             </ul>
                         </div>
                         <div class="well no-margin">
                            <label for="title">Directors</label>
                             <ul class="pager no-margin">
-                                <li data-ng-repeat="director in movie.Directors" class="previous"><a href="#" class="navbar-item" style="margin: 1px;">{{director}}</a></li>
+                                <li data-ng-repeat="director in movie.Directors" class="previous"><a href="{{'#/movie/list/Directors:' + director}}" class="navbar-item" style="margin: 1px;">{{director}}</a></li>
                             </ul>
                         </div>
                         <div class="well no-margin">
                             <label for="title">Writers</label>
                             <ul class="pager no-margin">
-                                <li data-ng-repeat="writer in movie.Writers" class="previous"><a href="#" class="navbar-item" style="margin: 1px;">{{writer}}</a></li>
+                                <li data-ng-repeat="writer in movie.Writers" class="previous"><a href="{{'#/movie/list/Writers:' + writer.split('(')[0]}}" class="navbar-item" style="margin: 1px;">{{writer}}</a></li>
                             </ul>
                         </div>
                     </div>

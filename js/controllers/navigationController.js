@@ -40,22 +40,23 @@ app.controller('navigationController', ['$scope', '$sce', '$http', function ($sc
             $('.dropdown-menu').show('fast');
 
             var data = {
-                "query": {
-                    "Title": $scope.searchData
+                query: {
+                    Title: $scope.searchData
                 },
-                "select": {
-                    "Title": 1,
-                    "Year": 1,
-                    "Genres": 1,
-                    "ImdbRating": 1,
-                    "ImdbID": 1,
-                    "ListedIn": 1
+                select: {
+                    Title: 1,
+                    Year: 1,
+                    Genres: 1,
+                    ImdbRating: 1,
+                    ImdbID: 1,
+                    ListedIn: 1
                 },
-                "sort": {
-                    "Released": 1
+                sort: {
+                    Released: -1
                 },
-                "skip": 0,
-                "limit": 10
+                skip: 0,
+                limit: 10,
+                userid: localStorage.getItem(prefUserId)
             };
 
             var config = {
@@ -69,9 +70,9 @@ app.controller('navigationController', ['$scope', '$sce', '$http', function ($sc
                     function (response) {
                         // success callback
                         var data = response.data;
-                        if(data.Status){
+                        if (data.Status) {
                             $scope.searchResults = data.Movies;
-                        }else{
+                        } else {
                             showToast(data.Error);
                         }
                     },

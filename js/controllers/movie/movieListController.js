@@ -1,62 +1,71 @@
 var app = angular.module(appName);
 
-app.registerCtrl('movieListController', ['$scope', '$http', function ($scope, $http) {
+app.registerCtrl('movieListController', ['$scope', '$http', '$routeParams', function ($scope, $http, $routeParams) {
     $scope.noDataFound = false;
 
-    /* Get Movie */
-    var data = {
-        "query": {
-            "Languages": "English"
-            , "Released": {
-                "$gt": moment().format("YYYY-MM-DD")
+    $scope.movies = [];
+    var page = 1;
+
+    $scope.loadMovies = function () {
+        var filters = $routeParams.filter.split('|');
+        var filterJson = {};
+        filters.forEach(function (filter) {
+            filterJson[filter.split(':')[0]] = filter.split(':')[1];
+        });
+        /* Get Movie */
+        
+        filterJson.Languages = "English";
+        
+        var data = {
+            query: filterJson,
+            select: {
+                Title: 1,
+                Released: 1,
+                Poster: 1,
+                ImdbRating: 1,
+                Genres: 1,
+                Runtime: 1
+            },
+            sort: {
+                Released: -1
+            },
+            skip: (page++ * 10 - 10),
+            limit: 10,
+            userid: localStorage.getItem(prefUserId)
+        };
+
+        var config = {
+            headers: {
+                'Content-Type': 'application/json'
             }
         }
-        , "select": {
-            "Title": 1
-            , "Released": 1
-            , "Poster": 1
-            , "ImdbRating": 1
-            , "Genres": 1
-            , "Runtime": 1
-        }
-        , "sort": {
-            "Released": 1
-        }
-        , "skip": 0
-        , "limit": 10
-        , "userid": localStorage.getItem(prefUserId)
-    };
 
-    var config = {
-        headers: {
-            'Content-Type': 'application/json'
-        }
+        $http.post(hostAddress + '/api/movie/getQuery', data, config)
+            .then(
+                function (response) {
+                    // success callback
+                    var data = response.data;
+                    console.log(data);
+                    if (data.Status) {
+                        var movies = data.Movies;
+                        movies.forEach(function (object) {
+                            object.Genres = object.Genres.join(", ");
+                            object.Released = moment(object.Released).format('MMMM Do YYYY');
+                            $scope.movies.push(object);
+                        });
+                    } else {
+                        $scope.noDataFound = true;
+                    }
+                }
+                , function (error) {
+                    // failure callback
+                    $('.notification').text('Oops! something went wrong').show('fast').delay(3000).hide('fast');
+                }
+                );
+        /* End Movie */
     }
 
-    $http.post(hostAddress + '/api/movie/getQuery', data, config)
-        .then(
-            function (response) {
-                // success callback
-                var data = response.data;
-                $scope.movies = [];
-                console.log(data);
-                if (data.Status) {
-                    var movies = data.Movies;
-                    movies.forEach(function (object) {
-                        object.Genres = object.Genres.join(", ");
-                        object.Released = moment(object.Released).format('MMMM Do YYYY');
-                        $scope.movies.push(object);
-                    });
-                } else {
-                    $scope.noDataFound = true;
-                }
-            }
-            , function (error) {
-                // failure callback
-                $('.notification').text('Oops! something went wrong').show('fast').delay(3000).hide('fast');
-            }
-        );
-    /* End Movie */
+    $scope.loadMovies();
 
     $scope.addToWatchlist = function ($index) {
         if ($scope.movies[$index].addedToWatchlist) {
@@ -85,7 +94,7 @@ app.registerCtrl('movieListController', ['$scope', '$http', function ($scope, $h
         $scope.addToList = addToList($index, "Liked", "");
     };
 
-    $scope.playTrailer = function ($index) {};
+    $scope.playTrailer = function ($index) { };
 
     function addToList(index, listName, caption) {
         var movie = $scope.movies[index];
@@ -121,7 +130,7 @@ app.registerCtrl('movieListController', ['$scope', '$http', function ($scope, $h
                     // failure callback
                     $('.notification').text('Oops! something went wrong').show('fast').delay(3000).hide('fast');
                 }
-            );
+                );
     }
 
 }]);

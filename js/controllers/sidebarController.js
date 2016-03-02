@@ -66,7 +66,7 @@ app.controller('sidebarController', ['$scope', '$sce', '$http', function($scope,
                         genres.forEach(function(name) {
                             $scope.genres.push({
                                 title: name,
-                                href: "#/list/genre/" + name,
+                                href: "#/movie/list/Genres:" + name,
                                 glyphicon: "glyphicon glyphicon-star"
                             });
                         });
