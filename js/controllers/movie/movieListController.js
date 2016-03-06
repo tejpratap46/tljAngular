@@ -10,12 +10,21 @@ app.registerCtrl('movieListController', ['$scope', '$http', '$routeParams', func
         var filters = $routeParams.filter.split('|');
         var filterJson = {};
         filters.forEach(function (filter) {
-            filterJson[filter.split(':')[0]] = filter.split(':')[1];
+            if (filter.split(':')[1].indexOf("$$$") > 1) {
+                var subFilter = filter.split(':')[1];
+                var subFilterKey = subFilter.split("$$$")[0];
+                var subFilterValue = subFilter.split("$$$")[1];
+                filterJson[filter.split(':')[0]] = {};
+                filterJson[filter.split(':')[0]][subFilterKey] = subFilterValue;
+            } else {
+                filterJson[filter.split(':')[0]] = filter.split(':')[1];
+            }
         });
-        /* Get Movie */
-        
         filterJson.Languages = "English";
+        console.log(filterJson);
         
+        /* Get Movie */
+
         var data = {
             query: filterJson,
             select: {
