@@ -74,6 +74,9 @@ app.registerCtrl('homeController', ['$scope', '$http', '$window', function ($sco
     /* Add Comment on post */
     $scope.addComment = function (index) {
         var post = $scope.feed[index];
+        if (post.AddComment.length == 0) {
+            return;
+        }
         var data = {
             "postid": post._id,
             "userid": localStorage.getItem(prefUserId),
@@ -152,6 +155,7 @@ app.registerCtrl('homeController', ['$scope', '$http', '$window', function ($sco
                         } else {
                             // unliked post
                         }
+                        return;
                     } else {
                         $scope.noDataFound = true;
                     }

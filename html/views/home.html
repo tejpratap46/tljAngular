@@ -79,8 +79,7 @@
                 <form lpformnum="3" data-ng-submit="addComment($index)">
                     <div class="input-group">
                         <div class="input-group-btn">
-                            <button class="btn btn-link" title="like" data-ng-mouseup="likePost($index)"><span class="glyphicon glyphicon-heart toggle-icon-{{post.IsLiked}}"></span></button>
-                            <!--                            <button class="btn btn-link" title="share"><i class="glyphicon glyphicon-share toggle-icon-false"></i></button>-->
+                            <button class="btn btn-link" type="button" title="like" data-ng-click="likePost($index)"><span class="glyphicon glyphicon-heart toggle-icon-{{post.IsLiked}}"></span></button>
                         </div>
                         <input class="form-control" placeholder="Add a comment.." type="text" data-ng-model="post.AddComment">
                     </div>
