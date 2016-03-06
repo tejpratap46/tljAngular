@@ -1,7 +1,7 @@
 <div>
-   <div class="row">
-       <div class="col-sm-1"></div>
-       <div class="col-sm-10 no-padding" data-ng-if="movie">
+    <div class="row">
+        <div class="col-sm-1"></div>
+        <div class="col-sm-10 no-padding" data-ng-if="movie">
             <div class="panel panel-default">
                 <div class="panel-body">
                     <div class="no-padding no-margin no-border" style="background: #EEEEEE; overflow: hidden;">
@@ -16,17 +16,32 @@
                                 <p>{{movie.Released}}</p>
                                 <small>{{movie.Genres}}</small>
                                 <small>{{movie.Runtime}} min</small>
-                            </blockquote>  
+                            </blockquote>
                         </a>
                         <hr class="no-margin">
                         <blockquote class="row no-padding no-margin no-border">
-                            <div class="col-xs-12 col-sm-4"><button class="btn btn-link full-width"><h1 class="no-margin">{{movie.ImdbRating | number: 1}}</h1></button></div>
+                            <div class="col-xs-12 col-sm-4">
+                                <button class="btn btn-link full-width">
+                                    <h1 class="no-margin">{{movie.ImdbRating | number: 1}}</h1></button>
+                            </div>
                             <div class="clearfix visible-xs"></div>
                             <hr class="no-margin visible-xs">
-                            <div class="col-xs-3 col-sm-2"><button class="btn btn-link full-width toggle-icon-{{movie.addedToWatchlist}}" title="Add To Watchlist" data-ng-click="addToWatchlist()"><span class="glyphicon glyphicon-plus movie-action-icon"></span><br><small class="ellipsis">Add To Watchlist</small></button></div>
-                            <div class="col-xs-3 col-sm-2"><button class="btn btn-link full-width toggle-icon-{{movie.addedToWatched}}" title="Mark As Watched" data-ng-click="addToWatched()"><span class="glyphicon glyphicon-ok movie-action-icon"></span><br><small class="ellipsis">Mark As Watched</small></button></div>
-                            <div class="col-xs-3 col-sm-2"><button class="btn btn-link full-width toggle-icon-{{movie.addedToLiked}}" title="Like This Movie" data-ng-click="addToLiked()"><span class="glyphicon glyphicon-heart movie-action-icon"></span><br><small class="ellipsis">Like This Movie</small></button></div>
-                            <div class="col-xs-3 col-sm-2"><button class="btn btn-link full-width toggle-icon-false" title="Play Trailer" data-ng-click="playTrailer()"><span class="glyphicon glyphicon-play movie-action-icon"></span><br><small class="ellipsis">Play Trailer</small></button></div>
+                            <div class="col-xs-3 col-sm-2">
+                                <button class="btn btn-link full-width toggle-icon-{{movie.addedToWatchlist}}" title="Add To Watchlist" data-ng-click="addToWatchlist()"><span class="glyphicon glyphicon-plus movie-action-icon"></span>
+                                    <br><small class="ellipsis">Add To Watchlist</small></button>
+                            </div>
+                            <div class="col-xs-3 col-sm-2">
+                                <button class="btn btn-link full-width toggle-icon-{{movie.addedToWatched}}" title="Mark As Watched" data-ng-click="addToWatched()"><span class="glyphicon glyphicon-ok movie-action-icon"></span>
+                                    <br><small class="ellipsis">Mark As Watched</small></button>
+                            </div>
+                            <div class="col-xs-3 col-sm-2">
+                                <button class="btn btn-link full-width toggle-icon-{{movie.addedToLiked}}" title="Like This Movie" data-ng-click="addToLiked()"><span class="glyphicon glyphicon-heart movie-action-icon"></span>
+                                    <br><small class="ellipsis">Like This Movie</small></button>
+                            </div>
+                            <div class="col-xs-3 col-sm-2">
+                                <button class="btn btn-link full-width toggle-icon-false" title="Play Trailer" data-ng-click="playTrailer()"><span class="glyphicon glyphicon-play movie-action-icon"></span>
+                                    <br><small class="ellipsis">Play Trailer</small></button>
+                            </div>
                         </blockquote>
                         <div class="well no-margin">
                             <label for="title" data-ng-if="movie.Plot">Plot : </label>
@@ -40,13 +55,13 @@
                             <a href="{{'http://www.imdb.com/title/' + movie.ImdbID}}" target="_blank" class="btn btn-warning" data-ng-if="movie.ImdbID"><i class="glyphicon glyphicon-new-window"></i> IMDB</a>
                         </div>
                         <div class="well no-margin">
-                           <label for="title">Actors</label>
+                            <label for="title">Actors</label>
                             <ul class="pager no-margin">
                                 <li data-ng-repeat="actor in movie.Actors" class="previous"><a href="{{'#/movie/list/Actors:' + actor}}" class="navbar-item" style="margin: 1px;">{{actor}}</a></li>
                             </ul>
                         </div>
                         <div class="well no-margin">
-                           <label for="title">Directors</label>
+                            <label for="title">Directors</label>
                             <ul class="pager no-margin">
                                 <li data-ng-repeat="director in movie.Directors" class="previous"><a href="{{'#/movie/list/Directors:' + director}}" class="navbar-item" style="margin: 1px;">{{director}}</a></li>
                             </ul>
@@ -60,7 +75,20 @@
                     </div>
                 </div>
             </div>
-       </div>
-       <div class="col-sm-1"></div>
-   </div>
+            <div class="well">
+                <form class="form-horizontal" role="form">
+                    <h4>Say something about this movie</h4>
+                    <div class="form-group" style="padding:14px;">
+                        <textarea class="form-control" placeholder="Something like... Hey this movie is all about this and that." data-ng-model="movieComment"
+                        data-ng-change="movieCommentChange()"></textarea>
+                    </div>
+                    <button class="btn btn-primary pull-right" type="button">Comment</button>
+                    <ul class="list-inline">
+                        <li><a href=""><i class="glyphicon glyphicon-check"></i></a></li>
+                    </ul>
+                </form>
+            </div>
+        </div>
+        <div class="col-sm-1"></div>
+    </div>
 </div>
