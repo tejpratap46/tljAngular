@@ -76,6 +76,11 @@ app.config(['$routeProvider', '$controllerProvider', 'cfpLoadingBarProvider', fu
 		controller : 'movieListController',
         resolve: loader(['js/controllers/movie/movieListController.js'])
 	})
+	.when('/user/:userId/post/:postId', {
+		templateUrl: 'html/views/post/view.html',
+		controller : 'postViewController',
+        resolve: loader(['js/controllers/post/postViewController.js'])
+	})
 	.otherwise({
 		redirectTo: '/'
 	});

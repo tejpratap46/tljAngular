@@ -219,14 +219,6 @@ h1,h2,h3 {
 	background-color: #fff;
 }
 
-.btn-default {
-    color:#666666;
-    text-shadow:0 0 1px rgba(0,0,0,.3);
-}
-.form-control {
-	
-}
-
 .panel textarea, .well textarea, textarea.form-control
 {
    resize: none;

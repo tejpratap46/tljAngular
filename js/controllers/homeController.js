@@ -18,19 +18,19 @@ app.registerCtrl('homeController', ['$scope', '$http', '$window', function ($sco
     function loadFeed(params) {
         /* Get User Feed, must be rich */
         var data = {
-            "userid": localStorage.getItem(prefUserId),
-            "select": {
-                "Comments": 0
+            userid: localStorage.getItem(prefUserId),
+            select: {
+                Comments: 0
             },
-            "selectMovieFields": "_id Title Released Poster ImdbRating Genres",
-            "selectUserFields": "_id Name",
-            "sort": {
-                "CreatedAt": -1
+            selectMovieFields: "_id Title Released Poster ImdbRating Genres",
+            selectUserFields: "_id Name",
+            sort: {
+                CreatedAt: -1
             },
-            "skip": 0,
-            "limit": 10
+            skip: 0,
+            limit: 10
         };
-
+        
         var config = {
             headers: {
                 'Content-Type': 'application/json'

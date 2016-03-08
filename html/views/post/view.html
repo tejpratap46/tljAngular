@@ -1,23 +1,9 @@
 <div>
     <div class="col-md-2"></div>
     <div class="col-md-8">
-        <div class="well">
-            <form class="form-horizontal" role="form">
-                <h4>Comment about a movie</h4>
-                <div class="form-group" style="padding:14px;">
-                    <textarea class="form-control" placeholder="Use @movieName to tag movie." data-ng-model="movieComment" data-ng-change="movieCommentChange()"></textarea>
-                </div>
-                <button class="btn btn-primary pull-right" type="button">Post</button>
-                <ul class="list-inline">
-                    <li><a href=""><i class="glyphicon glyphicon-upload"></i></a></li>
-                    <li><a href=""><i class="glyphicon glyphicon-camera"></i></a></li>
-                    <li><a href=""><i class="glyphicon glyphicon-map-marker"></i></a></li>
-                </ul>
-            </form>
-        </div>
-        <div class="panel panel-default" data-ng-repeat="post in feed track by $index">
+        <div class="panel panel-default">
             <div class="panel-heading">
-                <!--                <a href="#" class="pull-right">View all</a>-->
+                <!--<a href="#" class="pull-right">View all</a>-->
                 <h5 class="no-margin">
                     <a href="{{'#/user/' + post.User._id}}">
                         <img src="https://cdn0.iconfinder.com/data/icons/user-pictures/100/male-128.png" alt="" class="img-circle" style="margin: 0px;">
@@ -31,12 +17,12 @@
             <div class="panel-body">
                 <div class="no-padding no-margin no-border" style="background: #EEEEEE; overflow: hidden;">
                     <a class="row" href="{{'#/movie/view/' + post.Movie._id}}">
-                        <div class="col-sm-4 no-padding">
-                            <div style="max-height: 200px; overflow: hidden;">
+                        <div class="col-sm-12 no-padding">
+                            <div style="max-height: 400px; overflow: hidden;">
                                 <img data-ng-src="{{post.Movie.Poster}}" class="full-width">
                             </div>
                         </div>
-                        <blockquote class="col-sm-8 no-border">
+                        <blockquote class="col-sm-12 no-border">
                             <h1 class="bold">{{post.Movie.Title}}</h1>
                             <p>{{post.Movie.Released}}</p>
                             <small>{{post.Movie.Genres}}</small>
@@ -71,10 +57,10 @@
                         <p class="justified">{{post.Caption}}</p>
                     </div>
                     <a href="" class="btn btn-link"><small>{{post.LikesCount}} likes</small></a>
-                    <a href="{{'#/user/' + post.User._id + '/post/' + post._id}}" class="btn btn-link"> <small>{{post.CommentsCount}} comments</small></a>
+                    <a href="" class="btn btn-link"> <small>{{post.CommentsCount}} comments</small></a>
                     <blockquote class="no-margin" data-ng-repeat="comment in post.Comments">
                         <ul class="list-unstyled" style="font-size: 0.7em;">
-                            <li><a href="{{'#/user/' + comment.User._id}}" class="bold">{{comment.User.Name}}</a><span> {{comment.Text}}</span></li>
+                            <li><a href="{{'#/user/' + post.User._id}}" class="bold">{{comment.User.Name}}</a><span> {{comment.Text}}</span></li>
                         </ul>
                     </blockquote>
                 </div>

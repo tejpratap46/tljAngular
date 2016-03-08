@@ -8,13 +8,14 @@
     <meta name="description" content="My OPD">
     <link rel="icon" href="favicon.ico">
     <title>TLJ</title>
-    <link rel="stylesheet" href="https://bootswatch.com/readable/bootstrap.min.css">
+    <!--<link rel="stylesheet" href="https://bootswatch.com/readable/bootstrap.min.css">-->
     <!--<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.6/css/bootstrap.min.css">-->
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/angular-loading-bar/0.8.0/loading-bar.min.css">
-    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/font-awesome/4.5.0/css/font-awesome.min.css">
-    <!--
-        <link rel="stylesheet" href="css/libs/bootstrap.min.css"><link rel="stylesheet" href="css/libs/loading-bar.min.css">
-    -->
+    <!--<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/angular-loading-bar/0.8.0/loading-bar.min.css">-->
+    <!--<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/font-awesome/4.5.0/css/font-awesome.min.css">-->
+
+    <link rel="stylesheet" href="css/libs/bootstrap.min.css">
+    <link rel="stylesheet" href="css/libs/loading-bar.min.css">
+
     <link rel="stylesheet" href="css/style.css">
     <link rel="stylesheet" href="css/signin.css">
     <link rel="stylesheet" href="css/sidebar.css"> </head>
@@ -64,7 +65,9 @@
                                     <input data-ng-change="searchMovie()" type="text" class="form-control" placeholder="{{searchBoxPlaceholder}}" data-ng-model="searchData"
                                     data-ng-blur="searchBoxBlur()" data-ng-click="searchBoxClick()">
                                     <ul class="dropdown-menu full-width">
-                                        <li data-ng-repeat="movie in searchResults" class="ellipsis"><a href="{{'#/movie/view/' + movie._id}}">{{movie.Title + ' (' + movie.Year + ')'}}</a></li>
+                                        <li data-ng-repeat="movie in searchResults">
+                                            <a href="{{'#/movie/view/' + movie._id}}" class="ellipsis">{{movie.Title + ' (' + movie.Year + ')'}}</a>
+                                        </li>
                                     </ul>
                                     <div class="input-group-btn">
                                         <button class="btn btn-default" type="submit"> <i class="glyphicon glyphicon-search"></i> </button>
@@ -79,19 +82,20 @@
                                 <input data-ng-change="searchMovie()" type="text" class="form-control no-radius" placeholder="{{searchBoxPlaceholder}}" data-ng-model="searchData"
                                 data-ng-blur="searchBoxBlur()" data-ng-click="searchBoxClick()">
                                 <ul class="dropdown-menu full-width">
-                                    <li data-ng-repeat="movie in searchResults" class="ellipsis"><a href="{{'#/movie/view/' + movie._id}}"">{{movie.Title + ' (' + movie.Year + ')'}}</a></li>
+                                    <li data-ng-repeat="movie in searchResults">
+                                        <a href="{{'#/movie/view/' + movie._id}}" class="ellipsis">{{movie.Title + ' (' + movie.Year + ')'}}</a></li>
                                 </ul>
-                                <div class="input-group-btn">
-                                    <button class="btn btn-default no-radius" type="submit"> <i class="glyphicon glyphicon-search"></i> </button>
+                                <div class="input-group-btn ">
+                                    <button class="btn btn-default no-radius " type="submit "> <i class="glyphicon glyphicon-search "></i> </button>
                                 </div>
                             </div>
                         </form>
                     </div>
                     <!-- /top nav -->
                     <div>
-                        <div class="full col-sm-9 no-padding" style="paddin-left: 0px; padding-right: 0px;">
+                        <div class="full col-sm-9 no-padding " style="paddin-left: 0px; padding-right: 0px; ">
                             <!-- content -->
-                            <div id="view" data-ng-view></div>
+                            <div id="view " data-ng-view></div>
                         </div>
                         <!-- /col-9 -->
                     </div>
@@ -101,21 +105,25 @@
             </div>
         </div>
     </div>
-    <div class="notification"></div>
+    <div class="notification "></div>
 </body>
 <!--
-      <script src="https://ajax.googleapis.com/ajax/libs/jquery/2.1.4/jquery.min.js"></script><script src="https://ajax.googleapis.com/ajax/libs/angularjs/1.5.0/angular.min.js"></script><script src="https://ajax.googleapis.com/ajax/libs/angularjs/1.5.0/angular-route.min.js"></script><script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.6/js/bootstrap.min.js"></script><script src="https://cdnjs.cloudflare.com/ajax/libs/angular-loading-bar/0.8.0/loading-bar.min.js"></script><script src="https://cdnjs.cloudflare.com/ajax/libs/moment.js/2.11.2/moment.min.js"></script>
+      <script src="https://ajax.googleapis.com/ajax/libs/jquery/2.1.4/jquery.min.js "></script><script src="https://ajax.googleapis.com/ajax/libs/angularjs/1.5.0/angular.min.js
+                                        "></script><script src="https://ajax.googleapis.com/ajax/libs/angularjs/1.5.0/angular-route.min.js
+                                        "></script><script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.6/js/bootstrap.min.js
+                                        "></script><script src="https://cdnjs.cloudflare.com/ajax/libs/angular-loading-bar/0.8.0/loading-bar.min.js
+                                        "></script><script src="https://cdnjs.cloudflare.com/ajax/libs/moment.js/2.11.2/moment.min.js "></script>
     -->
-<script src="js/libs/jquery.min.js"></script>
-<script src="js/libs/angular.min.js"></script>
-<script src="js/libs/angular-route.min.js"></script>
-<script src="js/libs/loading-bar.min.js"></script>
-<script src="js/libs/bootstrap.min.js"></script>
-<script src="js/libs/moment.min.js"></script>
-<script src="js/config.js"></script>
-<script src="js/app.js"></script>
-<script src="js/controllers/sidebarController.js"></script>
-<script src="js/controllers/navigationController.js"></script>
-<script src="js/script.js"></script>
+<script src="js/libs/jquery.min.js "></script>
+<script src="js/libs/angular.min.js "></script>
+<script src="js/libs/angular-route.min.js "></script>
+<script src="js/libs/loading-bar.min.js "></script>
+<script src="js/libs/bootstrap.min.js "></script>
+<script src="js/libs/moment.min.js "></script>
+<script src="js/config.js "></script>
+<script src="js/app.js "></script>
+<script src="js/controllers/sidebarController.js "></script>
+<script src="js/controllers/navigationController.js "></script>
+<script src="js/script.js "></script>
 
 </html>
