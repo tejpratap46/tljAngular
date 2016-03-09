@@ -77,7 +77,7 @@ app.registerCtrl('postViewController', ['$scope', '$http', '$window', '$routePar
     }
 
     /* Add Comment on post */
-    $scope.addComment = function(index) {
+    $scope.addComment = function() {
         var post = $scope.post;
         if (post.AddComment.length == 0) {
             return;
@@ -94,6 +94,7 @@ app.registerCtrl('postViewController', ['$scope', '$http', '$window', '$routePar
         }
         $scope.post.Comments.push({
             User: {
+                _id: localStorage.getItem(prefUserId),
                 Name: localStorage.getItem(prefName)
             },
             Text: $scope.post.AddComment
@@ -128,7 +129,7 @@ app.registerCtrl('postViewController', ['$scope', '$http', '$window', '$routePar
     /* End Add Comment */
 
     /* Like/Un-Like post */
-    $scope.likePost = function(index) {
+    $scope.likePost = function() {
         var post = $scope.post;
         // reflect like changes here
         if (post.IsLiked) {
@@ -173,37 +174,37 @@ app.registerCtrl('postViewController', ['$scope', '$http', '$window', '$routePar
     }
     /* Like/Un-Like Feed */
 
-    $scope.addToWatchlist = function($index) {
+    $scope.addToWatchlist = function() {
         if ($scope.post.Movie.addedToWatchlist) {
             $scope.post.Movie.addedToWatchlist = false;
         } else {
             $scope.post.Movie.addedToWatchlist = true;
         }
-        $scope.addToList = addToList($index, "Liked", "");
+        $scope.addToList = addToList("Watchlist", "");
     };
 
-    $scope.addToWatched = function($index) {
+    $scope.addToWatched = function() {
         if ($scope.post.Movie.addedToWatched) {
             $scope.post.Movie.addedToWatched = false;
         } else {
             $scope.post.Movie.addedToWatched = true;
         }
-        $scope.addToList = addToList($index, "Liked", "");
+        $scope.addToList = addToList("Watched", "");
     };
 
-    $scope.addToLiked = function($index) {
+    $scope.addToLiked = function() {
         if ($scope.post.Movie.addedToLiked) {
             $scope.post.Movie.addedToLiked = false;
         } else {
             $scope.post.Movie.addedToLiked = true;
         }
-        $scope.addToList = addToList($index, "Liked", "");
+        $scope.addToList = addToList("Liked", "");
     };
 
     $scope.playTrailer = function($index) { };
 
-    function addToList(index, listName, caption) {
-        var post = $scope.feed[index];
+    function addToList(listName, caption) {
+        var post = $scope.post;
         var data = {
             "movieid": post.Movie._id,
             "userid": localStorage.getItem(prefUserId),

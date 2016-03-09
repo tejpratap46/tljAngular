@@ -17,14 +17,14 @@ app.controller('sidebarController', ['$scope', '$sce', '$http', function($scope,
     }, {
         title: "Popular",
         href: "#/movie/list/Releasing",
-        glyphicon: "glyphicon glyphicon-paperclip"
+        glyphicon: "glyphicon glyphicon-fire"
     }, {
-        title: "Popular",
-        href: "#/movie/list/Releasing",
-        glyphicon: "glyphicon glyphicon-paperclip"
+        title: "Upcoming",
+        href: "#/movie/list/Released:$gt$$$" + moment(new Date()).format('YYYY-MM-DD') + "/Released:1",
+        glyphicon: "glyphicon glyphicon-plane"
     }, {
         title: "Releasing",
-        href: "#/movie/list/Released:$lte$$$" + moment(new Date()).format('YYYY-MM-DD'),
+        href: "#/movie/list/Released:$lte$$$" + moment(new Date()).format('YYYY-MM-DD') + "/Released:-1",
         glyphicon: "glyphicon glyphicon-thumbs-up"
     }]
 

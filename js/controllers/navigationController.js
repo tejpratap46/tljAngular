@@ -11,12 +11,14 @@ app.controller('navigationController', ['$scope', '$sce', '$http', function ($sc
 
     function checkIfLoggedIn() {
         if (localStorage.getItem(prefUsername)) {
-            $scope.userMenu = $sce.trustAsHtml("<li><a href='#/user'>" + localStorage.getItem(prefName) + "<span class='caret'></span></a></li><li><a href='#/login'>Logout</a></li>");
+            $scope.userMenu = $sce.trustAsHtml("<li><a href='#/user/" + localStorage.getItem(prefUserId) + "'>" + localStorage.getItem(prefName) + "<span class='caret'></span></a></li><li><a href='#/login'>Logout</a></li>");
             $scope.loggedIn = true;
+            $scope.userid = localStorage.getItem(prefUserId);
             $('#navbar').show(0);
         } else {
             $scope.userMenu = $sce.trustAsHtml("<li><a href='#/login' class='bold'>Login</a></li>");
             $scope.loggedIn = false;
+            $scope.userid = undefined;
             $('#navbar').hide(0);
         }
     }

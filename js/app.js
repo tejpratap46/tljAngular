@@ -71,7 +71,7 @@ app.config(['$routeProvider', '$controllerProvider', 'cfpLoadingBarProvider', fu
 		controller : 'movieViewController',
         resolve: loader(['js/controllers/movie/movieViewController.js'])
 	})
-	.when('/movie/list/:filter', {
+	.when('/movie/list/:query/:sort?', {
 		templateUrl: 'html/views/movie/list.html',
 		controller : 'movieListController',
         resolve: loader(['js/controllers/movie/movieListController.js'])

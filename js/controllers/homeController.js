@@ -89,6 +89,7 @@ app.registerCtrl('homeController', ['$scope', '$http', '$window', function ($sco
         }
         $scope.feed[index].Comments.push({
             User: {
+                _id: localStorage.getItem(prefUserId),
                 Name: localStorage.getItem(prefName)
             },
             Text: $scope.feed[index].AddComment
@@ -174,7 +175,7 @@ app.registerCtrl('homeController', ['$scope', '$http', '$window', function ($sco
         } else {
             $scope.feed[$index].Movie.addedToWatchlist = true;
         }
-        $scope.addToList = addToList($index, "Liked", "");
+        $scope.addToList = addToList($index, "Watchlist", "");
     };
 
     $scope.addToWatched = function ($index) {
@@ -183,7 +184,7 @@ app.registerCtrl('homeController', ['$scope', '$http', '$window', function ($sco
         } else {
             $scope.feed[$index].Movie.addedToWatched = true;
         }
-        $scope.addToList = addToList($index, "Liked", "");
+        $scope.addToList = addToList($index, "Watched", "");
     };
 
     $scope.addToLiked = function ($index) {
@@ -235,5 +236,10 @@ app.registerCtrl('homeController', ['$scope', '$http', '$window', function ($sco
                 }
                 );
     }
-
+    
+    $scope.movieCommentChange = function (){
+        var comment = $scope.movieComment;
+        var tagslistarr = comment.match(/#\S+/g);
+        console.log(tagslistarr);
+    }
 }]);

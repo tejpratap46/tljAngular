@@ -7,26 +7,28 @@ app.registerCtrl('movieListController', ['$scope', '$http', '$routeParams', func
     var page = 1;
 
     $scope.loadMovies = function () {
-        var filters = $routeParams.filter.split('|');
-        var filterJson = {};
-        filters.forEach(function (filter) {
-            if (filter.split(':')[1].indexOf("$$$") > 1) {
-                var subFilter = filter.split(':')[1];
+        var queryFilters = $routeParams.query.split('|');
+        var queryFilterJson = {};
+        queryFilters.forEach(function (query) {
+            if (query.split(':')[1].indexOf("$$$") > 1) {
+                var subFilter = query.split(':')[1];
                 var subFilterKey = subFilter.split("$$$")[0];
                 var subFilterValue = subFilter.split("$$$")[1];
-                filterJson[filter.split(':')[0]] = {};
-                filterJson[filter.split(':')[0]][subFilterKey] = subFilterValue;
+                queryFilterJson[query.split(':')[0]] = {};
+                queryFilterJson[query.split(':')[0]][subFilterKey] = subFilterValue;
             } else {
-                filterJson[filter.split(':')[0]] = filter.split(':')[1];
+                queryFilterJson[query.split(':')[0]] = query.split(':')[1];
             }
         });
-        filterJson.Languages = "English";
-        console.log(filterJson);
-        
+        queryFilterJson.Languages = "English";
+        var sortFilter = $routeParams.sort;
+        var sortFilterJson = {};
+        sortFilterJson[sortFilter.split(':')[0]] = sortFilter.split(':')[1];
+        console.log(sortFilterJson);
         /* Get Movie */
 
         var data = {
-            query: filterJson,
+            query: queryFilterJson,
             select: {
                 Title: 1,
                 Released: 1,
@@ -35,9 +37,7 @@ app.registerCtrl('movieListController', ['$scope', '$http', '$routeParams', func
                 Genres: 1,
                 Runtime: 1
             },
-            sort: {
-                Released: -1
-            },
+            sort: sortFilterJson,
             skip: (page++ * 10 - 10),
             limit: 10,
             userid: localStorage.getItem(prefUserId)

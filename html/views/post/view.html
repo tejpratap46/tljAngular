@@ -60,7 +60,7 @@
                     <a href="" class="btn btn-link"> <small>{{post.CommentsCount}} comments</small></a>
                     <blockquote class="no-margin" data-ng-repeat="comment in post.Comments">
                         <ul class="list-unstyled" style="font-size: 0.7em;">
-                            <li><a href="{{'#/user/' + post.User._id}}" class="bold">{{comment.User.Name}}</a><span> {{comment.Text}}</span></li>
+                            <li><a href="{{'#/user/' + comment.User._id}}" class="bold">{{comment.User.Name}}</a><span> {{comment.Text}}</span></li>
                         </ul>
                     </blockquote>
                 </div>
