@@ -23,7 +23,7 @@ app.controller('sidebarController', ['$scope', '$sce', '$http', function($scope,
         href: "#/movie/list/Released:$gt$$$" + moment(new Date()).format('YYYY-MM-DD') + "/Released:1",
         glyphicon: "glyphicon glyphicon-plane"
     }, {
-        title: "Releasing",
+        title: "Released",
         href: "#/movie/list/Released:$lte$$$" + moment(new Date()).format('YYYY-MM-DD') + "/Released:-1",
         glyphicon: "glyphicon glyphicon-thumbs-up"
     }]

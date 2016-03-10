@@ -6,7 +6,9 @@ var app = angular.module(appName, [
 app.config(['$routeProvider', '$controllerProvider', 'cfpLoadingBarProvider', function($routeProvider, $controllerProvider, cfpLoadingBarProvider){
     // Angular loading bar config
     cfpLoadingBarProvider.includeSpinner = false;
-
+    
+    // defined in script.js
+    checkIfLoggedIn();
 // code to lazy load controllers, used from : http://stackoverflow.com/questions/25168593/angularjs-lazy-loading-controllers-and-content/28199498#28199498
     app.registerCtrl = $controllerProvider.register;
 

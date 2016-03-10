@@ -6,10 +6,17 @@ $('[data-toggle=offcanvas]').click(function() {
     $('#xs-menu').toggleClass('visible-xs').toggleClass('hidden-xs');
 });
 
-function checkIfLoggedIn(params) {
-    
+function checkIfLoggedIn() {
+    if (localStorage.getItem(prefUsername)) {
+        $('#navbar').show(0);
+        $('#sidebar').show(0);
+    } else {
+        $('#navbar').hide(0);
+        $('#sidebar').hide(0);
+        window.location.hash="/login";
+    }
 }
 
-function showToast(message){
+function showToast(message) {
     $('.notification').text(message).show('fast').delay(3000).hide('fast');
 }
