@@ -1,15 +1,15 @@
 var app = angular.module(appName);
 
-app.registerCtrl('movieListController', ['$scope', '$http', '$routeParams', function ($scope, $http, $routeParams) {
+app.registerCtrl('movieListController', ['$scope', '$http', '$routeParams', function($scope, $http, $routeParams) {
     $scope.noDataFound = false;
 
     $scope.movies = [];
     var page = 1;
 
-    $scope.loadMovies = function () {
+    $scope.loadMovies = function() {
         var queryFilters = $routeParams.query.split('|');
         var queryFilterJson = {};
-        queryFilters.forEach(function (query) {
+        queryFilters.forEach(function(query) {
             if (query.split(':')[1].indexOf("$$$") > 1) {
                 var subFilter = query.split(':')[1];
                 var subFilterKey = subFilter.split("$$$")[0];
@@ -21,10 +21,14 @@ app.registerCtrl('movieListController', ['$scope', '$http', '$routeParams', func
             }
         });
         queryFilterJson.Languages = "English";
-        var sortFilter = $routeParams.sort;
-        var sortFilterJson = {};
-        sortFilterJson[sortFilter.split(':')[0]] = sortFilter.split(':')[1];
-        console.log(sortFilterJson);
+        if ($routeParams.sort) {
+            var sortFilter = $routeParams.sort;
+            var sortFilterJson = {};
+            sortFilterJson[sortFilter.split(':')[0]] = sortFilter.split(':')[1];
+        } else {
+            var sortFilterJson = {Released: -1};
+        }
+
         /* Get Movie */
 
         var data = {
@@ -51,32 +55,32 @@ app.registerCtrl('movieListController', ['$scope', '$http', '$routeParams', func
 
         $http.post(hostAddress + '/api/movie/getQuery', data, config)
             .then(
-                function (response) {
-                    // success callback
-                    var data = response.data;
-                    console.log(data);
-                    if (data.Status) {
-                        var movies = data.Movies;
-                        movies.forEach(function (object) {
-                            object.Genres = object.Genres.join(", ");
-                            object.Released = moment(object.Released).format('MMMM Do YYYY');
-                            $scope.movies.push(object);
-                        });
-                    } else {
-                        $scope.noDataFound = true;
-                    }
+            function(response) {
+                // success callback
+                var data = response.data;
+                console.log(data);
+                if (data.Status) {
+                    var movies = data.Movies;
+                    movies.forEach(function(object) {
+                        object.Genres = object.Genres.join(", ");
+                        object.Released = moment(object.Released).format('MMMM Do YYYY');
+                        $scope.movies.push(object);
+                    });
+                } else {
+                    $scope.noDataFound = true;
                 }
-                , function (error) {
-                    // failure callback
-                    $('.notification').text('Oops! something went wrong').show('fast').delay(3000).hide('fast');
-                }
-                );
+            }
+            , function(error) {
+                // failure callback
+                $('.notification').text('Oops! something went wrong').show('fast').delay(3000).hide('fast');
+            }
+            );
         /* End Movie */
     }
 
     $scope.loadMovies();
 
-    $scope.addToWatchlist = function ($index) {
+    $scope.addToWatchlist = function($index) {
         if ($scope.movies[$index].addedToWatchlist) {
             $scope.movies[$index].addedToWatchlist = false;
         } else {
@@ -85,7 +89,7 @@ app.registerCtrl('movieListController', ['$scope', '$http', '$routeParams', func
         $scope.addToList = addToList($index, "Watchlist", "");
     };
 
-    $scope.addToWatched = function ($index) {
+    $scope.addToWatched = function($index) {
         if ($scope.movies[$index].addedToWatched) {
             $scope.movies[$index].addedToWatched = false;
         } else {
@@ -94,7 +98,7 @@ app.registerCtrl('movieListController', ['$scope', '$http', '$routeParams', func
         $scope.addToList = addToList($index, "Watched", "");
     };
 
-    $scope.addToLiked = function ($index) {
+    $scope.addToLiked = function($index) {
         if ($scope.movies[$index].addedToLiked) {
             $scope.movies[$index].addedToLiked = false;
         } else {
@@ -103,7 +107,7 @@ app.registerCtrl('movieListController', ['$scope', '$http', '$routeParams', func
         $scope.addToList = addToList($index, "Liked", "");
     };
 
-    $scope.playTrailer = function ($index) { };
+    $scope.playTrailer = function($index) { };
 
     function addToList(index, listName, caption) {
         var movie = $scope.movies[index];
@@ -122,24 +126,24 @@ app.registerCtrl('movieListController', ['$scope', '$http', '$routeParams', func
 
         $http.post(hostAddress + '/api/list/listAddMovie', data, config)
             .then(
-                function (response) {
-                    // success callback
-                    var data = response.data;
-                    if (data.Status) {
-                        if (data.MovieAdded) {
-                            console.log(data);
-                        } else {
-                            console.log(data);
-                        }
+            function(response) {
+                // success callback
+                var data = response.data;
+                if (data.Status) {
+                    if (data.MovieAdded) {
+                        console.log(data);
                     } else {
-                        $('.notification').text(data.Error).show('fast').delay(3000).hide('fast');
+                        console.log(data);
                     }
+                } else {
+                    $('.notification').text(data.Error).show('fast').delay(3000).hide('fast');
                 }
-                , function (error) {
-                    // failure callback
-                    $('.notification').text('Oops! something went wrong').show('fast').delay(3000).hide('fast');
-                }
-                );
+            }
+            , function(error) {
+                // failure callback
+                $('.notification').text('Oops! something went wrong').show('fast').delay(3000).hide('fast');
+            }
+            );
     }
 
 }]);

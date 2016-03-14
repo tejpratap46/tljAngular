@@ -36,8 +36,19 @@ app.controller('navigationController', ['$scope', '$sce', '$http', function ($sc
         $scope.searchBoxPlaceholder = "Search By Movie Name, Actor Name, Director Name";
         $('.dropdown-menu').show('fast');
     }
-
+    
+    var timeoutHandler;
     $scope.searchMovie = function () {
+        if (timeoutHandler){
+            clearTimeout(timeoutHandler);
+        }
+        timeoutHandler = setTimeout(function (){
+            console.log("Quering server");
+            $scope.autocompleteSearch = autocompleteSearch();
+        },500);
+    }
+    
+    function autocompleteSearch(){
         if ($scope.searchData.length > 0) {
             $('.dropdown-menu').show('fast');
 

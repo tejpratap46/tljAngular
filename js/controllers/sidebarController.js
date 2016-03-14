@@ -25,7 +25,7 @@ app.controller('sidebarController', ['$scope', '$sce', '$http', function($scope,
     }, {
         title: "Released",
         href: "#/movie/list/Released:$lte$$$" + moment(new Date()).format('YYYY-MM-DD') + "/Released:-1",
-        glyphicon: "glyphicon glyphicon-thumbs-up"
+        glyphicon: "glyphicon glyphicon-flag"
     }]
 
     $scope.$on('userLoggedIn', function(event, data) {

@@ -242,4 +242,45 @@ app.registerCtrl('postViewController', ['$scope', '$http', '$window', '$routePar
             );
     }
 
+    // Get Trailer
+    $scope.playTrailer = function() {
+        var post = $scope.post;
+        var data = {
+            "movieid": post.Movie._id
+        };
+
+        var config = {
+            headers: {
+                'Content-Type': 'application/json'
+            }
+        }
+
+        $http.post(hostAddress + '/api/movie/getTrailer', data, config)
+            .then(
+            function(response) {
+                // success callback
+                var data = response.data;
+                if (data.Status) {
+                    var options = {
+                        url: data.URL,
+                        title: post.Movie.Title + ' Trailer',
+                        size: eModal.size.lg,
+                        buttons: [
+                            { text: 'OK', style: 'default', close: true }
+                        ],
+                    };
+                    console.log(data.URL);
+
+                    eModal.ajax(options);
+                } else {
+                    $('.notification').text(data.Error).show('fast').delay(3000).hide('fast');
+                }
+            },
+            function(error) {
+                // failure callback
+                $('.notification').text('Oops! something went wrong').show('fast').delay(3000).hide('fast');
+            }
+            );
+    }
+
 }]);
