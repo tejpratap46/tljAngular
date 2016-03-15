@@ -237,9 +237,41 @@ app.registerCtrl('homeController', ['$scope', '$http', '$window', function ($sco
                 );
     }
     
+    // Get Tokens from user update
     $scope.movieCommentChange = function (){
         var comment = $scope.movieComment;
         var tagslistarr = comment.match(/#\S+/g);
         console.log(tagslistarr);
+    }
+    
+    // Get Trailer
+    $scope.playTrailer = function(index) {
+        var movie = $scope.feed[index].Movie;
+        var data = {
+            "movieid": movie._id
+        };
+
+        var config = {
+            headers: {
+                'Content-Type': 'application/json'
+            }
+        }
+
+        $http.post(hostAddress + '/api/movie/getTrailer', data, config)
+            .then(
+            function(response) {
+                // success callback
+                var data = response.data;
+                if (data.Status) {
+                    eModal.iframe(data.URL, movie.Title + ' Trailer');
+                } else {
+                    $('.notification').text(data.Error).show('fast').delay(3000).hide('fast');
+                }
+            },
+            function(error) {
+                // failure callback
+                $('.notification').text('Oops! something went wrong').show('fast').delay(3000).hide('fast');
+            }
+            );
     }
 }]);

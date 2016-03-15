@@ -261,17 +261,7 @@ app.registerCtrl('postViewController', ['$scope', '$http', '$window', '$routePar
                 // success callback
                 var data = response.data;
                 if (data.Status) {
-                    var options = {
-                        url: data.URL,
-                        title: post.Movie.Title + ' Trailer',
-                        size: eModal.size.lg,
-                        buttons: [
-                            { text: 'OK', style: 'default', close: true }
-                        ],
-                    };
-                    console.log(data.URL);
-
-                    eModal.ajax(options);
+                    eModal.iframe(data.URL, post.Movie.Title + ' Trailer');
                 } else {
                     $('.notification').text(data.Error).show('fast').delay(3000).hide('fast');
                 }

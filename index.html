@@ -37,11 +37,11 @@
                             </a>
                         </li>
                         <li data-ng-repeat="option in mainOptions">
-                            <a href="{{option.href}}" class="bold"> <i class="{{option.glyphicon}}" data-toggle="offcanvas"></i> {{option.title}} </a>
+                            <a href="{{option.href}}"> <i class="{{option.glyphicon}}" data-toggle="offcanvas"></i> {{option.title}} </a>
                         </li>
-                        <hr class="hidden-xs">
-                        <p style="padding: 10px;" class="bold hidden-xs">Genres</p>
-                        <li data-ng-repeat="genre in genres" class="hidden-xs">
+                        <hr>
+                        <p style="padding: 10px;">Genres</p>
+                        <li data-ng-repeat="genre in genres">
                             <a href="{{genre.href}}"> <i class="{{genre.glyphicon}}"></i> {{genre.title}} </a>
                         </li>
                     </ul>
