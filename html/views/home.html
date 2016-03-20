@@ -1,6 +1,38 @@
 <div>
-    <div class="col-md-2"></div>
-    <div class="col-md-8">
+    <div class="col-lg-1"></div>
+    <div class="col-sm-2 col-md-3 col-lg-2 hidden-xs">
+        <div class="panel panel-default">
+            <div class="panel-body no-padding">
+                <div class="center">
+                    <div style="background-color:#EEEEEE; height: 120px;">
+                        <div style="position: relative; top: 35%;"><a href="" class="bold ellipsis" style="font-size: 25px;">{{username}}</a></div>
+                    </div>
+                    <button class="btn btn-primary btn-lg round bold" style="width: 55px; height: 55px; margin-top: -25px;">
+                        <span class="glyphicon glyphicon-flash"></span>
+                    </button>
+                </div>
+                <div class="clearfix"></div>
+                <div>
+                    <div class="list-group">
+                        <a href="" class="list-group-item no-border no-raduis">
+                            <p class="list-group-item-heading bold">WatchListed</p>
+                            <p class="list-group-item-text">3 movies.</p>
+                        </a>
+                        <a href="" class="list-group-item no-border no-raduis">
+                            <p class="list-group-item-heading bold">Watched</p>
+                            <p class="list-group-item-text">354 Movies.</p>
+                        </a>
+                        <a href="" class="list-group-item no-border no-raduis">
+                            <p class="list-group-item-heading bold">Liked</p>
+                            <p class="list-group-item-text">62 Movies.</p>
+                        </a>
+                    </div>
+                </div>
+                <div class="clearfix"></div>
+            </div>
+        </div>
+    </div>
+    <div class="col-sm-8 col-md-6 col-lg-6 no-padding">
         <div class="well">
             <form class="form-horizontal" role="form">
                 <h4>Comment about a movie</h4>
@@ -17,27 +49,34 @@
         </div>
         <div class="panel panel-default" data-ng-repeat="post in feed track by $index">
             <div class="panel-heading">
-                <!--                <a href="#" class="pull-right">View all</a>-->
-                <h5 class="no-margin">
-                    <a href="{{'#/user/' + post.User._id}}">
-                        <img src="https://cdn0.iconfinder.com/data/icons/user-pictures/100/male-128.png" alt="" class="img-circle" style="margin: 0px;">
-                    </a>
-                    <a href="{{'#/user/' + post.User._id}}" class="bold">{{post.User.Name}}</a>
-                    <small> {{post.ListName}}</small>
-                    <a href="{{'#/movie/view/' + post.Movie._id}}" class="bold"> {{post.Movie.Title}}</a>
-                    <small title="{{post.UpdatedAt}}">- about {{post.UpdatedAtFromNow}}</small>
-                </h5>
+                <table>
+                    <tbody>
+                        <tr>
+                            <td>
+                                <a href="{{'#/user/' + post.User._id}}">
+                                    <img src="https://cdn0.iconfinder.com/data/icons/user-pictures/100/male-128.png" alt="" class="img-circle" style="margin: 0px; max-width: 50px;">
+                                </a>
+                            </td>
+                            <td style="padding-left: 10px;">
+                                <a href="{{'#/user/' + post.User._id}}" class="bold">{{post.User.Name}}</a>
+                                <small> {{post.ListName}}</small>
+                                <a href="{{'#/movie/view/' + post.Movie._id}}" class="bold"> {{post.Movie.Title}}</a><br />
+                                <small title="{{post.UpdatedAt}}">- about {{post.UpdatedAtFromNow}}</small>
+                            </td>
+                        </tr>
+                    </tbody>
+                </table>
             </div>
-            <div class="panel-body">
+            <div class="panel-body no-padding">
                 <div class="no-padding no-margin no-border" style="background: #EEEEEE; overflow: hidden;">
-                    <a class="row" href="{{'#/movie/view/' + post.Movie._id}}">
+                    <a class="row no-margin" href="{{'#/movie/view/' + post.Movie._id}}">
                         <div class="col-sm-4 no-padding">
                             <div style="max-height: 200px; overflow: hidden;">
                                 <img data-ng-src="{{post.Movie.Poster}}" class="full-width">
                             </div>
                         </div>
                         <blockquote class="col-sm-8 no-border">
-                            <h1 class="bold">{{post.Movie.Title}}</h1>
+                            <h3 class="bold">{{post.Movie.Title}}</h3>
                             <p>{{post.Movie.Released}}</p>
                             <small>{{post.Movie.Genres}}</small>
                         </blockquote>
@@ -83,11 +122,14 @@
                         <div class="input-group-btn">
                             <button class="btn btn-link" type="button" title="like" data-ng-click="likePost($index)"><span class="glyphicon glyphicon-heart toggle-icon-{{post.IsLiked}}"></span></button>
                         </div>
-                        <input class="form-control" placeholder="Add a comment.." type="text" data-ng-model="post.AddComment">
+                        <input class="form-control no-radius no-border" placeholder="Add a comment.." type="text" data-ng-model="post.AddComment">
                     </div>
                 </form>
             </div>
         </div>
     </div>
-    <div class="col-md-2"></div>
+    <div class="col-sm-2 col-md-3 col-lg-2">
+
+    </div>
+    <div class="col-lg-1"></div>
 </div>

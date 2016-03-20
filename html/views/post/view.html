@@ -1,10 +1,9 @@
-<div>
-    <div class="col-md-2"></div>
-    <div class="col-md-8">
-        <div class="panel panel-default">
-            <div class="panel-heading">
-                <!--<a href="#" class="pull-right">View all</a>-->
-                <h5 class="no-margin">
+<div class="col-sm-1 col-md-2 col-lg-3"></div>
+<div class="col-sm-10 col-md-8 col-lg-6">
+    <div class="panel panel-default">
+        <div class="panel-heading">
+            <!--<a href="#" class="pull-right">View all</a>-->
+            <h5 class="no-margin">
                     <a href="{{'#/user/' + post.User._id}}">
                         <img src="https://cdn0.iconfinder.com/data/icons/user-pictures/100/male-128.png" alt="" class="img-circle" style="margin: 0px;">
                     </a>
@@ -13,67 +12,66 @@
                     <a href="{{'#/movie/view/' + post.Movie._id}}" class="bold"> {{post.Movie.Title}}</a>
                     <small title="{{post.UpdatedAt}}">- about {{post.UpdatedAtFromNow}}</small>
                 </h5>
-            </div>
-            <div class="panel-body">
-                <div class="no-padding no-margin no-border" style="background: #EEEEEE; overflow: hidden;">
-                    <a class="row" href="{{'#/movie/view/' + post.Movie._id}}">
-                        <div class="col-sm-12 no-padding">
-                            <div style="max-height: 400px; overflow: hidden;">
-                                <img data-ng-src="{{post.Movie.Poster}}" class="full-width">
-                            </div>
+        </div>
+        <div class="panel-body no-padding">
+            <div class="no-padding no-margin no-border" style="background: #EEEEEE; overflow: hidden;">
+                <a class="row no-margin" href="{{'#/movie/view/' + post.Movie._id}}">
+                    <div class="col-sm-12 no-padding">
+                        <div style="max-height: 400px; overflow: hidden;">
+                            <img data-ng-src="{{post.Movie.Poster}}" class="full-width">
                         </div>
-                        <blockquote class="col-sm-12 no-border">
-                            <h1 class="bold">{{post.Movie.Title}}</h1>
-                            <p>{{post.Movie.Released}}</p>
-                            <small>{{post.Movie.Genres}}</small>
-                        </blockquote>
-                    </a>
-                    <hr class="no-margin">
-                    <blockquote class="row no-padding no-margin no-border">
-                        <div class="col-xs-12 col-sm-4">
-                            <button class="btn btn-link full-width">
-                                <h1 class="no-margin">{{post.Movie.ImdbRating | number: 1}}</h1></button>
-                        </div>
-                        <div class="clearfix visible-xs"></div>
-                        <hr class="no-margin visible-xs">
-                        <div class="col-xs-3 col-sm-2">
-                            <button class="btn btn-link full-width toggle-icon-{{post.Movie.addedToWatchlist}}" title="Add To Watchlist" data-ng-click="addToWatchlist($index)"><span class="glyphicon glyphicon-plus movie-action-icon"></span>
-                                <br><small class="ellipsis">Add To Watchlist</small></button>
-                        </div>
-                        <div class="col-xs-3 col-sm-2">
-                            <button class="btn btn-link full-width toggle-icon-{{post.Movie.addedToWatched}}" title="Mark As Watched" data-ng-click="addToWatched($index)"><span class="glyphicon glyphicon-ok movie-action-icon"></span>
-                                <br><small class="ellipsis">Mark As Watched</small></button>
-                        </div>
-                        <div class="col-xs-3 col-sm-2">
-                            <button class="btn btn-link full-width toggle-icon-{{post.Movie.addedToLiked}}" title="Like This Movie" data-ng-click="addToLiked($index)"><span class="glyphicon glyphicon-heart movie-action-icon"></span>
-                                <br><small class="ellipsis">Like This Movie</small></button>
-                        </div>
-                        <div class="col-xs-3 col-sm-2">
-                            <button class="btn btn-link full-width toggle-icon-false" title="Play Trailer" data-ng-click="playTrailer()"><span class="glyphicon glyphicon-play movie-action-icon"></span>
-                                <br><small class="ellipsis">Play Trailer</small></button>
-                        </div>
-                    </blockquote>
-                    <div class="well no-margin" data-ng-if="post.Caption">
-                        <p class="justified">{{post.Caption}}</p>
                     </div>
-                    <a href="" class="btn btn-link"><small>{{post.LikesCount}} likes</small></a>
-                    <a href="" class="btn btn-link"> <small>{{post.CommentsCount}} comments</small></a>
-                    <blockquote class="no-margin" data-ng-repeat="comment in post.Comments">
-                        <ul class="list-unstyled" style="font-size: 0.7em;">
-                            <li><a href="{{'#/user/' + comment.User._id}}" class="bold">{{comment.User.Name}}</a><span> {{comment.Text}}</span></li>
-                        </ul>
+                    <blockquote class="col-sm-12 no-border">
+                        <h1 class="bold">{{post.Movie.Title}}</h1>
+                        <p>{{post.Movie.Released}}</p>
+                        <small>{{post.Movie.Genres}}</small>
                     </blockquote>
+                </a>
+                <hr class="no-margin">
+                <blockquote class="row no-padding no-margin no-border">
+                    <div class="col-xs-12 col-sm-4">
+                        <button class="btn btn-link full-width">
+                            <h1 class="no-margin">{{post.Movie.ImdbRating | number: 1}}</h1></button>
+                    </div>
+                    <div class="clearfix visible-xs"></div>
+                    <hr class="no-margin visible-xs">
+                    <div class="col-xs-3 col-sm-2">
+                        <button class="btn btn-link full-width toggle-icon-{{post.Movie.addedToWatchlist}}" title="Add To Watchlist" data-ng-click="addToWatchlist($index)"><span class="glyphicon glyphicon-plus movie-action-icon"></span>
+                            <br><small class="ellipsis">Add To Watchlist</small></button>
+                    </div>
+                    <div class="col-xs-3 col-sm-2">
+                        <button class="btn btn-link full-width toggle-icon-{{post.Movie.addedToWatched}}" title="Mark As Watched" data-ng-click="addToWatched($index)"><span class="glyphicon glyphicon-ok movie-action-icon"></span>
+                            <br><small class="ellipsis">Mark As Watched</small></button>
+                    </div>
+                    <div class="col-xs-3 col-sm-2">
+                        <button class="btn btn-link full-width toggle-icon-{{post.Movie.addedToLiked}}" title="Like This Movie" data-ng-click="addToLiked($index)"><span class="glyphicon glyphicon-heart movie-action-icon"></span>
+                            <br><small class="ellipsis">Like This Movie</small></button>
+                    </div>
+                    <div class="col-xs-3 col-sm-2">
+                        <button class="btn btn-link full-width toggle-icon-false" title="Play Trailer" data-ng-click="playTrailer()"><span class="glyphicon glyphicon-play movie-action-icon"></span>
+                            <br><small class="ellipsis">Play Trailer</small></button>
+                    </div>
+                </blockquote>
+                <div class="well no-margin" data-ng-if="post.Caption">
+                    <p class="justified">{{post.Caption}}</p>
                 </div>
-                <form lpformnum="3" data-ng-submit="addComment($index)">
-                    <div class="input-group">
-                        <div class="input-group-btn">
-                            <button class="btn btn-link" type="button" title="like" data-ng-click="likePost($index)"><span class="glyphicon glyphicon-heart toggle-icon-{{post.IsLiked}}"></span></button>
-                        </div>
-                        <input class="form-control" placeholder="Add a comment.." type="text" data-ng-model="post.AddComment">
-                    </div>
-                </form>
+                <a href="" class="btn btn-link"><small>{{post.LikesCount}} likes</small></a>
+                <a href="" class="btn btn-link"> <small>{{post.CommentsCount}} comments</small></a>
+                <blockquote class="no-margin" data-ng-repeat="comment in post.Comments">
+                    <ul class="list-unstyled" style="font-size: 0.7em;">
+                        <li><a href="{{'#/user/' + comment.User._id}}" class="bold">{{comment.User.Name}}</a><span> {{comment.Text}}</span></li>
+                    </ul>
+                </blockquote>
             </div>
+            <form lpformnum="3" data-ng-submit="addComment($index)">
+                <div class="input-group">
+                    <div class="input-group-btn">
+                        <button class="btn btn-link" type="button" title="like" data-ng-click="likePost($index)"><span class="glyphicon glyphicon-heart toggle-icon-{{post.IsLiked}}"></span></button>
+                    </div>
+                    <input class="form-control" placeholder="Add a comment.." type="text" data-ng-model="post.AddComment">
+                </div>
+            </form>
         </div>
     </div>
-    <div class="col-md-2"></div>
 </div>
+<div class="col-sm-1 col-md-2 col-lg-3"></div>
