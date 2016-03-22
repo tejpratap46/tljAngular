@@ -1,13 +1,13 @@
 var app = angular.module(appName);
 
-app.registerCtrl('movieViewController', ['$scope', '$http', '$routeParams', function($scope, $http, $routeParams) {
-    
+app.registerCtrl('movieViewController', ['$scope', '$http', '$routeParams', '$window', function($scope, $http, $routeParams, $window) {
+
     /* Get Movie */
     var data = {
         "query": {
             "_id": $routeParams.id
         },
-        "select":{
+        "select": {
             "CreatedAt": 1,
             "UpdatedAt": 1,
             "Title": 1,
@@ -20,7 +20,7 @@ app.registerCtrl('movieViewController', ['$scope', '$http', '$routeParams', func
             "Writers": 1,
             "Actors": 1,
             "Plot": 1,
-            "Languages":1,
+            "Languages": 1,
             "Countries": 1,
             "Awards": 1,
             "Poster": 1,
@@ -48,64 +48,79 @@ app.registerCtrl('movieViewController', ['$scope', '$http', '$routeParams', func
         "userid": localStorage.getItem(prefUserId)
     };
 
+    $scope.$watch(function() {
+        return $window.innerHeight;
+    }, function(value) {
+        $scope.backdropHeight = value / 1.5;
+    });
+
+    var ypos, image;
+    function parallex() {
+        image = document.getElementById('backdropImage');
+        ypos = window.pageYOffset;
+        console.log("scroll");
+        image.style.marginTop = ypos * 0.7 + 'px';
+    }
+    window.addEventListener('scroll', parallex), false;
+
     var config = {
-        headers : {
+        headers: {
             'Content-Type': 'application/json'
         }
     }
 
     $http.post(hostAddress + '/api/movie/getQuery', data, config)
-    .then(
-        function(response){
+        .then(
+        function(response) {
             // success callback
-                var data = response.data;
-                console.log(data);
-                if (data.Status){
-                    var movies = data.Movies;
-                    movies.forEach(function(object){
-                        object.Genres = object.Genres.join(", ");
-                        object.Released = moment(object.Released).format('MMMM Do YYYY');
-                    });
-                    $scope.movie = movies[0];
-                }
+            var data = response.data;
+            console.log(data);
+            if (data.Status) {
+                var movies = data.Movies;
+                movies.forEach(function(object) {
+                    object.Genres = object.Genres.join(", ");
+                    object.Released = moment(object.Released).format('MMMM Do YYYY');
+                });
+                $scope.movie = movies[0];
+            }
         },
-        function(error){
+        function(error) {
             // failure callback
             $('.notification').text('Oops! something went wrong').show('fast').delay(3000).hide('fast');
         }
-    );
-    
-    $scope.addToWatchlist = function(){
-        if ($scope.movie.addedToWatchlist){
+        );
+
+    $scope.addToWatchlist = function() {
+        if ($scope.movie.addedToWatchlist) {
             $scope.movie.addedToWatchlist = false;
-        }else{
+        } else {
             $scope.movie.addedToWatchlist = true;
         }
         $scope.addToList = addToList("Watchlist", "");
     }
-    
-    $scope.addToWatched = function(){
-        if ($scope.movie.addedToWatched){
+
+    $scope.addToWatched = function() {
+        if ($scope.movie.addedToWatched) {
             $scope.movie.addedToWatched = false;
-        }else{
+        } else {
             $scope.movie.addedToWatched = true;
         }
         $scope.addToList = addToList("Watched", "");
     };
-    
-    $scope.addToLiked = function(){
-        if ($scope.movie.addedToLiked){
+
+    $scope.addToLiked = function() {
+        if ($scope.movie.addedToLiked) {
             $scope.movie.addedToLiked = false;
-        }else{
+        } else {
             $scope.movie.addedToLiked = true;
         }
         $scope.addToList = addToList("Liked", "");
     };
-    
-    $scope.playTrailer = function(){
+
+    $scope.playTrailer = function() {
     };
-    
-    function addToList(listName, caption){
+
+    function addToList(listName, caption) {
         var movie = $scope.movie;
         var data = {
             "movieid": movie._id,
@@ -115,33 +130,33 @@ app.registerCtrl('movieViewController', ['$scope', '$http', '$routeParams', func
         };
 
         var config = {
-            headers : {
+            headers: {
                 'Content-Type': 'application/json'
             }
         }
 
         $http.post(hostAddress + '/api/list/listAddMovie', data, config)
-        .then(
-            function(response){
+            .then(
+            function(response) {
                 // success callback
-                    var data = response.data;
-                    if (data.Status){
-                        if (data.MovieAdded){
-                            console.log(data);
-                        }else{
-                            console.log(data);
-                        }
-                    }else{
-                        $('.notification').text(data.Error).show('fast').delay(3000).hide('fast');
+                var data = response.data;
+                if (data.Status) {
+                    if (data.MovieAdded) {
+                        console.log(data);
+                    } else {
+                        console.log(data);
                     }
-            }, 
-            function(error){
+                } else {
+                    $('.notification').text(data.Error).show('fast').delay(3000).hide('fast');
+                }
+            },
+            function(error) {
                 // failure callback
                 $('.notification').text('Oops! something went wrong').show('fast').delay(3000).hide('fast');
             }
-        );
+            );
     }
-    
+
     // Get Trailer
     $scope.playTrailer = function() {
         var movie = $scope.movie;
@@ -172,5 +187,5 @@ app.registerCtrl('movieViewController', ['$scope', '$http', '$routeParams', func
             }
             );
     }
-    
+
 }]);

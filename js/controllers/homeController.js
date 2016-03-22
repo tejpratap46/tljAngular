@@ -21,7 +21,7 @@ app.registerCtrl('homeController', ['$scope', '$http', '$window', function($scop
     $scope.username = localStorage.getItem(prefName);
     $scope.feed = [];
     $scope.loadFeed = loadFeed();
-    
+
     /**
      * Get User Feed, must be rich
      */
@@ -210,7 +210,7 @@ app.registerCtrl('homeController', ['$scope', '$http', '$window', function($scop
     };
 
     $scope.playTrailer = function($index) { };
-    
+
     /**
      * Geral function to add movie to  a list
      * 
@@ -295,7 +295,43 @@ app.registerCtrl('homeController', ['$scope', '$http', '$window', function($scop
             );
     }
 
-    $scope.more = function() {
-        console.log('More...');
+    var lists = ["Watched", "Watchlist", "Liked"];
+
+    lists.forEach(function(listName) {
+        $scope.getMovieInListCount = getMovieInListCount(listName);
+    });
+
+    function getMovieInListCount(listName) {
+        var data = {
+            "query": {
+                "User": localStorage.getItem(prefUserId),
+                "ListName": listName
+            }
+        };
+
+        var config = {
+            headers: {
+                'Content-Type': 'application/json'
+            }
+        }
+
+        $http.post(hostAddress + '/api/user/userListGetCountQuery', data, config)
+            .then(
+            function(response) {
+                // success callback
+                var responseData = response.data;
+                if (listName == "Watched") {
+                    $scope.Watched = responseData.Count;
+                } else if (listName == "Watchlist") {
+                    $scope.Watchlist = responseData.Count;
+                } else if (listName == "Liked") {
+                    $scope.Liked = responseData.Count;
+                }
+            },
+            function(error) {
+                // failure callback
+                $('.notification').text('Oops! something went wrong').show('fast').delay(3000).hide('fast');
+            }
+            );
     }
 }]);
