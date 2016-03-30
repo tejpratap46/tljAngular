@@ -1,6 +1,7 @@
 var app = angular.module(appName, [
     'ngRoute',
-    'angular-loading-bar'
+    'angular-loading-bar',
+    'infinite-scroll'
 ]);
 
 app.config(['$routeProvider', '$controllerProvider', 'cfpLoadingBarProvider', function($routeProvider, $controllerProvider, cfpLoadingBarProvider) {

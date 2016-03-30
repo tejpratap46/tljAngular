@@ -3,24 +3,48 @@ var app = angular.module(appName);
 app.registerCtrl('homeController', ['$scope', '$http', '$window', function($scope, $http, $window) {
     $scope.noDataFound = false;
     $scope.isLoadingFeed = false;
+    $scope.user = { username: localStorage.getItem(prefName) };
 
-    angular.element($window).bind("scroll", function() {
-        var windowHeight = "innerHeight" in window ? window.innerHeight : document.documentElement.offsetHeight;
-        var body = document.body, html = document.documentElement;
-        var docHeight = Math.max(body.scrollHeight, body.offsetHeight, html.clientHeight, html.scrollHeight, html.offsetHeight);
-        windowBottom = windowHeight + window.pageYOffset;
-        if (windowBottom >= docHeight - 100) {
-            if (!$scope.isLoadingFeed) {
-                // if not loading any thing, then load more
-                $scope.loadFeed = loadFeed();
+    $scope.sidebarList = {
+        userList: [],
+        movieList: [
+            {
+                title: "Home",
+                href: "#home",
+                glyphicon: "glyphicon glyphicon-home"
+            }, {
+                title: "Top",
+                href: "#/movie/list/Releasing",
+                glyphicon: "glyphicon glyphicon-list-alt"
+            }, {
+                title: "Featured",
+                href: "#featured",
+                glyphicon: "glyphicon glyphicon-list"
+            }, {
+                title: "Popular",
+                href: "#/movie/list/Releasing",
+                glyphicon: "glyphicon glyphicon-fire"
+            }, {
+                title: "Upcoming",
+                href: "#/movie/list/Released:$gt$$$" + moment(new Date()).format('YYYY-MM-DD') + "/Released:1",
+                glyphicon: "glyphicon glyphicon-plane"
+            }, {
+                title: "Released",
+                href: "#/movie/list/Released:$lte$$$" + moment(new Date()).format('YYYY-MM-DD') + "/Released:-1",
+                glyphicon: "glyphicon glyphicon-flag"
             }
-        }
-    });
+        ]
+    };
 
     var page = 1;
-    $scope.username = localStorage.getItem(prefName);
     $scope.feed = [];
-    $scope.loadFeed = loadFeed();
+
+    $scope.loadMore = function() {
+        if (!$scope.isLoadingFeed) {
+            console.log("calling load moew for : " + page);
+            $scope.loadFeed = loadFeed();
+        }
+    }
 
     /**
      * Get User Feed, must be rich
@@ -32,7 +56,7 @@ app.registerCtrl('homeController', ['$scope', '$http', '$window', function($scop
             select: {
                 Comments: 0
             },
-            selectMovieFields: "_id Title Released Poster ImdbRating Genres",
+            selectMovieFields: "_id Title Released Year Poster ImdbRating Genres",
             selectUserFields: "_id Name",
             sort: {
                 CreatedAt: -1
@@ -268,7 +292,9 @@ app.registerCtrl('homeController', ['$scope', '$http', '$window', function($scop
     $scope.playTrailer = function(index) {
         var movie = $scope.feed[index].Movie;
         var data = {
-            "movieid": movie._id
+            "movieid": movie._id,
+            "movieTitle": movie.Title,
+            "movieYear": movie.Year
         };
 
         var config = {
@@ -321,11 +347,24 @@ app.registerCtrl('homeController', ['$scope', '$http', '$window', function($scop
                 // success callback
                 var responseData = response.data;
                 if (listName == "Watched") {
-                    $scope.Watched = responseData.Count;
+                    $scope.sidebarList.userList.push({
+                        glyphicon: "glyphicon glyphicon-ok",
+                        name: "Watched",
+                        count: responseData.Count
+                    });
+                    $scope.user.WatchedCount = responseData.Count;
                 } else if (listName == "Watchlist") {
-                    $scope.Watchlist = responseData.Count;
+                    $scope.sidebarList.userList.push({
+                        glyphicon: "glyphicon glyphicon-plus",
+                        name: "Watchlist",
+                        count: responseData.Count
+                    });
                 } else if (listName == "Liked") {
-                    $scope.Liked = responseData.Count;
+                    $scope.sidebarList.userList.push({
+                        glyphicon: "glyphicon glyphicon-heart",
+                        name: "Liked",
+                        count: responseData.Count
+                    });
                 }
             },
             function(error) {

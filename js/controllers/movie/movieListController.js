@@ -1,12 +1,27 @@
 var app = angular.module(appName);
 
-app.registerCtrl('movieListController', ['$scope', '$http', '$routeParams', function($scope, $http, $routeParams) {
+app.registerCtrl('movieListController', ['$scope', '$http', '$routeParams', '$window', function($scope, $http, $routeParams, $window) {
     $scope.noDataFound = false;
 
+    $scope.$watch(function() {
+        return $window.innerHeight;
+    }, function(value) {
+        $scope.sidebarHeight = value - 80;
+    });
+
     $scope.movies = [];
+    $scope.isLoading = false;
     var page = 1;
 
-    $scope.loadMovies = function() {
+    $scope.loadMore = function() {
+        if ($scope.isLoading == false) {
+            $scope.loadMovies = loadMovies();
+        }
+    }
+
+    function loadMovies() {
+        $scope.isLoading = true;
+
         var queryFilters = $routeParams.query.split('|');
         var queryFilterJson = {};
         queryFilters.forEach(function(query) {
@@ -26,7 +41,7 @@ app.registerCtrl('movieListController', ['$scope', '$http', '$routeParams', func
             var sortFilterJson = {};
             sortFilterJson[sortFilter.split(':')[0]] = sortFilter.split(':')[1];
         } else {
-            var sortFilterJson = {Released: -1};
+            var sortFilterJson = { Released: -1 };
         }
 
         /* Get Movie */
@@ -36,6 +51,7 @@ app.registerCtrl('movieListController', ['$scope', '$http', '$routeParams', func
             select: {
                 Title: 1,
                 Released: 1,
+                Year: 1,
                 Poster: 1,
                 ImdbRating: 1,
                 Genres: 1,
@@ -57,6 +73,7 @@ app.registerCtrl('movieListController', ['$scope', '$http', '$routeParams', func
             .then(
             function(response) {
                 // success callback
+                $scope.isLoading = false;
                 var data = response.data;
                 console.log(data);
                 if (data.Status) {
@@ -72,13 +89,12 @@ app.registerCtrl('movieListController', ['$scope', '$http', '$routeParams', func
             }
             , function(error) {
                 // failure callback
+                $scope.isLoading = false;
                 $('.notification').text('Oops! something went wrong').show('fast').delay(3000).hide('fast');
             }
             );
         /* End Movie */
     }
-
-    $scope.loadMovies();
 
     $scope.addToWatchlist = function($index) {
         if ($scope.movies[$index].addedToWatchlist) {
@@ -145,12 +161,14 @@ app.registerCtrl('movieListController', ['$scope', '$http', '$routeParams', func
             }
             );
     }
-    
+
     // Get Trailer
     $scope.playTrailer = function(index) {
         var movie = $scope.movies[index];
         var data = {
-            "movieid": movie._id
+            "movieid": movie._id,
+            "movieTitle": movie.Title,
+            "movieYear": movie.Year
         };
 
         var config = {

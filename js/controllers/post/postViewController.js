@@ -28,7 +28,7 @@ app.registerCtrl('postViewController', ['$scope', '$http', '$window', '$routePar
             sort: {
                 UpdatedAt: -1
             },
-            selectMovieFields: "_id Title Released Poster ImdbRating Genres",
+            selectMovieFields: "_id Title Released Year Poster ImdbRating Genres",
             selectUserFields: "_id Name",
             skip: 0,
             limit: 10
@@ -246,7 +246,9 @@ app.registerCtrl('postViewController', ['$scope', '$http', '$window', '$routePar
     $scope.playTrailer = function() {
         var post = $scope.post;
         var data = {
-            "movieid": post.Movie._id
+            "movieid": post.Movie._id,
+            "movieTitle": post.Movie.Title,
+            "movieYear": post.Movie.Year
         };
 
         var config = {

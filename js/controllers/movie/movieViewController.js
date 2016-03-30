@@ -47,7 +47,8 @@ app.registerCtrl('movieViewController', ['$scope', '$http', '$routeParams', '$wi
         "limit": 10,
         "userid": localStorage.getItem(prefUserId)
     };
-
+    
+    // Make big poster image half of screen size
     $scope.$watch(function() {
         return $window.innerHeight;
     }, function(value) {
@@ -58,7 +59,6 @@ app.registerCtrl('movieViewController', ['$scope', '$http', '$routeParams', '$wi
     function parallex() {
         image = document.getElementById('backdropImage');
         ypos = window.pageYOffset;
-        console.log("scroll");
         image.style.marginTop = ypos * 0.7 + 'px';
     }
     window.addEventListener('scroll', parallex), false;
@@ -161,7 +161,9 @@ app.registerCtrl('movieViewController', ['$scope', '$http', '$routeParams', '$wi
     $scope.playTrailer = function() {
         var movie = $scope.movie;
         var data = {
-            "movieid": movie._id
+            "movieid": movie._id,
+            "movieTitle": movie.Title,
+            "movieYear": movie.Year
         };
 
         var config = {

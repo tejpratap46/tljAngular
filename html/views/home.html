@@ -5,7 +5,7 @@
             <div class="panel-body no-padding">
                 <div class="center">
                     <div style="background-color:#EEEEEE; height: 120px;">
-                        <div style="position: relative; top: 35%;"><a href="" class="bold ellipsis" style="font-size: 25px;">{{username}}</a></div>
+                        <div style="position: relative; top: 35%;"><a href="" class="bold ellipsis" style="font-size: 25px;">{{user.username}}</a></div>
                     </div>
                     <button class="btn btn-primary btn-lg round bold" style="width: 55px; height: 55px; margin-top: -25px;">
                         <span class="glyphicon glyphicon-flash"></span>
@@ -14,25 +14,42 @@
                 <div class="clearfix"></div>
                 <div>
                     <div class="list-group">
-                        <a href="" class="list-group-item no-border no-raduis">
-                            <p class="list-group-item-heading bold">Watchlisted</p>
-                            <p class="list-group-item-text">{{Watchlist}} movies.</p>
-                        </a>
-                        <a href="" class="list-group-item no-border no-raduis">
-                            <p class="list-group-item-heading bold">Watched</p>
-                            <p class="list-group-item-text">{{Watched}} Movies.</p>
-                        </a>
-                        <a href="" class="list-group-item no-border no-raduis">
-                            <p class="list-group-item-heading bold">Liked</p>
-                            <p class="list-group-item-text">{{Liked}} Movies.</p>
+                        <a href="" class="list-group-item no-border no-radius" data-ng-repeat="item in sidebarList.userList" data-ng-if="item.count > 0">
+                            <table>
+                                <tr>
+                                    <td>
+                                        <h3><i data-ng-class="item.glyphicon"></i></h3>
+                                    </td>
+                                    <td style="padding-left: 10px;">
+                                        <p class="list-group-item-heading bold">{{item.name}}</p>
+                                        <p class="list-group-item-text">{{item.count}} movies.</p>
+                                    </td>
+                                </tr>
+                            </table>
                         </a>
                     </div>
                 </div>
-                <div class="clearfix"></div>
+                <hr>
+                <div>
+                    <div class="list-group">
+                        <a href="{{item.href}}" class="list-group-item no-border no-raduis" data-ng-repeat="item in sidebarList.movieList">
+                            <table>
+                                <tr>
+                                    <td>
+                                        <h3><i data-ng-class="item.glyphicon"></i></h3>
+                                    </td>
+                                    <td style="padding-left: 10px;">
+                                        <p class="list-group-item-heading bold">{{item.title}}</p>
+                                    </td>
+                                </tr>
+                            </table>
+                        </a>
+                    </div>
+                </div>
             </div>
         </div>
     </div>
-    <div class="col-sm-8 col-md-6 col-lg-6 no-padding">
+    <div class="col-sm-8 col-md-6 col-lg-6 no-padding" infinite-scroll='loadMore()' infinite-scroll-distance='2'>
         <div class="well">
             <form class="form-horizontal" role="form">
                 <h4>Comment about a movie</h4>
@@ -60,7 +77,8 @@
                             <td style="padding-left: 10px;">
                                 <a href="{{'#/user/' + post.User._id}}" class="bold">{{post.User.Name}}</a>
                                 <small> {{post.ListName}}</small>
-                                <a href="{{'#/movie/view/' + post.Movie._id}}" class="bold"> {{post.Movie.Title}}</a><br />
+                                <a href="{{'#/movie/view/' + post.Movie._id}}" class="bold"> {{post.Movie.Title}}</a>
+                                <br />
                                 <small title="{{post.UpdatedAt}}">- about {{post.UpdatedAtFromNow}}</small>
                             </td>
                         </tr>
@@ -75,8 +93,8 @@
                                 <img data-ng-src="{{post.Movie.Poster}}" class="full-width">
                             </div>
                         </div>
-                        <blockquote class="col-sm-8 no-border">
-                            <h3 class="bold">{{post.Movie.Title}}</h3>
+                        <blockquote class="col-sm-8 no-border no-margin">
+                            <h4 class="bold">{{post.Movie.Title}}</h4>
                             <p>{{post.Movie.Released}}</p>
                             <small>{{post.Movie.Genres}}</small>
                         </blockquote>
@@ -128,8 +146,52 @@
             </div>
         </div>
     </div>
-    <div class="hidden-xs hidden-sm col-md-3 col-lg-2">
 
+    <div class="hidden-xs hidden-sm col-md-3 col-lg-2">
+        <div class="panel panel-default">
+            <div class="panel-body">
+                <table>
+                    <tbody>
+                        <tr>
+                            <td>
+                                <a href="{{'#/user/' + post.User._id}}">
+                                    <img src="https://cdn0.iconfinder.com/data/icons/user-pictures/100/male-128.png" alt="" class="img-circle" style="margin: 0px; max-width: 50px;">
+                                </a>
+                            </td>
+                            <td style="padding-left: 10px;">
+                                <a href="{{'#/user/' + post.User._id}}" class="bold">name</a>
+                                <small> some extra info</small>
+                                <p><a href="#" class="btn btn-default btn-xs"><small>follow</small></a></p>
+                            </td>
+                        </tr>
+                        <tr>
+                            <td>
+                                <a href="{{'#/user/' + post.User._id}}">
+                                    <img src="https://cdn0.iconfinder.com/data/icons/user-pictures/100/male-128.png" alt="" class="img-circle" style="margin: 0px; max-width: 50px;">
+                                </a>
+                            </td>
+                            <td style="padding-left: 10px;">
+                                <a href="{{'#/user/' + post.User._id}}" class="bold">name</a>
+                                <small> some extra info</small>
+                                <p><a href="#" class="btn btn-default btn-xs"><small>follow</small></a></p>
+                            </td>
+                        </tr>
+                        <tr>
+                            <td>
+                                <a href="{{'#/user/' + post.User._id}}">
+                                    <img src="https://cdn0.iconfinder.com/data/icons/user-pictures/100/male-128.png" alt="" class="img-circle" style="margin: 0px; max-width: 50px;">
+                                </a>
+                            </td>
+                            <td style="padding-left: 10px;">
+                                <a href="{{'#/user/' + post.User._id}}" class="bold">name</a>
+                                <small> some extra info</small>
+                                <p><a href="#" class="btn btn-default btn-xs"><small>follow</small></a></p>
+                            </td>
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
+        </div>
     </div>
     <div class="col-lg-1"></div>
 </div>
