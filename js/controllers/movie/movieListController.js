@@ -2,11 +2,20 @@ var app = angular.module(appName);
 
 app.registerCtrl('movieListController', ['$scope', '$http', '$routeParams', '$window', function($scope, $http, $routeParams, $window) {
     $scope.noDataFound = false;
+    $scope.filterBoxVisible = false;
+
+    $scope.showFilterBox = function() {
+        $scope.filterBoxVisible = true;
+    }
+
+    $scope.hideFilterBox = function() {
+        $scope.filterBoxVisible = false;
+    }
 
     $scope.$watch(function() {
         return $window.innerHeight;
     }, function(value) {
-        $scope.sidebarHeight = value - 80;
+        $scope.filterheight = value - 128;
     });
 
     $scope.movies = [];
@@ -46,6 +55,7 @@ app.registerCtrl('movieListController', ['$scope', '$http', '$routeParams', '$wi
 
         /* Get Movie */
 
+        var limit = 12;
         var data = {
             query: queryFilterJson,
             select: {
@@ -58,8 +68,8 @@ app.registerCtrl('movieListController', ['$scope', '$http', '$routeParams', '$wi
                 Runtime: 1
             },
             sort: sortFilterJson,
-            skip: (page++ * 10 - 10),
-            limit: 10,
+            skip: (page++ * limit - limit),
+            limit: limit,
             userid: localStorage.getItem(prefUserId)
         };
 

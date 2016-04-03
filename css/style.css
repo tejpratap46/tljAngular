@@ -124,6 +124,11 @@
 
 /* Custom styles */
 
+.form-control {
+    -webkit-box-shadow: inset 0 1px 1px rgba(0, 0, 0, 0);
+    box-shadow: inset 0 1px 1px rgba;
+}
+
 .movie-action-icon {
     font-size: 1.5em;
 }
@@ -145,41 +150,12 @@ textarea {
 }
 
 #view {
-    padding-top: 40px;
-}
-
-#sidebar {
-    position: fixed;
-    height: 100%;
-    margin-top: -80px;
-    padding-top: 70px;
-    overflow-y: auto;
+    margin-top: 40px;
 }
 
 @media(max-width: 767px) {
     #view {
-        padding-top: 70px;
-    }
-    #sidebar {
-        position: fixed;
-    }
-}
-
-@media(max-width: 991px) {
-    #sidebar {
-        width: 24%;
-    }
-}
-
-@media(min-width: 991px) and (max-width: 1200px) {
-    #sidebar {
-        width: 16%;
-    }
-}
-
-@media(min-width: 1200px) {
-    #sidebar {
-        width: 16%;
+        margin-top: 70px;
     }
 }
 

@@ -51,6 +51,7 @@ app.registerCtrl('homeController', ['$scope', '$http', '$window', function($scop
      */
     function loadFeed() {
         $scope.isLoadingFeed = true;
+        var limit = 10;
         var data = {
             userid: localStorage.getItem(prefUserId),
             select: {
@@ -61,8 +62,8 @@ app.registerCtrl('homeController', ['$scope', '$http', '$window', function($scop
             sort: {
                 CreatedAt: -1
             },
-            skip: page++ * 10 - 10,
-            limit: 10
+            skip: page++ * limit - limit,
+            limit: limit
         };
 
         var config = {
