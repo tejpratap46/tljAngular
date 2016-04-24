@@ -9,6 +9,12 @@ app.controller('navigationController', ['$scope', '$sce', '$http', function ($sc
 
     $scope.checkIfLoggedIn = checkIfLoggedIn();
 
+    $scope.xsSearchBoxVisible = false;
+
+    $scope.showXsSearchBox = function () {
+        $scope.xsSearchBoxVisible = !$scope.xsSearchBoxVisible;
+    }
+
     function checkIfLoggedIn() {
         if (localStorage.getItem(prefUsername)) {
             $scope.userMenu = $sce.trustAsHtml("<li><a href='#/user/" + localStorage.getItem(prefUserId) + "'>" + localStorage.getItem(prefName) + "<span class='caret'></span></a></li><li><a href='#/login'>Logout</a></li>");
@@ -36,19 +42,19 @@ app.controller('navigationController', ['$scope', '$sce', '$http', function ($sc
         $scope.searchBoxPlaceholder = "Search By Movie Name, Actor Name, Director Name";
         $('.dropdown-menu').show('fast');
     }
-    
+
     var timeoutHandler;
     $scope.searchMovie = function () {
-        if (timeoutHandler){
+        if (timeoutHandler) {
             clearTimeout(timeoutHandler);
         }
-        timeoutHandler = setTimeout(function (){
+        timeoutHandler = setTimeout(function () {
             console.log("Quering server");
             $scope.autocompleteSearch = autocompleteSearch();
-        },500);
+        }, 500);
     }
-    
-    function autocompleteSearch(){
+
+    function autocompleteSearch() {
         if ($scope.searchData.length > 0) {
             $('.dropdown-menu').show('fast');
 
@@ -80,23 +86,67 @@ app.controller('navigationController', ['$scope', '$sce', '$http', function ($sc
 
             $http.post(hostAddress + '/api/movie/getQuery', data, config)
                 .then(
-                    function (response) {
-                        // success callback
-                        var data = response.data;
-                        if (data.Status) {
-                            $scope.searchResults = data.Movies;
-                        } else {
-                            showToast(data.Error);
-                        }
-                    },
-                    function (error) {
-                        // failure callback
-                        $('.notification').text('Oops! something went wrong').show('fast').delay(3000).hide('fast');
+                function (response) {
+                    // success callback
+                    var data = response.data;
+                    if (data.Status) {
+                        $scope.searchResults = data.Movies;
+                    } else {
+                        showToast(data.Error);
                     }
-                    );
+                },
+                function (error) {
+                    // failure callback
+                    $('.notification').text('Oops! something went wrong').show('fast').delay(3000).hide('fast');
+                }
+                );
 
         } else {
             $('.dropdown-menu').hide('fast');
+        }
+    }
+
+    var selectedIndex = -1;
+    $scope.searchKeydown = function ($event) {
+        console.log($event.keyCode);
+        if ($event.keyCode == 38) {
+            var iterator = 0;
+            $event.preventDefault();
+            if (selectedIndex == -1) {
+                selectedIndex = $scope.searchResults.length - 1;
+            } else {
+                selectedIndex--;
+            }
+            $scope.searchResults.forEach(function (result) {
+                if (iterator == selectedIndex) {
+                    result.isSelected = true;
+                } else {
+                    result.isSelected = false;
+                }
+                iterator++;
+            });
+        } else if ($event.keyCode == 40) {
+            var iterator = 0;
+            $event.preventDefault();
+            if (selectedIndex == $scope.searchResults.length - 1) {
+                selectedIndex = -1;
+            } else {
+                selectedIndex++;
+            }
+            $scope.searchResults.forEach(function (result) {
+                if (iterator == selectedIndex) {
+                    result.isSelected = true;
+                } else {
+                    result.isSelected = false;
+                }
+                iterator++;
+            });
+        } else if ($event.keyCode == 13) {
+            $event.preventDefault();
+            if (selectedIndex >= 0) {
+                window.location.hash = '/movie/view/' + $scope.searchResults[selectedIndex]._id;
+                $('.dropdown-menu').hide('fast');
+            }
         }
     }
 }]);

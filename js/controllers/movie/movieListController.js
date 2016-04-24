@@ -133,8 +133,6 @@ app.registerCtrl('movieListController', ['$scope', '$http', '$routeParams', '$wi
         $scope.addToList = addToList($index, "Liked", "");
     };
 
-    $scope.playTrailer = function($index) { };
-
     function addToList(index, listName, caption) {
         var movie = $scope.movies[index];
         var data = {

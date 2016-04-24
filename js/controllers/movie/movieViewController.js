@@ -1,6 +1,6 @@
 var app = angular.module(appName);
 
-app.registerCtrl('movieViewController', ['$scope', '$http', '$routeParams', '$window', function($scope, $http, $routeParams, $window) {
+app.registerCtrl('movieViewController', ['$scope', '$http', '$routeParams', '$window', function ($scope, $http, $routeParams, $window) {
 
     /* Get Movie */
     var data = {
@@ -47,19 +47,21 @@ app.registerCtrl('movieViewController', ['$scope', '$http', '$routeParams', '$wi
         "limit": 10,
         "userid": localStorage.getItem(prefUserId)
     };
-    
+
     // Make big poster image half of screen size
-    $scope.$watch(function() {
+    $scope.$watch(function () {
         return $window.innerHeight;
-    }, function(value) {
+    }, function (value) {
         $scope.backdropHeight = value / 1.5;
     });
 
     var ypos, image;
     function parallex() {
         image = document.getElementById('backdropImage');
-        ypos = window.pageYOffset;
-        image.style.marginTop = ypos * 0.7 + 'px';
+        if (image != null) {
+            ypos = window.pageYOffset;
+            image.style.marginTop = ypos * 0.7 + 'px';
+        }
     }
     window.addEventListener('scroll', parallex), false;
 
@@ -71,26 +73,25 @@ app.registerCtrl('movieViewController', ['$scope', '$http', '$routeParams', '$wi
 
     $http.post(hostAddress + '/api/movie/getQuery', data, config)
         .then(
-        function(response) {
+        function (response) {
             // success callback
             var data = response.data;
             console.log(data);
             if (data.Status) {
                 var movies = data.Movies;
-                movies.forEach(function(object) {
-                    object.Genres = object.Genres.join(", ");
+                movies.forEach(function (object) {
                     object.Released = moment(object.Released).format('MMMM Do YYYY');
                 });
                 $scope.movie = movies[0];
             }
         },
-        function(error) {
+        function (error) {
             // failure callback
             $('.notification').text('Oops! something went wrong').show('fast').delay(3000).hide('fast');
         }
         );
 
-    $scope.addToWatchlist = function() {
+    $scope.addToWatchlist = function () {
         if ($scope.movie.addedToWatchlist) {
             $scope.movie.addedToWatchlist = false;
         } else {
@@ -99,7 +100,7 @@ app.registerCtrl('movieViewController', ['$scope', '$http', '$routeParams', '$wi
         $scope.addToList = addToList("Watchlist", "");
     }
 
-    $scope.addToWatched = function() {
+    $scope.addToWatched = function () {
         if ($scope.movie.addedToWatched) {
             $scope.movie.addedToWatched = false;
         } else {
@@ -108,7 +109,7 @@ app.registerCtrl('movieViewController', ['$scope', '$http', '$routeParams', '$wi
         $scope.addToList = addToList("Watched", "");
     };
 
-    $scope.addToLiked = function() {
+    $scope.addToLiked = function () {
         if ($scope.movie.addedToLiked) {
             $scope.movie.addedToLiked = false;
         } else {
@@ -117,7 +118,7 @@ app.registerCtrl('movieViewController', ['$scope', '$http', '$routeParams', '$wi
         $scope.addToList = addToList("Liked", "");
     };
 
-    $scope.playTrailer = function() {
+    $scope.playTrailer = function () {
     };
 
     function addToList(listName, caption) {
@@ -137,7 +138,7 @@ app.registerCtrl('movieViewController', ['$scope', '$http', '$routeParams', '$wi
 
         $http.post(hostAddress + '/api/list/listAddMovie', data, config)
             .then(
-            function(response) {
+            function (response) {
                 // success callback
                 var data = response.data;
                 if (data.Status) {
@@ -150,7 +151,7 @@ app.registerCtrl('movieViewController', ['$scope', '$http', '$routeParams', '$wi
                     $('.notification').text(data.Error).show('fast').delay(3000).hide('fast');
                 }
             },
-            function(error) {
+            function (error) {
                 // failure callback
                 $('.notification').text('Oops! something went wrong').show('fast').delay(3000).hide('fast');
             }
@@ -158,7 +159,7 @@ app.registerCtrl('movieViewController', ['$scope', '$http', '$routeParams', '$wi
     }
 
     // Get Trailer
-    $scope.playTrailer = function() {
+    $scope.playTrailer = function () {
         var movie = $scope.movie;
         var data = {
             "movieid": movie._id,
@@ -174,7 +175,7 @@ app.registerCtrl('movieViewController', ['$scope', '$http', '$routeParams', '$wi
 
         $http.post(hostAddress + '/api/movie/getTrailer', data, config)
             .then(
-            function(response) {
+            function (response) {
                 // success callback
                 var data = response.data;
                 if (data.Status) {
@@ -183,7 +184,7 @@ app.registerCtrl('movieViewController', ['$scope', '$http', '$routeParams', '$wi
                     $('.notification').text(data.Error).show('fast').delay(3000).hide('fast');
                 }
             },
-            function(error) {
+            function (error) {
                 // failure callback
                 $('.notification').text('Oops! something went wrong').show('fast').delay(3000).hide('fast');
             }

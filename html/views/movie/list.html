@@ -1,4 +1,4 @@
-<div class="col-xs-12 no-padding" infinite-scroll='loadMore()' infinite-scroll-distance='1'>
+<div>
     <div class="panel panel-default" style="position: fixed; margin-top: -15px; z-index: 1;">
         <div class="panel-heading">
             <table>
@@ -19,50 +19,52 @@
             </table>
         </div>
         <div data-ng-if="filterBoxVisible" class="panel-body" style="height: {{filterheight}}px;">
-            
+
         </div>
     </div>
-    <div style="margin-top: 50px; overflow-y: hidden; height: {{filterBoxVisible ? '0px' : 'initial'}};">
-        <div class="col-sm-6 col-md-4 col-lg-3" style="padding: 5px 5px;" data-ng-repeat="movie in movies">
-            <div class="panel panel-default no-margin" style="overflow: hidden;">
-                <div class="panel-body no-padding">
-                    <div>
-                        <a class="row no-margin" href="{{'#/movie/view/' + movie._id}}">
-                            <blockquote class="col-xs-12 no-border no-margin">
-                                <table>
-                                    <td>
-                                        <h1 class="no-margin">{{movie.ImdbRating > 0 ? movie.ImdbRating : 'n.a.'}}</h1>
-                                    </td>
-                                    <td style="padding-left: 10px;">
-                                        <h5 class="ellipsis bold no-margin">{{movie.Title}} <small>{{movie.Released}}</small></h5>
-                                    </td>
-                                </table>
-                            </blockquote>
-                            <div class="col-xs-12 no-padding">
-                                <div style="height: 220px; overflow: hidden;">
-                                    <img data-ng-src="{{movie.Poster}}" onError="this.onerror=null;console.log('error');this.src='images/default.png';" class="full-width">
+    <div class="col-xs-12 no-padding" infinite-scroll='loadMore()' infinite-scroll-distance='1'>
+        <div style="margin-top: 50px; overflow-y: hidden; height: {{filterBoxVisible ? '0px' : 'initial'}};">
+            <div class="col-sm-6 col-md-4 col-lg-3" style="padding: 0px;" data-ng-repeat="movie in movies">
+                <div class="panel panel-default no-margin no-radius" style="overflow: hidden;">
+                    <div class="panel-body no-padding">
+                        <div>
+                            <a class="row no-margin" href="{{'#/movie/view/' + movie._id}}">
+                                <blockquote class="col-xs-12 no-border no-margin">
+                                    <table>
+                                        <td>
+                                            <h1 class="no-margin">{{movie.ImdbRating > 0 ? movie.ImdbRating : 'n.a.'}}</h1>
+                                        </td>
+                                        <td style="padding-left: 10px;">
+                                            <h5 class="ellipsis bold no-margin">{{movie.Title}} <small>{{movie.Released}}</small></h5>
+                                        </td>
+                                    </table>
+                                </blockquote>
+                                <div class="col-xs-12 no-padding">
+                                    <div style="height: 220px; overflow: hidden;">
+                                        <img data-ng-src="{{movie.Poster}}" onError="this.onerror=null;console.log('error');this.src='images/default.png';" class="full-width">
+                                    </div>
                                 </div>
-                            </div>
-                        </a>
-                        <blockquote class="row no-padding no-margin no-border">
-                            <h5><small>{{movie.Genres}}</small></h5>
-                            <div class="col-xs-3">
-                                <button class="btn btn-link full-width toggle-icon-{{movie.addedToWatchlist}}" title="Add To Watchlist" data-ng-click="addToWatchlist($index)"><span class="glyphicon glyphicon-plus movie-action-icon"></span>
+                            </a>
+                            <blockquote class="row no-padding no-margin no-border">
+                                <h5><small>{{movie.Genres}}</small></h5>
+                                <div class="col-xs-3">
+                                    <button class="btn btn-link full-width toggle-icon-{{movie.addedToWatchlist}}" title="Add To Watchlist" data-ng-click="addToWatchlist($index)"><span class="glyphicon glyphicon-plus movie-action-icon"></span>
                                     <br><small class="ellipsis">Add To Watchlist</small></button>
-                            </div>
-                            <div class="col-xs-3">
-                                <button class="btn btn-link full-width toggle-icon-{{movie.addedToWatched}}" title="Mark As Watched" data-ng-click="addToWatched($index)"><span class="glyphicon glyphicon-ok movie-action-icon"></span>
+                                </div>
+                                <div class="col-xs-3">
+                                    <button class="btn btn-link full-width toggle-icon-{{movie.addedToWatched}}" title="Mark As Watched" data-ng-click="addToWatched($index)"><span class="glyphicon glyphicon-ok movie-action-icon"></span>
                                     <br><small class="ellipsis">Mark As Watched</small></button>
-                            </div>
-                            <div class="col-xs-3">
-                                <button class="btn btn-link full-width toggle-icon-{{movie.addedToLiked}}" title="Like This Movie" data-ng-click="addToLiked($index)"><span class="glyphicon glyphicon-heart movie-action-icon"></span>
+                                </div>
+                                <div class="col-xs-3">
+                                    <button class="btn btn-link full-width toggle-icon-{{movie.addedToLiked}}" title="Like This Movie" data-ng-click="addToLiked($index)"><span class="glyphicon glyphicon-heart movie-action-icon"></span>
                                     <br><small class="ellipsis">Like This Movie</small></button>
-                            </div>
-                            <div class="col-xs-3">
-                                <button class="btn btn-link full-width toggle-icon-false" title="Play Trailer" data-ng-click="playTrailer($index)"><span class="glyphicon glyphicon-play movie-action-icon"></span>
+                                </div>
+                                <div class="col-xs-3">
+                                    <button class="btn btn-link full-width toggle-icon-false" title="Play Trailer" data-ng-click="playTrailer($index)"><span class="glyphicon glyphicon-play movie-action-icon"></span>
                                     <br><small class="ellipsis">Play Trailer</small></button>
-                            </div>
-                        </blockquote>
+                                </div>
+                            </blockquote>
+                        </div>
                     </div>
                 </div>
             </div>

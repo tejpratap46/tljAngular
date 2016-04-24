@@ -154,9 +154,9 @@ textarea {
 }
 
 @media(max-width: 767px) {
-    #view {
+    /*#view {
         margin-top: 70px;
-    }
+    }*/
 }
 
 .equal {

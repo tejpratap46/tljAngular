@@ -1,15 +1,40 @@
 <div data-ng-if="movie">
-    <div class="hidden-xs" style="background-color: black; min-height:200px; height: {{backdropHeight}}px; max-height: 600px; overflow: hidden; margin-top: -50px;">
-        <img id="backdropImage" style="opacity: 0.8;" data-ng-src="{{movie.Poster}}" class="full-width">
+    <div class="hidden-xs" style="background-color: black; min-height:200px; height: {{backdropHeight}}px; max-height: 420px; overflow: hidden; margin-top: -15px;">
+        <div class="row" style="background-image: url('{{movie.Poster}}'); background-size:cover; -webkit-filter: blur(5px); min-height:200px; height: {{backdropHeight}}px; max-height: 420px; opacity: 0.8;">
+
+        </div>
+        <div class="row no-margin" style="top: -90%; position: relative;">
+            <a href="{{'#/movie/view/' + movie._id}}">
+                <div class="col-sm-12 center no-padding">
+                    <div>
+                        <img style="background-image: url('{{movie.Poster}}'); background-size:cover; background-position: center center; height: 200px; width: 200px;"
+                            class="img-circle">
+                    </div>
+                </div>
+            </a>
+            <div class="row center no-border no-margin">
+                <a href="{{'#/movie/view/' + movie._id}}">
+                    <h2 class="bold white">{{movie.Title}}</h2>
+                </a>
+                <p class="white no-margin">{{movie.Released}}</p>
+                <small class="white">
+                    {{movie.Genres.length > 0 ? '| ':''}}
+                    <span data-ng-repeat="genre in movie.Genres">
+                        <a class="white" href="#/movie/list/Genres:{{genre}}">{{genre}}</a> | 
+                    </span>
+                </small>
+                <p><small class="white">{{movie.Runtime}} min</small></p>
+            </div>
+        </div>
     </div>
-    <div class="visible-xs" style="margin-top: 130px;/*to counter above in small devices.*/"></div>
-    <div style="margin-top: -60px;">
+    <div class="visible-xs" style="margin-top: -15px;"></div>
+    <div>
         <div class="col-sm-1 col-md-1 col-lg-2"></div>
         <div class="col-sm-10 col-md-10 col-lg-8 no-padding">
             <div class="panel panel-default">
                 <div class="panel-body no-padding">
                     <div class="no-padding no-margin no-border" style="background: #EEEEEE; overflow: hidden;">
-                        <div class="row no-margin">
+                        <div class="visible-xs row no-margin">
                             <a href="{{'#/movie/view/' + movie._id}}">
                                 <div class="col-sm-4 no-padding">
                                     <div style="max-height: 300px; overflow: hidden;">
@@ -17,14 +42,19 @@
                                     </div>
                                 </div>
                             </a>
-                            <blockquote class="col-sm-8 no-border no-margin">
+                            <div class="col-sm-8 center no-border no-margin">
                                 <a href="{{'#/movie/view/' + movie._id}}">
                                     <h2 class="bold">{{movie.Title}}</h2>
                                 </a>
-                                <p>{{movie.Released}}</p>
-                                <small>{{movie.Genres}}</small>
-                                <small>{{movie.Runtime}} min</small>
-                            </blockquote>
+                                <p class="no-margin">{{movie.Released}}</p>
+                                <small>
+                                {{movie.Genres.length > 0 ? '| ':''}}
+                                <span data-ng-repeat="genre in movie.Genres">
+                                    <a href="#/movie/list/Genres:{{genre}}">{{genre}}</a> | 
+                                </span>
+                            </small>
+                                <p><small>{{movie.Runtime}} min</small></p>
+                            </div>
                         </div>
                         <hr class="no-margin">
                         <blockquote class="row no-padding no-margin no-border">
@@ -70,19 +100,19 @@
                         <div class="well no-margin">
                             <label for="title">Actors</label>
                             <ul class="pager no-margin">
-                                <li data-ng-repeat="actor in movie.Actors" class="previous"><a href="{{'#/movie/list/Actors:' + actor}}" class="navbar-item" style="margin: 1px;">{{actor}}</a></li>
+                                <li data-ng-repeat="actor in movie.Actors" class="previous"><a href="{{'#/movie/list/Actors:' + actor._id}}" class="navbar-item" style="margin: 1px;">{{actor.Name}}</a></li>
                             </ul>
                         </div>
                         <div class="well no-margin">
                             <label for="title">Directors</label>
                             <ul class="pager no-margin">
-                                <li data-ng-repeat="director in movie.Directors" class="previous"><a href="{{'#/movie/list/Directors:' + director}}" class="navbar-item" style="margin: 1px;">{{director}}</a></li>
+                                <li data-ng-repeat="director in movie.Directors" class="previous"><a href="{{'#/movie/list/Directors:' + director._id}}" class="navbar-item" style="margin: 1px;">{{director.Name}}</a></li>
                             </ul>
                         </div>
                         <div class="well no-margin">
                             <label for="title">Writers</label>
                             <ul class="pager no-margin">
-                                <li data-ng-repeat="writer in movie.Writers" class="previous"><a href="{{'#/movie/list/Writers:' + writer.split('(')[0]}}" class="navbar-item" style="margin: 1px;">{{writer}}</a></li>
+                                <li data-ng-repeat="writer in movie.Writers" class="previous"><a href="{{'#/movie/list/Writers:' + writer._id}}" class="navbar-item" style="margin: 1px;">{{writer.Name}}</a></li>
                             </ul>
                         </div>
                     </div>
@@ -93,7 +123,7 @@
                     <h4>Say something about this movie</h4>
                     <div class="form-group" style="padding:14px;">
                         <textarea class="form-control" placeholder="Something like... Hey this movie is all about this and that." data-ng-model="movieComment"
-                        data-ng-change="movieCommentChange()"></textarea>
+                            data-ng-change="movieCommentChange()"></textarea>
                     </div>
                     <button class="btn btn-primary pull-right" type="button">Comment</button>
                     <ul class="list-inline">

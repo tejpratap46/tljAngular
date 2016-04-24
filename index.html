@@ -7,12 +7,15 @@
     <meta name="viewport" content="width=device-width, user-scalable=no" />
     <meta name="description" content="Manage your movie, music, tv shows and podcast life here">
     <link rel="icon" href="favicon.png">
+    <link rel="manifest" href="manifest.json">
     <title>The List Job</title>
     <link rel="stylesheet" href="css/libs/bootstrap.min.css">
     <link rel="stylesheet" href="css/libs/loading-bar.min.css">
     <link rel="stylesheet" href="css/style.css">
     <link rel="stylesheet" href="css/signin.css">
     <!--<link rel="stylesheet" href="css/sidebar.css">-->
+
+    <link rel="manifest" href="manifest.json">
 </head>
 
 <body>
@@ -23,18 +26,22 @@
                 <a class="navbar-brand" href="#/"><span class="glyphicon glyphicon-globe"></span></a>
                 <a class="navbar-brand" href="#/"><span class="glyphicon glyphicon-cog"></span></a>
                 <a class="navbar-brand pull-right visible-xs" href="#/user"><span class="glyphicon glyphicon-user"></span></a>
+                <a class="navbar-brand pull-right visible-xs" href=""><span class="glyphicon glyphicon-search" data-ng-click="showXsSearchBox()"></span></a>
             </div>
             <div id="navbar" class="navbar-collapse collapse">
                 <ul class="nav navbar-nav hidden-xs">
-                    
+
                 </ul>
                 <form class="navbar-form navbar-left hidden-xs">
                     <div class="input-group">
-                        <input data-ng-change="searchMovie()" type="text" class="form-control" placeholder="{{searchBoxPlaceholder}}" data-ng-model="searchData"
-                        data-ng-blur="searchBoxBlur()" data-ng-click="searchBoxClick()">
-                        <ul class="dropdown-menu full-width">
+                        <input data-ng-change="searchMovie()" type="text" class="form-control" placeholder="{{searchBoxPlaceholder}}" data-ng-model="$parent.searchData"
+                            data-ng-blur="searchBoxBlur()" data-ng-click="searchBoxClick()" data-ng-keydown="searchKeydown($event)">
+                        <ul class="dropdown-menu full-width no-padding no-margin no-border no-radius">
                             <li data-ng-repeat="movie in searchResults">
-                                <a href="{{'#/movie/view/' + movie._id}}" class="ellipsis">{{movie.Title + ' (' + movie.Year + ')'}}</a>
+                                <a href="{{'#/movie/view/' + movie._id}}" class="ellipsis {{movie.isSelected ? 'active':''}}" style="padding: 3px 10px;">
+                                    <h5 class="no-margin">{{movie.Title}}</h5>
+                                    <p class="no-margin"><small class="no-margin">{{movie.Year}}</small></p>
+                                </a>
                             </li>
                         </ul>
                         <div class="input-group-btn">
@@ -44,13 +51,17 @@
                 </form>
                 <ul class="nav navbar-nav navbar-right hidden-xs" data-ng-bind-html="userMenu"></ul>
             </div>
-            <form class="navbar-form-xs visible-xs" style="margin: 0px -15px;">
+            <form data-ng-if="xsSearchBoxVisible" class="navbar-form-xs visible-xs" style="margin: 0px -15px;">
                 <div class="input-group">
-                    <input data-ng-change="searchMovie()" type="text" class="form-control no-radius" placeholder="{{searchBoxPlaceholder}}" data-ng-model="searchData"
-                    data-ng-blur="searchBoxBlur()" data-ng-click="searchBoxClick()">
-                    <ul class="dropdown-menu full-width">
+                    <input data-ng-change="searchMovie()" type="text" class="form-control no-radius" placeholder="{{searchBoxPlaceholder}}" data-ng-model="$parent.searchData"
+                        data-ng-blur="searchBoxBlur()" data-ng-click="searchBoxClick()" data-ng-keydown="searchKeydown($event)">
+                    <ul class="dropdown-menu full-width no-padding no-margin no-border no-radius">
                         <li data-ng-repeat="movie in searchResults">
-                            <a href="{{'#/movie/view/' + movie._id}}" class="ellipsis">{{movie.Title + ' (' + movie.Year + ')'}}</a></li>
+                            <a href="{{'#/movie/view/' + movie._id}}" class="ellipsis {{movie.isSelected ? 'active':''}}" style="padding: 3px 10px;">
+                                <h5 class="no-margin">{{movie.Title}}</h5>
+                                <p class="no-margin"><small class="no-margin">{{movie.Year}}</small></p>
+                            </a>
+                        </li>
                     </ul>
                     <div class="input-group-btn ">
                         <button class="btn btn-default no-radius " type="submit "> <i class="glyphicon glyphicon-search "></i> </button>
