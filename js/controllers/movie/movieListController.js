@@ -2,21 +2,6 @@ var app = angular.module(appName);
 
 app.registerCtrl('movieListController', ['$scope', '$http', '$routeParams', '$window', function($scope, $http, $routeParams, $window) {
     $scope.noDataFound = false;
-    $scope.filterBoxVisible = false;
-
-    $scope.showFilterBox = function() {
-        $scope.filterBoxVisible = true;
-    }
-
-    $scope.hideFilterBox = function() {
-        $scope.filterBoxVisible = false;
-    }
-
-    $scope.$watch(function() {
-        return $window.innerHeight;
-    }, function(value) {
-        $scope.filterheight = value - 128;
-    });
 
     $scope.movies = [];
     $scope.isLoading = false;

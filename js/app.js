@@ -1,7 +1,7 @@
 var app = angular.module(appName, [
     'ngRoute',
     'angular-loading-bar',
-    'infinite-scroll'
+    'infinite-scroll',
 ]);
 
 app.config(['$routeProvider', '$controllerProvider', 'cfpLoadingBarProvider', function($routeProvider, $controllerProvider, cfpLoadingBarProvider) {
@@ -88,3 +88,20 @@ app.config(['$routeProvider', '$controllerProvider', 'cfpLoadingBarProvider', fu
             redirectTo: '/'
         });
 }]);
+
+app.directive('tljFocusMe', function ($timeout) {
+    return {
+        scope: { trigger: '=tljFocusMe' },
+        link: function (scope, element) {
+            scope.$watch('trigger', function (value) {
+                if (value === true) {
+                    //console.log('trigger',value);
+                    //$timeout(function() {
+                    element[0].focus();
+                    scope.trigger = false;
+                    //});
+                }
+            });
+        }
+    };
+});

@@ -1,6 +1,6 @@
 var app = angular.module(appName);
 
-app.controller('navigationController', ['$scope', '$sce', '$http', function ($scope, $sce, $http) {
+app.controller('navigationController', ['$scope', '$http', '$route', function ($scope, $http, $route) {
 
     $scope.$on('userLoggedIn', function (event, data) {
         console.log('navigationController userLoggedIn');
@@ -17,30 +17,40 @@ app.controller('navigationController', ['$scope', '$sce', '$http', function ($sc
 
     function checkIfLoggedIn() {
         if (localStorage.getItem(prefUsername)) {
-            $scope.userMenu = $sce.trustAsHtml("<li><a href='#/user/" + localStorage.getItem(prefUserId) + "'>" + localStorage.getItem(prefName) + "<span class='caret'></span></a></li><li><a href='#/login'>Logout</a></li>");
             $scope.loggedIn = true;
             $scope.userid = localStorage.getItem(prefUserId);
+            $scope.username = localStorage.getItem(prefName);
             $('#navbar').show(0);
         } else {
-            $scope.userMenu = $sce.trustAsHtml("<li><a href='#/login' class='bold'>Login</a></li>");
             $scope.loggedIn = false;
             $scope.userid = undefined;
             $('#navbar').hide(0);
         }
     }
 
+    // Listen to route changes, and show and hide patient search bar accordingly
+    $scope.$on('$routeChangeStart', function (scope, next, current) {
+        console.log(JSON.stringify(next));
+        if (next.$$route.controller == "movieViewController") {
+            $scope.isTranslucentNavbar = true;
+        } else {
+            $scope.isTranslucentNavbar = false;
+        }
+        console.log($scope.isTranslucentNavbar);
+    });
+
     $scope.searchBoxPlaceholder = "Search Movie";
 
     $scope.searchBoxBlur = function () {
         $scope.searchBoxPlaceholder = "Search Movie";
         setTimeout(function () {
-            $('.dropdown-menu').hide('fast');
+            $('.search-results').hide('fast');
         }, 100);
     }
 
     $scope.searchBoxClick = function () {
         $scope.searchBoxPlaceholder = "Search By Movie Name, Actor Name, Director Name";
-        $('.dropdown-menu').show('fast');
+        $('.search-results').show('fast');
     }
 
     var timeoutHandler;
@@ -56,7 +66,7 @@ app.controller('navigationController', ['$scope', '$sce', '$http', function ($sc
 
     function autocompleteSearch() {
         if ($scope.searchData.length > 0) {
-            $('.dropdown-menu').show('fast');
+            $('.search-results').show('fast');
 
             var data = {
                 query: {
@@ -102,7 +112,7 @@ app.controller('navigationController', ['$scope', '$sce', '$http', function ($sc
                 );
 
         } else {
-            $('.dropdown-menu').hide('fast');
+            $('.search-results').hide('fast');
         }
     }
 
@@ -145,7 +155,7 @@ app.controller('navigationController', ['$scope', '$sce', '$http', function ($sc
             $event.preventDefault();
             if (selectedIndex >= 0) {
                 window.location.hash = '/movie/view/' + $scope.searchResults[selectedIndex]._id;
-                $('.dropdown-menu').hide('fast');
+                $('.search-results').hide('fast');
             }
         }
     }

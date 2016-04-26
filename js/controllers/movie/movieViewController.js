@@ -52,18 +52,8 @@ app.registerCtrl('movieViewController', ['$scope', '$http', '$routeParams', '$wi
     $scope.$watch(function () {
         return $window.innerHeight;
     }, function (value) {
-        $scope.backdropHeight = value / 1.5;
+        $scope.backdropHeight = value / 1.4;
     });
-
-    var ypos, image;
-    function parallex() {
-        image = document.getElementById('backdropImage');
-        if (image != null) {
-            ypos = window.pageYOffset;
-            image.style.marginTop = ypos * 0.7 + 'px';
-        }
-    }
-    window.addEventListener('scroll', parallex), false;
 
     var config = {
         headers: {
@@ -81,6 +71,7 @@ app.registerCtrl('movieViewController', ['$scope', '$http', '$routeParams', '$wi
                 var movies = data.Movies;
                 movies.forEach(function (object) {
                     object.Released = moment(object.Released).format('MMMM Do YYYY');
+                    object.Languages = object.Languages ? object.Languages.join(","):undefined
                 });
                 $scope.movie = movies[0];
             }

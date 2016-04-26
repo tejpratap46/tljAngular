@@ -19,13 +19,12 @@
 </head>
 
 <body>
-    <nav class="navbar navbar-default navbar-fixed-top" data-ng-controller="navigationController">
+    <nav class="navbar navbar-default navbar-fixed-top {{isTranslucentNavbar ? 'navbar-translucent':''}}" data-ng-controller="navigationController">
         <div class="container">
             <div class="navbar-header">
-                <a class="navbar-brand" href="#/"><span class="glyphicon glyphicon-flash"></span><span class="hidden-xs"> Bolt</span></a>
-                <a class="navbar-brand" href="#/"><span class="glyphicon glyphicon-globe"></span></a>
-                <a class="navbar-brand" href="#/"><span class="glyphicon glyphicon-cog"></span></a>
+                <a class="navbar-brand" href="#/"><span class="glyphicon glyphicon-flash"></span> Bolt</a>
                 <a class="navbar-brand pull-right visible-xs" href="#/user"><span class="glyphicon glyphicon-user"></span></a>
+                <a class="navbar-brand pull-right visible-xs" href=""><span class="glyphicon glyphicon-globe"></span></a>
                 <a class="navbar-brand pull-right visible-xs" href=""><span class="glyphicon glyphicon-search" data-ng-click="showXsSearchBox()"></span></a>
             </div>
             <div id="navbar" class="navbar-collapse collapse">
@@ -36,7 +35,7 @@
                     <div class="input-group">
                         <input data-ng-change="searchMovie()" type="text" class="form-control" placeholder="{{searchBoxPlaceholder}}" data-ng-model="$parent.searchData"
                             data-ng-blur="searchBoxBlur()" data-ng-click="searchBoxClick()" data-ng-keydown="searchKeydown($event)">
-                        <ul class="dropdown-menu full-width no-padding no-margin no-border no-radius">
+                        <ul class="dropdown-menu search-results full-width no-padding no-margin no-border no-radius">
                             <li data-ng-repeat="movie in searchResults">
                                 <a href="{{'#/movie/view/' + movie._id}}" class="ellipsis {{movie.isSelected ? 'active':''}}" style="padding: 3px 10px;">
                                     <h5 class="no-margin">{{movie.Title}}</h5>
@@ -49,13 +48,37 @@
                         </div>
                     </div>
                 </form>
-                <ul class="nav navbar-nav navbar-right hidden-xs" data-ng-bind-html="userMenu"></ul>
+                <ul class="nav navbar-nav navbar-right hidden-xs" data-ng-if="loggedIn">
+                    <li class="dropdown">
+                        <a href="" class="dropdown-toggle" data-toggle="dropdown" style="font-size: 1.3em;"><span class="glyphicon glyphicon-globe"></span></a>
+                        <ul class="dropdown-menu" role="menu">
+                            <li><a href="#/user/{{userid}}">Notification 1</a></li>
+                            <!--<li class="divider"></li>-->
+                            <li><a href="#/login">Notification 2</a></li>
+                        </ul>
+                    </li>
+                    <li class="dropdown">
+                        <a href="" class="dropdown-toggle" data-toggle="dropdown">{{username}} <span class="caret"></span></a>
+                        <ul class="dropdown-menu" role="menu">
+                            <li><a href="#/user/{{userid}}/watchlist">Watchlist</a></li>
+                            <li><a href="#/user/{{userid}}/watched">Watched</a></li>
+                            <li><a href="#/user/{{userid}}/liked">Liked</a></li>
+                            <li class="divider"></li>
+                            <li><a href="#/user/{{userid}}">Profile</a></li>
+                            <li class="divider"></li>
+                            <li><a href="#/login">Logout</a></li>
+                        </ul>
+                    </li>
+                </ul>
+                <ul class="nav navbar-nav navbar-right hidden-xs" data-ng-if="!loggedIn">
+                    <li><a href="#/login">Login</a></li>
+                </ul>
             </div>
             <form data-ng-if="xsSearchBoxVisible" class="navbar-form-xs visible-xs" style="margin: 0px -15px;">
                 <div class="input-group">
-                    <input data-ng-change="searchMovie()" type="text" class="form-control no-radius" placeholder="{{searchBoxPlaceholder}}" data-ng-model="$parent.searchData"
-                        data-ng-blur="searchBoxBlur()" data-ng-click="searchBoxClick()" data-ng-keydown="searchKeydown($event)">
-                    <ul class="dropdown-menu full-width no-padding no-margin no-border no-radius">
+                    <input tlj-focus-me="true" data-ng-change="searchMovie()" type="text" class="form-control no-radius" placeholder="{{searchBoxPlaceholder}}"
+                        data-ng-model="$parent.searchData" data-ng-blur="searchBoxBlur()" data-ng-click="searchBoxClick()" data-ng-keydown="searchKeydown($event)">
+                    <ul class="dropdown-menu search-results full-width no-padding no-margin no-border no-radius">
                         <li data-ng-repeat="movie in searchResults">
                             <a href="{{'#/movie/view/' + movie._id}}" class="ellipsis {{movie.isSelected ? 'active':''}}" style="padding: 3px 10px;">
                                 <h5 class="no-margin">{{movie.Title}}</h5>

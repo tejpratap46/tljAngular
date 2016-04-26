@@ -170,3 +170,17 @@ textarea {
     display: flex;
     flex-direction: column;
 }
+
+.navbar-translucent {
+    opacity: 0.8;
+    transition: opacity .25s ease-in-out;
+}
+
+.navbar-translucent:hover, .navbar-translucent:focus {
+    opacity: 1;
+    transition: opacity .25s ease-in-out;
+}
+
+a, a:hover, a:focus, a:active, .btn-link, .btn-link:hover, .btn-link:focus, .btn-link:active {
+    text-decoration: none;
+}
