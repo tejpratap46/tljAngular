@@ -1,6 +1,6 @@
 var app = angular.module(appName);
 
-app.controller('navigationController', ['$scope', '$http', '$route', function ($scope, $http, $route) {
+app.controller('navigationController', ['$scope', '$http', '$route', '$document', '$window', function ($scope, $http, $route, $document, $window) {
 
     $scope.$on('userLoggedIn', function (event, data) {
         console.log('navigationController userLoggedIn');
@@ -30,13 +30,37 @@ app.controller('navigationController', ['$scope', '$http', '$route', function ($
 
     // Listen to route changes, and show and hide patient search bar accordingly
     $scope.$on('$routeChangeStart', function (scope, next, current) {
-        console.log(JSON.stringify(next));
         if (next.$$route.controller == "movieViewController") {
             $scope.isTranslucentNavbar = true;
         } else {
             $scope.isTranslucentNavbar = false;
+            $scope.navbarOpacity = 1;
         }
         console.log($scope.isTranslucentNavbar);
+    });
+
+    var timeoutHandler;
+    $document.on('scroll', function () {
+        if (timeoutHandler) {
+            clearTimeout(timeoutHandler);
+        }
+        timeoutHandler = setTimeout(function () {
+            if ($scope.isTranslucentNavbar) {
+                var scrollYPos = $document.scrollTop();
+                var scrollTillOpaque = 300;
+                if (scrollYPos < scrollTillOpaque) {
+                    $scope.$apply(function () {
+                        $scope.navbarOpacity = parseFloat(scrollYPos / scrollTillOpaque).toFixed(2);
+                    });
+                } else {
+                    if ($scope.navbarOpacity != 1) {
+                        $scope.$apply(function () {
+                            $scope.navbarOpacity = 1;
+                        });
+                    }
+                }
+            }
+        }, 100);
     });
 
     $scope.searchBoxPlaceholder = "Search Movie";

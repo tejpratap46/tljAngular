@@ -172,15 +172,53 @@ textarea {
 }
 
 .navbar-translucent {
-    opacity: 0.8;
-    transition: opacity .25s ease-in-out;
+    opacity: 0.1;
+    transition: opacity .30s ease-in-out;
 }
 
 .navbar-translucent:hover, .navbar-translucent:focus {
-    opacity: 1;
-    transition: opacity .25s ease-in-out;
+    opacity: 1!important;
 }
 
 a, a:hover, a:focus, a:active, .btn-link, .btn-link:hover, .btn-link:focus, .btn-link:active {
     text-decoration: none;
+}
+
+
+/* Cutom buttons */
+
+.btn-facebook {
+    color: #ffffff;
+    background-color: #3B5998;
+    border-color: #3B5998;
+}
+
+.btn-facebook:hover, .btn-facebook:focus, .btn-facebook:active, .btn-facebook.active, .open .dropdown-toggle.btn-facebook {
+    color: #ffffff;
+    background-color: #334E8A;
+    border-color: #3B5998;
+}
+
+.btn-twitter {
+    color: #ffffff;
+    background-color: #00ACED;
+    border-color: #00ACED;
+}
+
+.btn-twitter:hover, .btn-twitter:focus, .btn-twitter:active, .btn-twitter.active, .open .dropdown-toggle.btn-twitter {
+    color: #ffffff;
+    background-color: #00A1DB;
+    border-color: #00ACED;
+}
+
+.btn-google {
+    color: #ffffff;
+    background-color: #C32F10;
+    border-color: #C32F10;
+}
+
+.btn-google:hover, .btn-google:focus, .btn-google:active, .btn-google.active, .open .dropdown-toggle.btn-google {
+    color: #ffffff;
+    background-color: #B52A0E;
+    border-color: #C32F10;
 }

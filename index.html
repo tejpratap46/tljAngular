@@ -19,7 +19,8 @@
 </head>
 
 <body>
-    <nav class="navbar navbar-default navbar-fixed-top {{isTranslucentNavbar ? 'navbar-translucent':''}}" data-ng-controller="navigationController">
+    <nav class="navbar navbar-default navbar-fixed-top {{isTranslucentNavbar ? 'navbar-translucent':''}}" style="opacity: {{navbarOpacity}};"
+        data-ng-controller="navigationController">
         <div class="container">
             <div class="navbar-header">
                 <a class="navbar-brand" href="#/"><span class="glyphicon glyphicon-flash"></span> Bolt</a>

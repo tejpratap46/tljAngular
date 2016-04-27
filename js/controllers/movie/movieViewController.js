@@ -49,11 +49,7 @@ app.registerCtrl('movieViewController', ['$scope', '$http', '$routeParams', '$wi
     };
 
     // Make big poster image half of screen size
-    $scope.$watch(function () {
-        return $window.innerHeight;
-    }, function (value) {
-        $scope.backdropHeight = value / 1.4;
-    });
+    $scope.backdropHeight = $window.innerHeight / 1.4;
 
     var config = {
         headers: {
@@ -71,7 +67,7 @@ app.registerCtrl('movieViewController', ['$scope', '$http', '$routeParams', '$wi
                 var movies = data.Movies;
                 movies.forEach(function (object) {
                     object.Released = moment(object.Released).format('MMMM Do YYYY');
-                    object.Languages = object.Languages ? object.Languages.join(","):undefined
+                    object.Languages = object.Languages ? object.Languages.join(",") : undefined
                 });
                 $scope.movie = movies[0];
             }

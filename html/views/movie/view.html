@@ -32,14 +32,15 @@
                 <div class="visible-xs row no-margin">
                     <a href="{{'#/movie/view/' + movie._id}}">
                         <div class="col-sm-4 no-padding">
-                            <div style="max-height: 300px; overflow: hidden;">
+                            <div style="min-height: 100px; max-height: 300px; overflow: hidden;">
                                 <img data-ng-src="{{movie.Poster}}" class="full-width">
+                                <!--<img data-ng-if="movie.posterAvailable" data-ng-src="{{movie.Poster}}" class="full-width" data-ng-error="movie.posterAvailable = false">-->
                             </div>
                         </div>
                     </a>
                     <div class="col-sm-8 center no-border no-margin">
                         <a href="{{'#/movie/view/' + movie._id}}">
-                            <h2 class="bold">{{movie.Title}}</h2>
+                            <h2 class="no-margin bold">{{movie.Title}}</h2>
                         </a>
                         <p class="no-margin">{{movie.Released}}</p>
                         <small>
@@ -68,19 +69,22 @@
                             <li><a href="">Rate this movie</a></li>
                         </ul>
                     </div>
-                    <hr>
+                    <div class="clearfix"></div>
+                    <hr class="no-margin">
                     <div class="row center no-margin">
-                        <a class="btn btn-danger" data-ng-if="movie.Rated" style="margin: 5px;">{{movie.Rated}}</a>
-                        <a class="btn btn-primary" data-ng-if="movie.BoxOffice" style="margin: 5px;">{{movie.BoxOffice}}</a>
+                        <a class="btn btn-danger" data-ng-if="movie.Rated" style="margin: 5px 0px;">{{movie.Rated}}</a>
+                        <a class="btn btn-primary" data-ng-if="movie.BoxOffice" style="margin: 5px 0px;">{{movie.BoxOffice}}</a>
                         <a class="btn btn-warning" href="{{'http://www.imdb.com/title/' + movie.ImdbID}}" target="_blank" data-ng-if="movie.ImdbID"
-                            style="margin: 5px;"><i class="glyphicon glyphicon-new-window"></i> IMDB</a>
+                            style="margin: 5px 0px;"><i class="glyphicon glyphicon-new-window"></i> IMDB</a>
+                        <a class="btn btn-facebook" style="margin: 5px 0px;"><span class="bold">f</span></a>
+                        <a class="btn btn-twitter" style="margin: 5px 0px;"><span class="bold">t</span></a>
+                        <a class="btn btn-google" style="margin: 5px 0px;"><span class="bold">g</span></a>
                     </div>
                 </div>
                 <div class="col-sm-9 col-lg-10 no-padding">
                     <div class="col-md-9">
                         <div class="no-padding no-margin no-border" style="overflow: hidden;">
                             <blockquote class="row no-padding no-margin no-border">
-                                <div class="clearfix visible-xs"></div>
                                 <hr class="no-margin visible-xs">
                                 <div class="col-xs-3">
                                     <button class="btn btn-link full-width toggle-icon-{{movie.addedToWatchlist}}" title="Add To Watchlist" data-ng-click="addToWatchlist()"><span class="glyphicon glyphicon-plus movie-action-icon"></span>
@@ -103,13 +107,14 @@
                                     </button>
                                 </div>
                             </blockquote>
-                            <hr>
-                            <div class="no-margin">
+                            <hr class="no-margin">
+                            <div class="clearfix"></div>
+                            <div>
                                 <label for="title" data-ng-if="movie.Plot">Plot : </label>
                                 <p class="justified" data-ng-if="movie.Plot">{{movie.Plot}}</p>
                             </div>
                             <div class="clearfix"></div>
-                            <div class="no-margin">
+                            <div>
                                 <label for="title">Actors</label>
                                 <ul class="pager no-margin">
                                     <li data-ng-repeat="actor in movie.Actors" class="previous"><a href="{{'#/movie/list/Actors:' + actor._id}}" class="navbar-item" style="margin: 1px;">{{actor.Name}}</a></li>
@@ -152,7 +157,7 @@
                         </div>
                         <div class="col-xs-12">
                             <label for="title" data-ng-if="movie.Website">Website : </label>
-                            <p class="ellipsis"><a href="{{movie.Website}}" target="_blank" data-ng-if="movie.Website">{{movie.Website}}</p></p>
+                            <p class="ellipsis"><a href="{{movie.Website}}" target="_blank" data-ng-if="movie.Website">{{movie.Website}}</p></a>
                         </div>
                     </div>
                 </div>

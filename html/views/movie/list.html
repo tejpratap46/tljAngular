@@ -35,7 +35,8 @@
                                 </blockquote>
                                 <div class="col-xs-12 no-padding">
                                     <div style="height: 220px; overflow: hidden;">
-                                        <img data-ng-src="{{movie.Poster}}" onError="this.onerror=null;console.log('error');this.src='images/default.png';" class="full-width">
+                                        <img data-ng-src="{{movie.Poster}}" class="full-width">
+                                        <!--<img data-ng-if="movie.posterAvailable" data-ng-src="{{movie.Poster}}" class="full-width" data-ng-error="movie.posterAvailable = false">-->
                                     </div>
                                 </div>
                             </a>
