@@ -30,13 +30,14 @@ app.controller('navigationController', ['$scope', '$http', '$route', '$document'
 
     // Listen to route changes, and show and hide patient search bar accordingly
     $scope.$on('$routeChangeStart', function (scope, next, current) {
-        if (next.$$route.controller == "movieViewController") {
-            $scope.isTranslucentNavbar = true;
-        } else {
-            $scope.isTranslucentNavbar = false;
-            $scope.navbarOpacity = 1;
+        if (next.$$route) {
+            if (next.$$route.controller == "movieViewController") {
+                $scope.isTranslucentNavbar = true;
+            } else {
+                $scope.isTranslucentNavbar = false;
+                $scope.navbarOpacity = 1;
+            }
         }
-        console.log($scope.isTranslucentNavbar);
     });
 
     var timeoutHandler;

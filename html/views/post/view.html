@@ -38,9 +38,9 @@
                                 </table>
                             </blockquote>
                             <div class="col-xs-12 no-padding">
-                                <div style="max-height: 220px; overflow: hidden;">
-                                    <img data-ng-src="{{post.Movie.Poster}}" class="full-width">
-                                    <!--<img data-ng-init="post.Movie.posterAvailable = true" data-ng-if="post.Movie.posterAvailable" data-ng-src="{{post.Movie.Poster}}" class="full-width" data-ng-error="post.Movie.posterAvailable = false">-->
+                                <div style="max-height: 220px; overflow: hidden;" data-ng-init="post.Movie.posterAvailable = true">
+                                    <!--<img data-ng-src="{{post.Movie.Poster}}" class="full-width">-->
+                                    <img data-ng-if="post.Movie.posterAvailable" data-ng-src="{{post.Movie.Poster}}" class="full-width" data-ng-error="post.Movie.posterAvailable = false">
                                 </div>
                             </div>
                         </a>

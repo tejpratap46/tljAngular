@@ -32,9 +32,9 @@
                 <div class="visible-xs row no-margin">
                     <a href="{{'#/movie/view/' + movie._id}}">
                         <div class="col-sm-4 no-padding">
-                            <div style="min-height: 100px; max-height: 300px; overflow: hidden;">
-                                <img data-ng-src="{{movie.Poster}}" class="full-width">
-                                <!--<img data-ng-if="movie.posterAvailable" data-ng-src="{{movie.Poster}}" class="full-width" data-ng-error="movie.posterAvailable = false">-->
+                            <div style="min-height: 100px; max-height: 300px; overflow: hidden;" data-ng-init="movie.posterAvailable = true">
+                                <!--<img data-ng-src="{{movie.Poster}}" class="full-width">-->
+                                <img data-ng-if="movie.posterAvailable == true" data-ng-src="{{movie.Poster}}" class="full-width" data-ng-error="movie.posterAvailable = false">
                             </div>
                         </div>
                     </a>
@@ -76,9 +76,11 @@
                         <a class="btn btn-primary" data-ng-if="movie.BoxOffice" style="margin: 5px 0px;">{{movie.BoxOffice}}</a>
                         <a class="btn btn-warning" href="{{'http://www.imdb.com/title/' + movie.ImdbID}}" target="_blank" data-ng-if="movie.ImdbID"
                             style="margin: 5px 0px;"><i class="glyphicon glyphicon-new-window"></i> IMDB</a>
-                        <a class="btn btn-facebook" style="margin: 5px 0px;"><span class="bold">f</span></a>
-                        <a class="btn btn-twitter" style="margin: 5px 0px;"><span class="bold">t</span></a>
-                        <a class="btn btn-google" style="margin: 5px 0px;"><span class="bold">g</span></a>
+                        <div class="col-xs-12 no-padding hidden-xs">
+                            <a class="btn btn-facebook" style="margin: 5px 0px;"><span class="bold">f</span></a>
+                            <a class="btn btn-twitter" style="margin: 5px 0px;"><span class="bold">t</span></a>
+                            <a class="btn btn-google" style="margin: 5px 0px;"><span class="bold">g</span></a>
+                        </div>
                     </div>
                 </div>
                 <div class="col-sm-9 col-lg-10 no-padding">
@@ -145,11 +147,11 @@
                         </div>
                         <div class="col-xs-12">
                             <label for="title" data-ng-if="movie.Production">Production : </label>
-                            <p class="justified" data-ng-if="movie.Production">{{movie.Production}}</p>
+                            <p data-ng-if="movie.Production">{{movie.Production}}</p>
                         </div>
                         <div class="col-xs-12">
                             <label for="title" data-ng-if="movie.Languages">Languages : </label>
-                            <p class="justified" data-ng-if="movie.Production">{{movie.Languages}}</p>
+                            <p data-ng-if="movie.Languages">{{movie.Languages}}</p>
                         </div>
                         <div class="col-xs-12">
                             <label for="title" data-ng-if="movie.TomatoConsensus">TomatoConsensus : </label>
@@ -157,7 +159,7 @@
                         </div>
                         <div class="col-xs-12">
                             <label for="title" data-ng-if="movie.Website">Website : </label>
-                            <p class="ellipsis"><a href="{{movie.Website}}" target="_blank" data-ng-if="movie.Website">{{movie.Website}}</p></a>
+                            <p class="ellipsis"><a href="{{movie.Website}}" target="_blank" data-ng-if="movie.Website">{{movie.Website.split(".")[1]}}</p></a>
                         </div>
                     </div>
                 </div>

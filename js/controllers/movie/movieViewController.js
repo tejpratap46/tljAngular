@@ -67,7 +67,7 @@ app.registerCtrl('movieViewController', ['$scope', '$http', '$routeParams', '$wi
                 var movies = data.Movies;
                 movies.forEach(function (object) {
                     object.Released = moment(object.Released).format('MMMM Do YYYY');
-                    object.Languages = object.Languages ? object.Languages.join(",") : undefined
+                    object.Languages = object.Languages ? object.Languages.join(", ") : undefined
                 });
                 $scope.movie = movies[0];
             }
