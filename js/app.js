@@ -2,6 +2,7 @@ var app = angular.module(appName, [
     'ngRoute',
     'angular-loading-bar',
     'infinite-scroll',
+    'ngColorThis'
 ]);
 
 app.config(['$routeProvider', '$controllerProvider', 'cfpLoadingBarProvider', function ($routeProvider, $controllerProvider, cfpLoadingBarProvider) {
@@ -122,45 +123,74 @@ app.directive('ngError', ['$parse', function ($parse) {
     };
 }]);
 
-// Colors filter
-// function encodeHex(s) {
-//     s = s.substring(1, 7);
-//     if (s.length < 6) {
-//         s = s[0] + s[0] + s[1] + s[1] + s[2] + s[2];
-//     }
-//     return encodeRGB(
-//         parseInt(s[0] + s[1], 16), parseInt(s[2] + s[3], 16), parseInt(s[4] + s[5], 16));
-// }
+app.filter('randomColor', function () {
+    return function (string) {
+        return '#' + Math.floor(Math.random()*16777215).toString(16);
+    };
+});
 
-// function encodeRGB(r, g, b) {
-//     return encode_triplet(0, r, g) + encode_triplet(b, 255, 255);
-// }
+// URL: http://jsfiddle.net/manishpatil/2fahpk7s/
+app.directive('starRating', function () {
+    return {
+        scope: {
+            rating: '=',
+            maxRating: '@',
+            readOnly: '@',
+            click: "&",
+            mouseHover: "&",
+            mouseLeave: "&"
+        },
+        restrict: 'EA',
+        template:
+        "<div style='display: inline-block; margin: 0px; padding: 0px; cursor:pointer;' ng-repeat='idx in maxRatings track by $index'> \
+                    <img ng-src='{{((hoverValue + _rating) <= $index) && \"http://www.codeproject.com/script/ratings/images/star-empty-lg.png\" || \"http://www.codeproject.com/script/ratings/images/star-fill-lg.png\"}}' \
+                    ng-Click='isolatedClick($index + 1)' \
+                    ng-mouseenter='isolatedMouseHover($index + 1)' \
+                    ng-mouseleave='isolatedMouseLeave($index + 1)'></img> \
+            </div>",
+        compile: function (element, attrs) {
+            if (!attrs.maxRating || (Number(attrs.maxRating) <= 0)) {
+                attrs.maxRating = '5';
+            };
+        },
+        controller: function ($scope, $element, $attrs) {
+            $scope.maxRatings = [];
 
-// function encode_triplet(e1, e2, e3) {
-//     var keyStr = "ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789+/=";
-//     enc1 = e1 >> 2;
-//     enc2 = ((e1 & 3) << 4) | (e2 >> 4);
-//     enc3 = ((e2 & 15) << 2) | (e3 >> 6);
-//     enc4 = e3 & 63;
-//     return keyStr.charAt(enc1) + keyStr.charAt(enc2) + keyStr.charAt(enc3) + keyStr.charAt(enc4);
-// }
+            for (var i = 1; i <= $scope.maxRating; i++) {
+                $scope.maxRatings.push({});
+            };
 
+            $scope._rating = $scope.rating;
 
-// function generatePixel(color) {
-//     return "data:image/gif;base64,R0lGODlhAQABAPAA" + color + "/yH5BAAAAAAALAAAAAABAAEAAAICRAEAOw==";
-// }
+            $scope.isolatedClick = function (param) {
+                if ($scope.readOnly == 'true') return;
 
-// // scripts are loaded in a closure in jsFiddle
-// // so make function global
-// window["generateHex"] = function generateHex() {
-//     var image = document.getElementById("image");
-//     var hexInput = document.getElementById("hex");
-//     var dataOutput = document.getElementById("output");
-//     var hex = hexInput.value;
-//     var color = encodeHex(hex);
-//     var data = generatePixel(color);
-//     dataOutput.value = data;
-//     image.src = data;
-// }
+                $scope.rating = $scope._rating = param;
+                $scope.hoverValue = 0;
+                $scope.click({
+                    param: param
+                });
+            };
 
-// generateHex();
+            $scope.isolatedMouseHover = function (param) {
+                if ($scope.readOnly == 'true') return;
+
+                $scope._rating = 0;
+                $scope.hoverValue = param;
+                $scope.mouseHover({
+                    param: param
+                });
+            };
+
+            $scope.isolatedMouseLeave = function (param) {
+                if ($scope.readOnly == 'true') return;
+
+                $scope._rating = $scope.rating;
+                $scope.hoverValue = 0;
+                $scope.mouseLeave({
+                    param: param
+                });
+            };
+        }
+    };
+});

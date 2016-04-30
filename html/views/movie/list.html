@@ -34,9 +34,11 @@
                                     </table>
                                 </blockquote>
                                 <div class="col-xs-12 no-padding">
-                                    <div style="height: 220px; overflow: hidden;" data-ng-init="movie.posterAvailable = true">
+                                    <div data-ng-if="movie.posterAvailable" style="max-height: 220px; overflow: hidden;" data-ng-init="movie.posterAvailable = true">
                                         <!--<img data-ng-src="{{movie.Poster}}" class="full-width">-->
                                         <img data-ng-if="movie.posterAvailable" data-ng-src="{{movie.Poster}}" class="full-width" data-ng-error="movie.posterAvailable = false">
+                                    </div>
+                                    <div data-ng-if="!movie.posterAvailable" style="height: 220px; overflow: hidden; background-image: url('http://dummyimage.com/300X220/f9f9f9/aaaaaa&text={{post.Movie.Title}}'); background-size:cover; background-position: center center;">
                                     </div>
                                 </div>
                             </a>
