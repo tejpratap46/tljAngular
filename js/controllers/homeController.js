@@ -13,8 +13,8 @@ app.registerCtrl('homeController', ['$scope', '$http', '$window', function($scop
                 href: "#home",
                 glyphicon: "glyphicon glyphicon-home"
             }, {
-                title: "Top",
-                href: "#/movie/list/Releasing",
+                title: "People",
+                href: "#/people/list",
                 glyphicon: "glyphicon glyphicon-list-alt"
             }, {
                 title: "Featured",
