@@ -31,6 +31,7 @@ app.controller('navigationController', ['$scope', '$http', '$route', '$document'
     // Listen to route changes, and show and hide patient search bar accordingly
     $scope.$on('$routeChangeStart', function (scope, next, current) {
         if (next.$$route) {
+            $scope.currentController = next.$$route.controller;
             if (next.$$route.controller == "movieViewController") {
                 $scope.isTranslucentNavbar = true;
             } else {
@@ -41,24 +42,38 @@ app.controller('navigationController', ['$scope', '$http', '$route', '$document'
     });
 
     var timeoutHandler;
+    var previousScrollYPos = 0;
     $document.on('scroll', function () {
         if (timeoutHandler) {
             clearTimeout(timeoutHandler);
         }
         timeoutHandler = setTimeout(function () {
-            if ($scope.isTranslucentNavbar) {
-                var scrollYPos = $document.scrollTop();
-                var scrollTillOpaque = 300;
-                if (scrollYPos < scrollTillOpaque) {
-                    $scope.$apply(function () {
-                        $scope.navbarOpacity = parseFloat(scrollYPos / scrollTillOpaque).toFixed(2);
-                    });
-                } else {
-                    if ($scope.navbarOpacity != 1) {
-                        $scope.$apply(function () {
-                            $scope.navbarOpacity = 1;
-                        });
+            if ($scope.currentController) {
+                if ($scope.currentController == 'movieViewController') {
+                    if ($scope.isTranslucentNavbar) {
+                        var scrollYPos = $document.scrollTop();
+                        var scrollTillOpaque = 300;
+                        if (scrollYPos < scrollTillOpaque) {
+                            $scope.$apply(function () {
+                                $scope.navbarOpacity = parseFloat(scrollYPos / scrollTillOpaque).toFixed(2);
+                            });
+                        } else {
+                            if ($scope.navbarOpacity != 1) {
+                                $scope.$apply(function () {
+                                    $scope.navbarOpacity = 1;
+                                });
+                            }
+                        }
                     }
+                } else if ($scope.currentController == 'movieListController') {
+                    if (previousScrollYPos < $document.scrollTop()) {
+                        console.log('Top to Bottom');
+                        $('#filterBar').fadeOut('fast');
+                    } else {
+                        console.log('Bottom to Top');
+                        $('#filterBar').fadeIn('fast');
+                    }
+                    previousScrollYPos = $document.scrollTop();
                 }
             }
         }, 100);

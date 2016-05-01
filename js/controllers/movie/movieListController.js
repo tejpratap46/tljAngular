@@ -1,6 +1,6 @@
 var app = angular.module(appName);
 
-app.registerCtrl('movieListController', ['$scope', '$http', '$routeParams', '$window', function($scope, $http, $routeParams, $window) {
+app.registerCtrl('movieListController', ['$scope', '$http', '$routeParams', function($scope, $http, $routeParams) {
     $scope.noDataFound = false;
 
     $scope.movies = [];

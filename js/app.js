@@ -5,7 +5,7 @@ var app = angular.module(appName, [
     'ngColorThis'
 ]);
 
-app.config(['$routeProvider', '$controllerProvider', 'cfpLoadingBarProvider', function ($routeProvider, $controllerProvider, cfpLoadingBarProvider) {
+app.config(['$routeProvider', '$controllerProvider', 'cfpLoadingBarProvider', '$locationProvider', function ($routeProvider, $controllerProvider, cfpLoadingBarProvider, $locationProvider) {
     // Angular loading bar config
     cfpLoadingBarProvider.includeSpinner = false;
 
@@ -85,9 +85,20 @@ app.config(['$routeProvider', '$controllerProvider', 'cfpLoadingBarProvider', fu
             controller: 'postViewController',
             resolve: loader(['js/controllers/post/postViewController.js'])
         })
+        .when('/people/list/:query?/:sort?', {
+            templateUrl: 'html/views/people/list.html',
+            controller: 'peopleListController',
+            resolve: loader(['js/controllers/people/peopleListController.js'])
+        })
         .otherwise({
             redirectTo: '/'
         });
+        
+        // Router without '#', update base url in index.html
+    // $locationProvider.html5Mode({
+    //     enabled: true,
+    //     requireBase: false
+    // });
 }]);
 
 app.directive('tljFocusMe', function ($timeout) {
@@ -125,7 +136,7 @@ app.directive('ngError', ['$parse', function ($parse) {
 
 app.filter('randomColor', function () {
     return function (string) {
-        return '#' + Math.floor(Math.random()*16777215).toString(16);
+        return '#' + Math.floor(Math.random() * 16777215).toString(16);
     };
 });
 

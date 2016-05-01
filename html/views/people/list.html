@@ -1,0 +1,57 @@
+<div>
+    <div id="filterBar" class="panel panel-default" style="position: fixed; margin-top: -15px; z-index: 1;">
+        <div class="panel-heading" style="padding: 5px 15px;">
+            <table>
+                <td class="full-width">
+                    <div class="btn-group">
+                        <a class="btn btn-default btn-sm">Default</a>
+                        <a href="" class="btn btn-default btn-sm">&times;</a>
+                    </div>
+                </td>
+                <td>
+                    <button class="btn btn-default btn-sm" data-toggle="modal" data-target="#filterModal">
+                        <i class="glyphicon glyphicon-menu-down"></i>
+                    </button>
+                </td>
+            </table>
+        </div>
+    </div>
+    <div class="col-xs-12 no-padding" infinite-scroll='loadMore()' infinite-scroll-distance='1'>
+        <div style="margin-top: 30px; overflow-y: hidden;">
+            <div class="col-sm-6 col-md-4 col-lg-3" style="padding: 0px;" data-ng-repeat="people in peoples">
+                <div class="panel panel-default no-margin no-radius" style="overflow: hidden;">
+                    <div class="panel-body no-padding">
+                        <table>
+                            <td>
+                                <img class="img-circle" style="width: 80px; height:80px; margin: 5px; background-color: {{'randomColor' | randomColor}}">
+                            </td>
+                            <td style="padding-left: 10px;">
+                                <h5 class="ellipsis bold no-margin">{{people.Name}}</small></h5>
+                                <p class="no-margin"><small>Acted In: {{people.WorkAsActorCount}}</small>, <small>Written In: {{people.WorkAsWriterCount}}</small>, <small>Directed In: {{people.WorkAsDirectorCount}}</small></p>
+                                <button class="btn btn-default btn-sm">follow</button>
+                            </td>
+                        </table>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+<!-- Filter Modal -->
+<div class="modal fade" id="filterModal">
+    <div class="modal-dialog modal-lg">
+        <div class="modal-content">
+            <div class="modal-header">
+                <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
+                <h4 class="modal-title" id="myModalLabel">Filter</h4>
+            </div>
+            <div class="modal-body">
+
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+                <button type="button" class="btn btn-primary">Apply</button>
+            </div>
+        </div>
+    </div>
+</div>

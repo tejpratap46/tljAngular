@@ -1,5 +1,5 @@
 <div>
-    <div class="panel panel-default" style="position: fixed; margin-top: -15px; z-index: 1;">
+    <div id="filterBar" class="panel panel-default" style="position: fixed; margin-top: -15px; z-index: 1;">
         <div class="panel-heading" style="padding: 5px 15px;">
             <table>
                 <td class="full-width">
@@ -17,7 +17,7 @@
         </div>
     </div>
     <div class="col-xs-12 no-padding" infinite-scroll='loadMore()' infinite-scroll-distance='1'>
-        <div style="margin-top: 30px; overflow-y: hidden; height: {{filterBoxVisible ? '0px' : 'initial'}};">
+        <div style="margin-top: 30px; overflow-y: hidden;">
             <div class="col-sm-6 col-md-4 col-lg-3" style="padding: 0px;" data-ng-repeat="movie in movies">
                 <div class="panel panel-default no-margin no-radius" style="overflow: hidden;">
                     <div class="panel-body no-padding">
@@ -33,12 +33,12 @@
                                         </td>
                                     </table>
                                 </blockquote>
-                                <div class="col-xs-12 no-padding">
-                                    <div data-ng-if="movie.posterAvailable" style="max-height: 220px; overflow: hidden;" data-ng-init="movie.posterAvailable = true">
+                                <div class="col-xs-12 no-padding" data-ng-init="movie.posterAvailable = true">
+                                    <div data-ng-if="movie.posterAvailable" style="height: 220px; overflow: hidden;">
                                         <!--<img data-ng-src="{{movie.Poster}}" class="full-width">-->
                                         <img data-ng-if="movie.posterAvailable" data-ng-src="{{movie.Poster}}" class="full-width" data-ng-error="movie.posterAvailable = false">
                                     </div>
-                                    <div data-ng-if="!movie.posterAvailable" style="height: 220px; overflow: hidden; background-image: url('http://dummyimage.com/300X220/f9f9f9/aaaaaa&text={{post.Movie.Title}}'); background-size:cover; background-position: center center;">
+                                    <div data-ng-if="!movie.posterAvailable" style="height: 220px; overflow: hidden; background-image: url('http://dummyimage.com/300X220/f9f9f9/aaaaaa&text={{movie.Title}}'); background-size:cover; background-position: center center;">
                                     </div>
                                 </div>
                             </a>
