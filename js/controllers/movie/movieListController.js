@@ -74,7 +74,6 @@ app.registerCtrl('movieListController', ['$scope', '$http', '$routeParams', func
                 if (data.Status) {
                     var movies = data.Movies;
                     movies.forEach(function(object) {
-                        object.Genres = object.Genres.join(", ");
                         object.Released = moment(object.Released).format('MMMM Do YYYY');
                         $scope.movies.push(object);
                     });

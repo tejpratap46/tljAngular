@@ -34,7 +34,7 @@
                                     </table>
                                 </blockquote>
                                 <div class="col-xs-12 no-padding" data-ng-init="movie.posterAvailable = true">
-                                    <div data-ng-if="movie.posterAvailable" style="height: 220px; overflow: hidden;">
+                                    <div data-ng-if="movie.posterAvailable" style="height: 220px; overflow: hidden; background-image: url('{{movie.Poster}}'); background-size:cover; background-position: center center;">
                                         <!--<img data-ng-src="{{movie.Poster}}" class="full-width">-->
                                         <img data-ng-if="movie.posterAvailable" data-ng-src="{{movie.Poster}}" class="full-width" data-ng-error="movie.posterAvailable = false">
                                     </div>
@@ -43,7 +43,11 @@
                                 </div>
                             </a>
                             <blockquote class="row no-padding no-margin no-border">
-                                <h5><small>{{movie.Genres}}</small></h5>
+                                <p class="center no-margin">
+                                    <span data-ng-repeat="genre in movie.Genres">
+                                        <a class="btn-primary btn-sm" href="#/movie/list/Genres:{{genre}}">{{genre}}</a>
+                                    </span>
+                                </p>
                                 <div class="col-xs-3">
                                     <button class="btn btn-link full-width toggle-icon-{{movie.addedToWatchlist}}" title="Add To Watchlist" data-ng-click="addToWatchlist($index)"><span class="glyphicon glyphicon-plus movie-action-icon"></span>
                                     <br><small class="ellipsis">Add To Watchlist</small></button>
@@ -77,7 +81,7 @@
                 <h4 class="modal-title" id="myModalLabel">Filter</h4>
             </div>
             <div class="modal-body">
-                
+
             </div>
             <div class="modal-footer">
                 <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>

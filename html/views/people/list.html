@@ -17,18 +17,30 @@
         </div>
     </div>
     <div class="col-xs-12 no-padding" infinite-scroll='loadMore()' infinite-scroll-distance='1'>
-        <div style="margin-top: 30px; overflow-y: hidden;">
-            <div class="col-sm-6 col-md-4 col-lg-3" style="padding: 0px;" data-ng-repeat="people in peoples track by $index">
-                <div class="panel panel-default no-margin no-radius" style="overflow: hidden;">
-                    <div class="panel-body no-padding">
+        <div style="margin-top: 35px; overflow-y: hidden;">
+            <div class="col-sm-6 col-md-4" style="padding: 5px;" data-ng-repeat="people in peoples track by $index">
+                <div class="panel panel-default no-margin" style="overflow: hidden;">
+                    <div class="panel-body" style="height: 100px;">
                         <table>
                             <td>
-                                <h1 class="center" style="width: 80px; height:80px; margin: 5px; font-size: 4em;">{{$index + 1}}</h1>
+                                <a href="#/movie/list/Actors:{{people._id}}">
+                                    <h1 class="center" style="width: 40px; height:40px; margin: 5px; font-size: 2em;">{{$index + 1}}</h1>
+                                </a>
                             </td>
                             <td style="padding-left: 10px;">
-                                <h5 class="ellipsis bold no-margin">{{people.Name}}</small></h5>
-                                <p class="ellipsis no-margin"><small>Acted In: {{people.WorkAsActorCount}}</small>, <small>Written In: {{people.WorkAsWriterCount}}</small>, <small>Directed In: {{people.WorkAsDirectorCount}}</small></p>
-                                <button class="btn btn-default btn-sm">follow</button>
+                                <a href="#/movie/list/Actors:{{people._id}}">
+                                    <h5 class="ellipsis bold no-margin">{{people.Name}}</small></h5>
+                                </a>
+                                <p class="ellipsis no-margin">
+                                    <small>Acted In: {{people.WorkAsActorCount}}, </small>
+                                    <small>Written In: {{people.WorkAsWriterCount}}, </small>
+                                    <small>Directed In: {{people.WorkAsDirectorCount}}</small></p>
+                                <button class="btn btn-primary btn-sm" data-ng-if="!people.isFollowing" data-ng-click="followUnfollowPeople($index)">
+                                    <span><i class="fa fa-user-plus"></i> <span>Follow</span></span>
+                                </button>
+                                <button class="btn btn-success btn-sm" data-ng-if="people.isFollowing" data-ng-click="followUnfollowPeople($index)">
+                                    <span><i class="fa fa-user-plus"></i> <span>Following</span></span>
+                                </button>
                             </td>
                         </table>
                     </div>

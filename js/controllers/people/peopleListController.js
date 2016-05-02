@@ -24,11 +24,10 @@ app.registerCtrl('peopleListController', ['$scope', '$http', '$routeParams', fun
             var sortFilterJson = { WorkAsActorCount: -1 };
         }
         /* Get People */
-        var limit = 12;
+        var limit = 20;
         var data = {
             query: {},
             select: {
-                _id: 0,
                 __v: 0
             },
             sort: sortFilterJson,
@@ -56,6 +55,44 @@ app.registerCtrl('peopleListController', ['$scope', '$http', '$routeParams', fun
                         $scope.peoples.push(people);
                     });
                     $scope.peoples.push(data.People);
+                } else {
+                    $scope.noDataFound = true;
+                }
+            }
+            , function (error) {
+                // failure callback
+                $scope.isLoading = false;
+                $('.notification').text('Oops! something went wrong').show('fast').delay(3000).hide('fast');
+            }
+            );
+        /* End People */
+    }
+
+    $scope.followUnfollowPeople = function ($peopleIndex) {
+
+        $scope.isLoading = true;
+
+        var limit = 20;
+        var data = {
+            followPeopleid: $scope.peoples[$peopleIndex]._id,
+            userid: localStorage.getItem(prefUserId)
+        };
+
+        var config = {
+            headers: {
+                'Content-Type': 'application/json'
+            }
+        }
+
+        $http.post(hostAddress + '/api/people/peopleFollow', data, config)
+            .then(
+            function (response) {
+                // success callback
+                $scope.isLoading = false;
+                var data = response.data;
+                console.log(data);
+                if (data.Status) {
+                    $scope.peoples[$peopleIndex].isFollowing = data.IsFollowing;
                 } else {
                     $scope.noDataFound = true;
                 }

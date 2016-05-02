@@ -65,7 +65,7 @@ app.controller('navigationController', ['$scope', '$http', '$route', '$document'
                             }
                         }
                     }
-                } else if ($scope.currentController == 'movieListController') {
+                } else if ($scope.currentController == 'movieListController' || $scope.currentController == 'peopleListController') {
                     if (previousScrollYPos < $document.scrollTop()) {
                         console.log('Top to Bottom');
                         $('#filterBar').fadeOut('fast');
