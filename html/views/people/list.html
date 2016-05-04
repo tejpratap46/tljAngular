@@ -18,31 +18,58 @@
     </div>
     <div class="col-xs-12 no-padding" infinite-scroll='loadMore()' infinite-scroll-distance='1'>
         <div style="margin-top: 35px; overflow-y: hidden;">
-            <div class="col-sm-6 col-md-4" style="padding: 5px;" data-ng-repeat="people in peoples track by $index">
-                <div class="panel panel-default no-margin" style="overflow: hidden;">
-                    <div class="panel-body" style="height: 100px;">
-                        <table>
-                            <td>
+            <div class="col-sm-6 col-md-4 col-lg-3 no-padding" data-ng-if="people.Name" data-ng-repeat="people in peoples track by $index">
+                <div class="panel panel-default no-margin no-radius" style="overflow: hidden;">
+                    <div class="panel-body no-padding">
+                        <div>
+                            <blockquote class="col-xs-12 no-border no-margin">
+                                <table>
+                                    <td>
+                                        <a href="#/movie/list/Actors:{{people._id}}">
+                                            <h1 class="center" style="min-width: 40px; height:40px; margin: 5px; font-size: 2em;">{{$index + 1}}</h1>
+                                        </a>
+                                    </td>
+                                    <td class="full-width" style="padding-left: 10px;">
+                                        <a href="#/movie/list/Actors:{{people._id}}">
+                                            <h5 class="ellipsis bold no-margin">{{people.Name}}</small></h5>
+                                        </a>
+                                    </td>
+                                    <td style="padding-left: 10px;">
+                                        <button class="btn btn-primary btn-sm" data-ng-if="!people.isFollowing" data-ng-click="followUnfollowPeople($index)">
+                                            <span><i class="fa fa-user-plus"></i> <span>Follow</span></span>
+                                        </button>
+                                        <button class="btn btn-success btn-sm" data-ng-if="people.isFollowing" data-ng-click="followUnfollowPeople($index)">
+                                            <span><i class="fa fa-user-plus"></i> <span>Following</span></span>
+                                        </button>
+                                    </td>
+                                </table>
+                            </blockquote>
+                            <div class="col-xs-12 no-padding" data-ng-init="people.posterAvailable = false">
                                 <a href="#/movie/list/Actors:{{people._id}}">
-                                    <h1 class="center" style="width: 40px; height:40px; margin: 5px; font-size: 2em;">{{$index + 1}}</h1>
+                                    <div data-ng-if="people.posterAvailable" style="height: 150px; overflow: hidden; background-image: url('{{people.Poster}}'); background-size:cover; background-position: center center;">
+                                        <img data-ng-if="people.posterAvailable" data-ng-src="{{people.Poster}}" class="full-width" data-ng-error="people.posterAvailable = false">
+                                    </div>
+                                    <div data-ng-if="!people.posterAvailable" style="height: 150px; overflow: hidden; background-image: url('http://dummyimage.com/300X220/f9f9f9/aaaaaa&text={{people.Name}}'); background-size:cover; background-position: center center;">
+                                    </div>
                                 </a>
-                            </td>
-                            <td style="padding-left: 10px;">
-                                <a href="#/movie/list/Actors:{{people._id}}">
-                                    <h5 class="ellipsis bold no-margin">{{people.Name}}</small></h5>
-                                </a>
-                                <p class="ellipsis no-margin">
-                                    <small>Acted In: {{people.WorkAsActorCount}}, </small>
-                                    <small>Written In: {{people.WorkAsWriterCount}}, </small>
-                                    <small>Directed In: {{people.WorkAsDirectorCount}}</small></p>
-                                <button class="btn btn-primary btn-sm" data-ng-if="!people.isFollowing" data-ng-click="followUnfollowPeople($index)">
-                                    <span><i class="fa fa-user-plus"></i> <span>Follow</span></span>
-                                </button>
-                                <button class="btn btn-success btn-sm" data-ng-if="people.isFollowing" data-ng-click="followUnfollowPeople($index)">
-                                    <span><i class="fa fa-user-plus"></i> <span>Following</span></span>
-                                </button>
-                            </td>
-                        </table>
+                            </div>
+                            <blockquote class="no-padding no-margin no-border">
+                                <div class="row center">
+                                    <div class="col-xs-4" data-ng-if="people.WorkAsActorCount > 0">
+                                        <button class="btn btn-link full-width toggle-icon-false bold" title="Add To Watchlist">{{people.WorkAsActorCount}}</span>
+                                    <br><small class="ellipsis" style="font-weight: normal;">Acted in</small></button>
+                                    </div>
+                                    <div class="col-xs-4" data-ng-if="people.WorkAsWriterCount > 0">
+                                        <button class="btn btn-link full-width toggle-icon-false bold" title="Mark As Watched">{{people.WorkAsWriterCount}}</span>
+                                    <br><small class="ellipsis" style="font-weight: normal;">Written in</small></button>
+                                    </div>
+                                    <div class="col-xs-4" data-ng-if="people.WorkAsDirectorCount > 0">
+                                        <button class="btn btn-link full-width toggle-icon-false bold" title="Like This Movie">{{people.WorkAsDirectorCount}}</span>
+                                    <br><small class="ellipsis" style="font-weight: normal;">Directed in</small></button>
+                                    </div>
+                                </div>
+                            </blockquote>
+                        </div>
                     </div>
                 </div>
             </div>

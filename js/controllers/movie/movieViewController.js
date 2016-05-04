@@ -57,7 +57,7 @@ app.registerCtrl('movieViewController', ['$scope', '$http', '$routeParams', '$wi
         }
     }
 
-    $http.post(hostAddress + '/api/movie/getQuery', data, config)
+    $http.post(hostAddress + '/api/movie/getOneQuery', data, config)
         .then(
         function (response) {
             // success callback
