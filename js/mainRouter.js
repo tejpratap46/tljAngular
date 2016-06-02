@@ -1,9 +1,13 @@
 var app = angular.module(appName);
 
-app.registerCtrl('mainRouter', ['$scope', function($scope) {
+app.registerCtrl('mainRouter', ['$scope', function ($scope) {
     if (localStorage.getItem(prefUsername)) {
         window.location.hash = '/home';
-    }else{
-        window.location.hash = '/login';
+    } else {
+        if (window.location.hash = '/register') {
+
+        } else {
+            window.location.hash = '/login';
+        }
     }
 }]);

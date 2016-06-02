@@ -16,56 +16,54 @@
             </table>
         </div>
     </div>
-    <div class="col-xs-12 no-padding" infinite-scroll='loadMore()' infinite-scroll-distance='1'>
-        <div style="margin-top: 30px; overflow-y: hidden;">
-            <div class="col-sm-6 col-md-4 col-lg-3 no-padding" data-ng-repeat="movie in movies">
-                <div class="panel panel-default no-margin no-radius" style="overflow: hidden;">
-                    <div class="panel-body no-padding">
-                        <div>
-                            <a class="row no-margin" href="{{'#/movie/view/' + movie._id}}">
-                                <blockquote class="col-xs-12 no-border no-margin">
-                                    <table>
-                                        <td>
-                                            <h1 class="no-margin">{{movie.ImdbRating > 0 ? movie.ImdbRating : 'n.a.'}}</h1>
-                                        </td>
-                                        <td style="padding-left: 10px;">
-                                            <h5 class="ellipsis bold no-margin">{{movie.Title}} <small>{{movie.Released}}</small></h5>
-                                        </td>
-                                    </table>
-                                </blockquote>
-                                <div class="col-xs-12 no-padding" data-ng-init="movie.posterAvailable = true">
-                                    <div data-ng-if="movie.posterAvailable" style="height: 220px; overflow: hidden; background-image: url('{{movie.Poster}}'); background-size:cover; background-position: center center;">
-                                        <!--<img data-ng-src="{{movie.Poster}}" class="full-width">-->
-                                        <img data-ng-if="movie.posterAvailable" data-ng-src="{{movie.Poster}}" class="full-width" data-ng-error="movie.posterAvailable = false">
-                                    </div>
-                                    <div data-ng-if="!movie.posterAvailable" style="height: 220px; overflow: hidden; background-image: url('http://dummyimage.com/300X220/f9f9f9/aaaaaa&text={{movie.Title}}'); background-size:cover; background-position: center center;">
-                                    </div>
+    <div class="col-xs-12 no-padding" style="margin-top: 30px; overflow-y: hidden;" infinite-scroll='loadMore()' infinite-scroll-distance='2'>
+        <div class="col-sm-6 col-md-4 col-lg-3 no-padding" data-ng-repeat="movie in movies">
+            <div class="panel panel-default no-margin no-radius" style="overflow: hidden;">
+                <div class="panel-body no-padding">
+                    <div>
+                        <a class="row no-margin" href="{{'#/movie/view/' + movie._id}}">
+                            <blockquote class="col-xs-12 no-border no-margin">
+                                <table>
+                                    <td>
+                                        <h1 class="no-margin">{{movie.ImdbRating > 0 ? movie.ImdbRating : 'n.a.'}}</h1>
+                                    </td>
+                                    <td style="padding-left: 10px;">
+                                        <h5 class="ellipsis bold no-margin">{{movie.Title}} <small>{{movie.Released}}</small></h5>
+                                    </td>
+                                </table>
+                            </blockquote>
+                            <div class="col-xs-12 no-padding" data-ng-init="movie.posterAvailable = true">
+                                <div data-ng-if="movie.posterAvailable" style="height: 220px; overflow: hidden; background-image: url('{{movie.Poster}}'); background-size:cover; background-position: center center;">
+                                    <!--<img data-ng-src="{{movie.Poster}}" class="full-width">-->
+                                    <img data-ng-if="movie.posterAvailable" data-ng-src="{{movie.Poster}}" class="full-width" data-ng-error="movie.posterAvailable = false">
                                 </div>
-                            </a>
-                            <blockquote class="row no-padding no-margin no-border">
-                                <p class="center no-margin">
-                                    <span data-ng-repeat="genre in movie.Genres">
+                                <div data-ng-if="!movie.posterAvailable" style="height: 220px; overflow: hidden; background-image: url('http://dummyimage.com/300X220/f9f9f9/aaaaaa&text={{movie.Title}}'); background-size:cover; background-position: center center;">
+                                </div>
+                            </div>
+                        </a>
+                        <blockquote class="row no-padding no-margin no-border">
+                            <p class="center no-margin" style="height: 30px; overflow: hidden; white-space: nowrap;">
+                                <span data-ng-repeat="genre in movie.Genres">
                                         <a class="btn-primary btn-sm" href="#/movie/list/Genres:{{genre}}">{{genre}}</a>
                                     </span>
-                                </p>
-                                <div class="col-xs-3">
-                                    <button class="btn btn-link full-width toggle-icon-{{movie.addedToWatchlist}}" title="Add To Watchlist" data-ng-click="addToWatchlist($index)"><span class="glyphicon glyphicon-plus movie-action-icon"></span>
+                            </p>
+                            <div class="col-xs-3">
+                                <button class="btn btn-link full-width toggle-icon-{{movie.addedToWatchlist}}" title="Add To Watchlist" data-ng-click="addToWatchlist($index)"><span class="glyphicon glyphicon-plus movie-action-icon"></span>
                                     <br><small class="ellipsis">Add To Watchlist</small></button>
-                                </div>
-                                <div class="col-xs-3">
-                                    <button class="btn btn-link full-width toggle-icon-{{movie.addedToWatched}}" title="Mark As Watched" data-ng-click="addToWatched($index)"><span class="glyphicon glyphicon-ok movie-action-icon"></span>
+                            </div>
+                            <div class="col-xs-3">
+                                <button class="btn btn-link full-width toggle-icon-{{movie.addedToWatched}}" title="Mark As Watched" data-ng-click="addToWatched($index)"><span class="glyphicon glyphicon-ok movie-action-icon"></span>
                                     <br><small class="ellipsis">Mark As Watched</small></button>
-                                </div>
-                                <div class="col-xs-3">
-                                    <button class="btn btn-link full-width toggle-icon-{{movie.addedToLiked}}" title="Like This Movie" data-ng-click="addToLiked($index)"><span class="glyphicon glyphicon-heart movie-action-icon"></span>
+                            </div>
+                            <div class="col-xs-3">
+                                <button class="btn btn-link full-width toggle-icon-{{movie.addedToLiked}}" title="Like This Movie" data-ng-click="addToLiked($index)"><span class="glyphicon glyphicon-heart movie-action-icon"></span>
                                     <br><small class="ellipsis">Like This Movie</small></button>
-                                </div>
-                                <div class="col-xs-3">
-                                    <button class="btn btn-link full-width toggle-icon-false" title="Play Trailer" data-ng-click="playTrailer($index)"><span class="glyphicon glyphicon-play movie-action-icon"></span>
+                            </div>
+                            <div class="col-xs-3">
+                                <button class="btn btn-link full-width toggle-icon-false" title="Play Trailer" data-ng-click="playTrailer($index)"><span class="glyphicon glyphicon-play movie-action-icon"></span>
                                     <br><small class="ellipsis">Play Trailer</small></button>
-                                </div>
-                            </blockquote>
-                        </div>
+                            </div>
+                        </blockquote>
                     </div>
                 </div>
             </div>

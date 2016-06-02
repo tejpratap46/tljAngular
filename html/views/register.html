@@ -6,21 +6,24 @@
         </div>
         <div>
             <label for="inputName" class="sr-only">Name</label>
-            <input data-ng-model="name" id="name" type="text" name="text" class="form-control" placeholder="Name" required autofocus>
+            <input data-ng-model="name" type="text" class="form-control" placeholder="Name" required autofocus>
+        </div>
+        <div>
+            <label for="inputUserName" class="sr-only">Username</label>
+            <input data-ng-model="username" data-ng-keydown="checkUsername($event)" type="text" class="form-control" placeholder="Username" required autofocus>
         </div>
         <div>
             <label for="inputEmail" class="sr-only">Email address</label>
-            <input data-ng-model="email" id="email" type="email" name="email" class="form-control" placeholder="Email address" required
-            autofocus>
+            <input data-ng-model="email" type="email" class="form-control" placeholder="Email address" required>
         </div>
         <div>
             <label for="inputPassword" class="sr-only">Password</label>
-            <input data-ng-model="password" id="password" type="password" name="password" class="form-control" placeholder="Password"
-            required>
+            <input data-ng-model="password" type="password" class="form-control" placeholder="Password"
+                required>
         </div>
         <div class="row">
             <div class="col-xs-12">
-                <button type="submit" class="btn btn-lg btn-primary btn-block" type="button" data-ng-click="register()">Register</button>
+                <button type="submit" class="btn btn-lg btn-primary btn-block">Register</button>
             </div>
             <div class="col-xs-12">
                 <input class="btn btn-lg btn-link btn-block" type="button" data-ng-click="login()" value="Log in" />

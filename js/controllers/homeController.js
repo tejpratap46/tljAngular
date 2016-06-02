@@ -1,9 +1,12 @@
 var app = angular.module(appName);
 
-app.registerCtrl('homeController', ['$scope', '$http', '$window', function($scope, $http, $window) {
+app.registerCtrl('homeController', ['$scope', '$http', '$location', '$rootScope', function ($scope, $http, $location, $rootScope) {
     $scope.noDataFound = false;
     $scope.isLoadingFeed = false;
-    $scope.user = { username: localStorage.getItem(prefName) };
+    $scope.user = {
+        username: localStorage.getItem(prefName),
+        userid: localStorage.getItem(prefUserId)
+    };
 
     $scope.sidebarList = {
         userList: [],
@@ -38,10 +41,17 @@ app.registerCtrl('homeController', ['$scope', '$http', '$window', function($scop
 
     var page = 1;
     $scope.feed = [];
+    var canLoadMore = true;
 
-    $scope.loadMore = function() {
-        if (!$scope.isLoadingFeed) {
-            console.log("calling load moew for : " + page);
+    $scope.loadMore = function () {
+        var cachedData = globalCacheStorage.get($location.path());
+        if (cachedData && cachedData.page >= page) {
+            page = cachedData.page + 1;
+            $scope.feed = cachedData.feed;
+            $rootScope.$broadcast('checkForScrollPosition', {});
+            console.log("calling for cache" + page);
+        } else if (!$scope.isLoadingFeed && canLoadMore) {
+            console.log("calling load more for : " + page);
             $scope.loadFeed = loadFeed();
         }
     }
@@ -66,22 +76,16 @@ app.registerCtrl('homeController', ['$scope', '$http', '$window', function($scop
             limit: limit
         };
 
-        var config = {
-            headers: {
-                'Content-Type': 'application/json'
-            }
-        }
-
-        $http.post(hostAddress + '/api/user/userFeed', data, config)
+        $http.post(hostAddress + '/api/user/userFeed', data)
             .then(
-            function(response) {
+            function (response) {
                 // success callback
                 $scope.isLoadingFeed = false;
                 var data = response.data;
                 console.log(data);
                 if (data.Status) {
                     var feed = data.Feed;
-                    feed.forEach(function(object) {
+                    feed.forEach(function (object) {
                         object.UpdatedAtFromNow = moment(object.UpdatedAt).fromNow();
                         object.UpdatedAt = moment(object.UpdatedAt).format('MMMM Do YYYY, h:mm a');
                         object.Movie.Genres = object.Movie.Genres.join(", ");
@@ -95,11 +99,16 @@ app.registerCtrl('homeController', ['$scope', '$http', '$window', function($scop
                         }
                         $scope.feed.push(object);
                     });
+                    globalCacheStorage.put($location.path(), { page: page - 1, feed: $scope.feed });
+                    console.log(globalCacheStorage.get($location.path()));
+                    if (feed.length == 0) {
+                        canLoadMore = false;
+                    }
                 } else {
                     $scope.noDataFound = true;
                 }
             },
-            function(error) {
+            function (error) {
                 // failure callback
                 $('.notification').text('Oops! something went wrong').show('fast').delay(3000).hide('fast');
             }
@@ -110,7 +119,7 @@ app.registerCtrl('homeController', ['$scope', '$http', '$window', function($scop
     /**
      * Add Comment on post
      */
-    $scope.addComment = function(index) {
+    $scope.addComment = function (index) {
         var post = $scope.feed[index];
         if (post.AddComment.length == 0) {
             return;
@@ -135,15 +144,9 @@ app.registerCtrl('homeController', ['$scope', '$http', '$window', function($scop
         $scope.feed[index].CommentsCount = $scope.feed[index].CommentsCount + 1;
         $scope.feed[index].AddComment = "";
 
-        var config = {
-            headers: {
-                'Content-Type': 'application/json'
-            }
-        }
-
-        $http.post(hostAddress + '/api/list/listAddCommentPost', data, config)
+        $http.post(hostAddress + '/api/list/listAddCommentPost', data)
             .then(
-            function(response) {
+            function (response) {
                 // success callback
                 var data = response.data;
                 console.log(data);
@@ -153,7 +156,7 @@ app.registerCtrl('homeController', ['$scope', '$http', '$window', function($scop
                     $scope.noDataFound = true;
                 }
             },
-            function(error) {
+            function (error) {
                 // failure callback
                 $('.notification').text('Oops! something went wrong').show('fast').delay(3000).hide('fast');
             }
@@ -162,7 +165,7 @@ app.registerCtrl('homeController', ['$scope', '$http', '$window', function($scop
     /* End Add Comment */
 
     /** Like/Un-Like post */
-    $scope.likePost = function(index) {
+    $scope.likePost = function (index) {
         var post = $scope.feed[index];
         // reflect like changes here
         if (post.IsLiked) {
@@ -177,15 +180,9 @@ app.registerCtrl('homeController', ['$scope', '$http', '$window', function($scop
             "userid": localStorage.getItem(prefUserId),
         };
 
-        var config = {
-            headers: {
-                'Content-Type': 'application/json'
-            }
-        }
-
-        $http.post(hostAddress + '/api/list/listLikePost', data, config)
+        $http.post(hostAddress + '/api/list/listLikePost', data)
             .then(
-            function(response) {
+            function (response) {
                 // success callback
                 var data = response.data;
                 if (data.Status) {
@@ -199,7 +196,7 @@ app.registerCtrl('homeController', ['$scope', '$http', '$window', function($scop
                     $scope.noDataFound = true;
                 }
             },
-            function(error) {
+            function (error) {
                 // failure callback
                 $('.notification').text('Oops! something went wrong').show('fast').delay(3000).hide('fast');
             }
@@ -207,7 +204,7 @@ app.registerCtrl('homeController', ['$scope', '$http', '$window', function($scop
     }
     /* End Like/Un-Like Feed */
 
-    $scope.addToWatchlist = function($index) {
+    $scope.addToWatchlist = function ($index) {
         if ($scope.feed[$index].Movie.addedToWatchlist) {
             $scope.feed[$index].Movie.addedToWatchlist = false;
         } else {
@@ -216,7 +213,7 @@ app.registerCtrl('homeController', ['$scope', '$http', '$window', function($scop
         $scope.addToList = addToList($index, "Watchlist", "");
     };
 
-    $scope.addToWatched = function($index) {
+    $scope.addToWatched = function ($index) {
         if ($scope.feed[$index].Movie.addedToWatched) {
             $scope.feed[$index].Movie.addedToWatched = false;
         } else {
@@ -225,7 +222,7 @@ app.registerCtrl('homeController', ['$scope', '$http', '$window', function($scop
         $scope.addToList = addToList($index, "Watched", "");
     };
 
-    $scope.addToLiked = function($index) {
+    $scope.addToLiked = function ($index) {
         if ($scope.feed[$index].Movie.addedToLiked) {
             $scope.feed[$index].Movie.addedToLiked = false;
         } else {
@@ -234,7 +231,7 @@ app.registerCtrl('homeController', ['$scope', '$http', '$window', function($scop
         $scope.addToList = addToList($index, "Liked", "");
     };
 
-    $scope.playTrailer = function($index) { };
+    $scope.playTrailer = function ($index) { };
 
     /**
      * Geral function to add movie to  a list
@@ -252,15 +249,9 @@ app.registerCtrl('homeController', ['$scope', '$http', '$window', function($scop
             "caption": caption
         };
 
-        var config = {
-            headers: {
-                'Content-Type': 'application/json'
-            }
-        }
-
-        $http.post(hostAddress + '/api/list/listAddMovie', data, config)
+        $http.post(hostAddress + '/api/list/listAddMovie', data)
             .then(
-            function(response) {
+            function (response) {
                 // success callback
                 var data = response.data;
                 if (data.Status) {
@@ -275,7 +266,7 @@ app.registerCtrl('homeController', ['$scope', '$http', '$window', function($scop
                     $('.notification').text(data.Error).show('fast').delay(3000).hide('fast');
                 }
             },
-            function(error) {
+            function (error) {
                 // failure callback
                 $('.notification').text('Oops! something went wrong').show('fast').delay(3000).hide('fast');
             }
@@ -283,14 +274,14 @@ app.registerCtrl('homeController', ['$scope', '$http', '$window', function($scop
     }
 
     // Get Tokens from user update
-    $scope.movieCommentChange = function() {
+    $scope.movieCommentChange = function () {
         var comment = $scope.movieComment;
         var tagslistarr = comment.match(/#\S+/g);
         console.log(tagslistarr);
     }
 
     // Get Trailer
-    $scope.playTrailer = function(index) {
+    $scope.playTrailer = function (index) {
         var movie = $scope.feed[index].Movie;
         var data = {
             "movieid": movie._id,
@@ -298,15 +289,9 @@ app.registerCtrl('homeController', ['$scope', '$http', '$window', function($scop
             "movieYear": movie.Year
         };
 
-        var config = {
-            headers: {
-                'Content-Type': 'application/json'
-            }
-        }
-
-        $http.post(hostAddress + '/api/movie/getTrailer', data, config)
+        $http.post(hostAddress + '/api/movie/getTrailer', data)
             .then(
-            function(response) {
+            function (response) {
                 // success callback
                 var data = response.data;
                 if (data.Status) {
@@ -315,7 +300,7 @@ app.registerCtrl('homeController', ['$scope', '$http', '$window', function($scop
                     $('.notification').text(data.Error).show('fast').delay(3000).hide('fast');
                 }
             },
-            function(error) {
+            function (error) {
                 // failure callback
                 $('.notification').text('Oops! something went wrong').show('fast').delay(3000).hide('fast');
             }
@@ -324,7 +309,7 @@ app.registerCtrl('homeController', ['$scope', '$http', '$window', function($scop
 
     var lists = ["Watched", "Watchlist", "Liked"];
 
-    lists.forEach(function(listName) {
+    lists.forEach(function (listName) {
         $scope.getMovieInListCount = getMovieInListCount(listName);
     });
 
@@ -336,39 +321,35 @@ app.registerCtrl('homeController', ['$scope', '$http', '$window', function($scop
             }
         };
 
-        var config = {
-            headers: {
-                'Content-Type': 'application/json'
-            }
-        }
-
-        $http.post(hostAddress + '/api/user/userListGetCountQuery', data, config)
+        $http.post(hostAddress + '/api/user/userListGetCountQuery', data)
             .then(
-            function(response) {
+            function (response) {
                 // success callback
                 var responseData = response.data;
                 if (listName == "Watched") {
                     $scope.sidebarList.userList.push({
                         glyphicon: "glyphicon glyphicon-ok",
                         name: "Watched",
+                        href: "#/user/" + localStorage.getItem(prefUserId) + "/Watched",
                         count: responseData.Count
                     });
-                    $scope.user.WatchedCount = responseData.Count;
                 } else if (listName == "Watchlist") {
                     $scope.sidebarList.userList.push({
                         glyphicon: "glyphicon glyphicon-plus",
                         name: "Watchlist",
+                        href: "#/user/" + localStorage.getItem(prefUserId) + "/Watchlist",
                         count: responseData.Count
                     });
                 } else if (listName == "Liked") {
                     $scope.sidebarList.userList.push({
                         glyphicon: "glyphicon glyphicon-heart",
                         name: "Liked",
+                        href: "#/user/" + localStorage.getItem(prefUserId) + "/Liked",
                         count: responseData.Count
                     });
                 }
             },
-            function(error) {
+            function (error) {
                 // failure callback
                 $('.notification').text('Oops! something went wrong').show('fast').delay(3000).hide('fast');
             }

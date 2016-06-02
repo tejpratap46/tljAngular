@@ -1,3 +1,7 @@
+a {
+    cursor: pointer;
+}
+
 .bold {
     font-weight: bold;
 }
@@ -72,6 +76,10 @@
 
 .no-radius {
     border-radius: 0px;
+}
+
+.no-opacity {
+    opacity: 0;
 }
 
 .center-vertical {
@@ -221,4 +229,25 @@ a, a:hover, a:focus, a:active, .btn-link, .btn-link:hover, .btn-link:focus, .btn
     color: #ffffff;
     background-color: #B52A0E;
     border-color: #C32F10;
+}
+
+.fade-ng-view {
+    opacity: 1;
+}
+.fade-ng-view.ng-enter,
+.fade-ng-view.ng-leave {
+    -webkit-transition: all 0.4s ease;
+    transition: all 0.4s ease;
+}
+.fade-ng-view.ng-enter {
+    opacity: 0;
+}
+.fade-ng-view.ng-enter-active {
+    opacity: 1;
+}
+.fade-ng-view.ng-leave {
+    opacity: 1;
+}
+.fade-ng-view.ng-leave-active {
+    opacity: 0;
 }

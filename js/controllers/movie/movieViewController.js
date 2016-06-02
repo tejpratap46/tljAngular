@@ -51,13 +51,7 @@ app.registerCtrl('movieViewController', ['$scope', '$http', '$routeParams', '$wi
     // Make big poster image half of screen size
     $scope.backdropHeight = $window.innerHeight / 1.4;
 
-    var config = {
-        headers: {
-            'Content-Type': 'application/json'
-        }
-    }
-
-    $http.post(hostAddress + '/api/movie/getOneQuery', data, config)
+    $http.post(hostAddress + '/api/movie/getOneQuery', data)
         .then(
         function (response) {
             // success callback
@@ -117,13 +111,7 @@ app.registerCtrl('movieViewController', ['$scope', '$http', '$routeParams', '$wi
             "caption": caption
         };
 
-        var config = {
-            headers: {
-                'Content-Type': 'application/json'
-            }
-        }
-
-        $http.post(hostAddress + '/api/list/listAddMovie', data, config)
+        $http.post(hostAddress + '/api/list/listAddMovie', data)
             .then(
             function (response) {
                 // success callback
@@ -154,13 +142,7 @@ app.registerCtrl('movieViewController', ['$scope', '$http', '$routeParams', '$wi
             "movieYear": movie.Year
         };
 
-        var config = {
-            headers: {
-                'Content-Type': 'application/json'
-            }
-        }
-
-        $http.post(hostAddress + '/api/movie/getTrailer', data, config)
+        $http.post(hostAddress + '/api/movie/getTrailer', data)
             .then(
             function (response) {
                 // success callback
@@ -178,4 +160,61 @@ app.registerCtrl('movieViewController', ['$scope', '$http', '$routeParams', '$wi
             );
     }
 
+    $scope.ratingHint = 'poop!';
+    $scope.userMovieRating = 0;
+
+    // User Can Rate Movie
+    $scope.setMovieRating = function (value) {
+        $scope.userMovieRating = value;
+    }
+
+    // Show hint to user on hover
+    $scope.hoverMovieRating = function (value) {
+        $scope.setUserRatingHint = setUserRatingHint(value);
+    }
+
+    function setUserRatingHint(ratingValue) {
+        switch (ratingValue) {
+            case 0:
+                $scope.ratingHint = 'poop!';
+                break;
+            case 1:
+                $scope.ratingHint = 'yek!';
+                break;
+            case 2:
+                $scope.ratingHint = 'huh!';
+                break;
+            case 3:
+                $scope.ratingHint = 'nah!';
+                break;
+            case 4:
+                $scope.ratingHint = 'something!';
+                break;
+            case 5:
+                $scope.ratingHint = '1 time watch!';
+                break;
+            case 6:
+                $scope.ratingHint = 'nice!';
+                break;
+            case 7:
+                $scope.ratingHint = 'good!';
+                break;
+            case 8:
+                $scope.ratingHint = 'great!';
+                break;
+            case 9:
+                $scope.ratingHint = 'awesome!';
+                break;
+            case 10:
+                $scope.ratingHint = 'incredible!';
+                break;
+            default:
+                break;
+        }
+        console.log(ratingValue);
+    }
+
+    $scope.ratingMovieMouseLeave = function () {
+        $scope.setUserRatingHint = setUserRatingHint($scope.userMovieRating);
+    }
 }]);

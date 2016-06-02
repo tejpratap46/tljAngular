@@ -1,0 +1,193 @@
+<div style="margin-top: -85px;">
+    <div style="background-color: black; min-height:200px; height: {{backdropHeight}}px; max-height: 450px; overflow: hidden; margin-top: -15px;">
+        <div class="row" style="background-image: url('{{feed[0].Movie.Poster}}'); background-size:cover; -webkit-filter: blur(5px); min-height:200px; height: {{backdropHeight}}px; max-height: 450px; opacity: 0.8;">
+
+        </div>
+        <div class="row no-margin" style="top: -80%; position: relative;">
+            <div class="col-sm-12 center no-padding">
+                <div>
+                    <img style="background-image: url('/images/user.default.png'); background-size:cover; background-position: center center; height: 150px; width: 150px;"
+                        class="img-circle">
+                </div>
+            </div>
+            <div class="clearfix"></div>
+            <div class="row center no-border no-margin">
+                <h2 class="bold white no-margin">{{userData.Name}}</h2>
+                <p class="white"><a href="">@{{userData.Username}}</a></p>
+                <div data-ng-if="userId != userIdBeingWatched">
+                    <button class="btn {{userData.IsFollowing ? 'btn-primary':'btn-default'}}" data-ng-click="followUnfollowUser()">
+                        <span><i class="fa fa-user-plus"></i> <span>{{userData.IsFollowing?'Unfollow':'Follow'}}</span></span>
+                    </button>
+                </div>
+                <div data-ng-if="userId == userIdBeingWatched">
+                    <button class="btn btn-default" data-ng-click="">
+                        <span><i class="glyphicon glyphicon-cog"></i> <span>Edit Settings</span></span>
+                    </button>
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class="row no-margin" style="background-color: currentColor; margin-top: -55px; padding: 5px 0px;">
+        <div class="hidden-xs col-md-3"></div>
+        <div class="col-md-6 col-lg-6 no-padding center">
+            <a class="col-xs-3 no-padding" data-ng-click="getUserList(undefined)">
+                <h4 class="bold white ellipsis no-margin">#</h4>
+                <small class="white">Feed</small>
+            </a>
+            <a class="col-xs-3 no-padding" href="">
+                <h4 class="bold white ellipsis no-margin">{{userData.Following.length}}</h4>
+                <small class="white">Following</small>
+            </a>
+            <a class="col-xs-3 no-padding" href="">
+                <h4 class="bold white ellipsis no-margin">{{userData.FollowingPeople.length}}</h4>
+                <small class="white">Fan Of</small>
+            </a>
+            <a class="col-xs-3 no-padding" href="">
+                <h4 class="bold white ellipsis no-margin">{{userData.FollowerCount}}</h4>
+                <small class="white">Followers</small>
+            </a>
+        </div>
+        <div class="hidden-xs col-sm-3"></div>
+    </div>
+    <div class="clearfix"></div>
+    <div class="clearfix"></div>
+    <div class="row no-margin">
+        <div class="col-lg-1"></div>
+        <div class="hidden-xs col-sm-3 col-md-3 col-lg-2">
+            <div class="panel panel-default">
+                <div class="panel-body no-padding">
+                    <div class="list-group no-margin">
+                        <a data-ng-click="getUserList(item.name)" style="padding: 0px 20px;" class="list-group-item no-border no-radius" data-ng-repeat="item in sidebarList.userList">
+                            <table>
+                                <tr>
+                                    <td>
+                                        <h3><i data-ng-class="item.glyphicon"></i></h3>
+                                    </td>
+                                    <td style="padding-left: 10px;">
+                                        <p class="list-group-item-heading bold">{{item.name}}</p>
+                                        <p class="list-group-item-text">{{item.count}} movies.</p>
+                                    </td>
+                                </tr>
+                            </table>
+                        </a>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <div class="col-sm-8 col-md-6 col-lg-6 no-padding">
+            <div class="visible-xs well row no-margin no-border no-radius center" style="padding: 10px 0px">
+                <a data-ng-click="getUserList(item.name)" class="col-xs-4 no-padding" data-ng-repeat="item in sidebarList.userList">
+                    <p class="list-group-item-heading bold">{{item.name}}</p>
+                    <p class="list-group-item-text">{{item.count}}</p>
+                </a>
+            </div>
+            <div infinite-scroll='loadMore()' infinite-scroll-distance='2'>
+                <div class="panel panel-default" style="overflow: hidden;" data-ng-repeat="post in feed track by $index">
+                    <div class="panel-heading">
+                        <table>
+                            <td>
+                                <a href="{{'#/user/' + post.User._id}}">
+                                    <img src="/images/user.default.png" alt="" class="img-circle" style="margin: 0px; max-width: 50px;">
+                                </a>
+                            </td>
+                            <td style="padding-left: 10px;">
+                                <a href="{{'#/user/' + post.User._id}}" class="bold">{{post.User.Name}}</a>
+                                <small> {{post.ListName}}</small>
+                                <a href="{{'#/movie/view/' + post.Movie._id}}" class="bold"> {{post.Movie.Title}}</a>
+                                <br />
+                                <small title="{{post.UpdatedAt}}">- about {{post.UpdatedAtFromNow}}</small>
+                            </td>
+                        </table>
+                    </div>
+                    <div class="panel-body">
+                        <div class="panel panel-default no-margin" style="overflow: hidden;">
+                            <div class="panel-body no-padding">
+                                <div>
+                                    <a class="row no-margin" href="{{'#/movie/view/' + post.Movie._id}}">
+                                        <blockquote class="col-xs-12 no-border no-margin">
+                                            <table>
+                                                <td>
+                                                    <h1 class="no-margin">{{post.Movie.ImdbRating > 0 ? post.Movie.ImdbRating : 'n.a.'}}</h1>
+                                                </td>
+                                                <td style="padding-left: 10px;">
+                                                    <h5 class="bold no-margin">{{post.Movie.Title}} <small>{{post.Movie.Released}}</small></h5>
+                                                    <h5 class="no-margin"><small>{{post.Movie.Genres}}</small></h5>
+                                                </td>
+                                            </table>
+                                        </blockquote>
+                                        <div class="col-xs-12 no-padding" data-ng-init="post.Movie.posterAvailable = true">
+                                            <div data-ng-if="post.Movie.posterAvailable" style="max-height: 220px; overflow: hidden;">
+                                                <!--<img data-ng-src="{{post.Movie.Poster}}" class="full-width">-->
+                                                <img data-ng-if="post.Movie.posterAvailable" data-ng-src="{{post.Movie.Poster}}" class="full-width" data-ng-error="post.Movie.posterAvailable = false">
+                                            </div>
+                                            <div data-ng-if="!post.Movie.posterAvailable" style="height: 220px; overflow: hidden; background-image: url('http://dummyimage.com/500X220/f9f9f9/aaaaaa&text={{post.Movie.Title}}'); background-size:cover; background-position: center center;">
+                                            </div>
+                                        </div>
+                                    </a>
+                                    <blockquote class="row no-padding no-margin no-border">
+                                        <div class="col-xs-3">
+                                            <button class="btn btn-link full-width toggle-icon-{{post.Movie.addedToWatchlist}}" title="Add To Watchlist" data-ng-click="addToWatchlist($index)"><span class="glyphicon glyphicon-plus movie-action-icon"></span>
+                                        <br><small class="ellipsis">Add To Watchlist</small></button>
+                                        </div>
+                                        <div class="col-xs-3">
+                                            <button class="btn btn-link full-width toggle-icon-{{post.Movie.addedToWatched}}" title="Mark As Watched" data-ng-click="addToWatched($index)"><span class="glyphicon glyphicon-ok movie-action-icon"></span>
+                                        <br><small class="ellipsis">Mark As Watched</small></button>
+                                        </div>
+                                        <div class="col-xs-3">
+                                            <button class="btn btn-link full-width toggle-icon-{{post.Movie.addedToLiked}}" title="Like This Movie" data-ng-click="addToLiked($index)"><span class="glyphicon glyphicon-heart movie-action-icon"></span>
+                                        <br><small class="ellipsis">Like This Movie</small></button>
+                                        </div>
+                                        <div class="col-xs-3">
+                                            <button class="btn btn-link full-width toggle-icon-false" title="Play Trailer" data-ng-click="playTrailer($index)"><span class="glyphicon glyphicon-play movie-action-icon"></span>
+                                        <br><small class="ellipsis">Play Trailer</small></button>
+                                        </div>
+                                    </blockquote>
+                                    <div class="well no-margin" data-ng-if="post.Caption">
+                                        <p class="justified">{{post.Caption}}</p>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="panel-footer no-padding">
+                        <a href="" class="btn btn-link"><small>{{post.LikesCount}} likes</small></a>
+                        <a href="{{'#/user/' + post.User._id + '/post/' + post._id}}" class="btn btn-link"> <small>{{post.CommentsCount}} comments</small></a>
+                        <blockquote class="no-margin" data-ng-repeat="comment in post.Comments">
+                            <ul class="list-unstyled" style="font-size: 0.7em;">
+                                <li><a href="{{'#/user/' + comment.User._id}}" class="bold">{{comment.User.Name}}</a><span> {{comment.Text}}</span></li>
+                            </ul>
+                        </blockquote>
+                        <form lpformnum="3" data-ng-submit="addComment($index)">
+                            <div class="input-group">
+                                <div class="input-group-btn">
+                                    <button class="btn btn-link" type="button" title="like" data-ng-click="likePost($index)"><span class="glyphicon glyphicon-heart toggle-icon-{{post.IsLiked}}"></span></button>
+                                </div>
+                                <input class="form-control no-radius no-border" placeholder="Add a comment.." type="text" data-ng-model="post.AddComment">
+                            </div>
+                        </form>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <div class="hidden-xs hidden-sm col-md-3 col-lg-2">
+            <div class="panel panel-default">
+                <div class="panel-body">
+                    <label for="ads">Some Sponsered Shit!</label>
+                    <table>
+                        <tbody>
+                            <tr>
+                                <td>
+                                </td>
+                                <td style="padding-left: 10px;">
+                                </td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+        </div>
+        <div class="col-lg-1"></div>
+    </div>
+</div>

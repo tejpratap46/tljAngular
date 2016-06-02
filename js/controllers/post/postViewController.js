@@ -24,13 +24,7 @@ app.registerCtrl('postViewController', ['$scope', '$http', '$routeParams', funct
             limit: 10
         };
 
-        var config = {
-            headers: {
-                'Content-Type': 'application/json'
-            }
-        }
-
-        $http.post(hostAddress + '/api/list/getQuery', data, config)
+        $http.post(hostAddress + '/api/list/getQuery', data)
             .then(
             function(response) {
                 // success callback
@@ -92,13 +86,7 @@ app.registerCtrl('postViewController', ['$scope', '$http', '$routeParams', funct
         $scope.post.CommentsCount = $scope.post.CommentsCount + 1;
         $scope.post.AddComment = "";
 
-        var config = {
-            headers: {
-                'Content-Type': 'application/json'
-            }
-        }
-
-        $http.post(hostAddress + '/api/list/listAddCommentPost', data, config)
+        $http.post(hostAddress + '/api/list/listAddCommentPost', data)
             .then(
             function(response) {
                 // success callback
@@ -134,13 +122,7 @@ app.registerCtrl('postViewController', ['$scope', '$http', '$routeParams', funct
             "userid": localStorage.getItem(prefUserId),
         };
 
-        var config = {
-            headers: {
-                'Content-Type': 'application/json'
-            }
-        }
-
-        $http.post(hostAddress + '/api/list/listLikePost', data, config)
+        $http.post(hostAddress + '/api/list/listLikePost', data)
             .then(
             function(response) {
                 // success callback
@@ -202,13 +184,7 @@ app.registerCtrl('postViewController', ['$scope', '$http', '$routeParams', funct
             "caption": caption
         };
 
-        var config = {
-            headers: {
-                'Content-Type': 'application/json'
-            }
-        }
-
-        $http.post(hostAddress + '/api/list/listAddMovie', data, config)
+        $http.post(hostAddress + '/api/list/listAddMovie', data)
             .then(
             function(response) {
                 // success callback
@@ -241,13 +217,7 @@ app.registerCtrl('postViewController', ['$scope', '$http', '$routeParams', funct
             "movieYear": post.Movie.Year
         };
 
-        var config = {
-            headers: {
-                'Content-Type': 'application/json'
-            }
-        }
-
-        $http.post(hostAddress + '/api/movie/getTrailer', data, config)
+        $http.post(hostAddress + '/api/movie/getTrailer', data)
             .then(
             function(response) {
                 // success callback

@@ -26,16 +26,16 @@
         <div class="container">
             <div class="navbar-header">
                 <a class="navbar-brand" href="#/"><span class="glyphicon glyphicon-flash"></span> Bolt</a>
-                <a class="navbar-brand pull-right visible-xs" href="#/user"><span class="glyphicon glyphicon-user"></span></a>
+                <a class="navbar-brand pull-right visible-xs" href="#/user/{{userid}}"><span class="glyphicon glyphicon-user"></span></a>
                 <a class="navbar-brand pull-right visible-xs" href=""><span class="glyphicon glyphicon-globe"></span></a>
                 <a class="navbar-brand pull-right visible-xs" href=""><span class="glyphicon glyphicon-search" data-ng-click="showXsSearchBox()"></span></a>
             </div>
             <div id="navbar" class="navbar-collapse collapse">
                 <ul class="nav navbar-nav hidden-xs">
-
+                    <li class="active"><a href="#">Section</a></li>
                 </ul>
-                <form class="navbar-form navbar-left hidden-xs">
-                    <div class="input-group">
+                <form class="navbar-form navbar-left hidden-xs" style="width: 50%;">
+                    <div style="display:table;" class="input-group">
                         <input data-ng-change="searchMovie()" type="text" class="form-control" placeholder="{{searchBoxPlaceholder}}" data-ng-model="$parent.searchData"
                             data-ng-blur="searchBoxBlur()" data-ng-click="searchBoxClick()" data-ng-keydown="searchKeydown($event)">
                         <ul class="dropdown-menu search-results full-width no-padding no-margin no-border no-radius">
@@ -46,7 +46,7 @@
                                 </a>
                             </li>
                         </ul>
-                        <div class="input-group-btn">
+                        <div style="width: 1%;" class="input-group-btn">
                             <button class="btn btn-default" type="submit"> <i class="glyphicon glyphicon-search"></i> </button>
                         </div>
                     </div>
@@ -63,9 +63,9 @@
                     <li class="dropdown">
                         <a href="" class="dropdown-toggle" data-toggle="dropdown">{{username}} <span class="caret"></span></a>
                         <ul class="dropdown-menu" role="menu">
-                            <li><a href="#/user/{{userid}}/watchlist">Watchlist</a></li>
-                            <li><a href="#/user/{{userid}}/watched">Watched</a></li>
-                            <li><a href="#/user/{{userid}}/liked">Liked</a></li>
+                            <li><a href="#/user/{{userid}}/Watchlist">Watchlist</a></li>
+                            <li><a href="#/user/{{userid}}/Watched">Watched</a></li>
+                            <li><a href="#/user/{{userid}}/Liked">Liked</a></li>
                             <li class="divider"></li>
                             <li><a href="#/user/{{userid}}">Profile</a></li>
                             <li class="divider"></li>
@@ -96,7 +96,7 @@
             </form>
         </div>
     </nav>
-    <div id="view" data-ng-view></div>
+    <div id="view" data-ng-view class="fade-ng-view"></div>
     <div class="notification"></div>
 </body>
 <script src="js/libs/jquery.min.js "></script>
@@ -106,7 +106,7 @@
 <script src="js/libs/bootstrap.min.js "></script>
 <script src="js/libs/moment.min.js "></script>
 <script async src="js/libs/emodal.min.js "></script>
-<script src="js/libs/angular-color-this.min.js "></script>
+<script src="js/libs/angular-animate.min.js "></script>
 <script src="js/libs/ng-infinite-scroll.min.js "></script>
 <script src="js/config.js "></script>
 <script src="js/app.js "></script>

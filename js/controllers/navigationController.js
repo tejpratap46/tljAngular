@@ -1,6 +1,40 @@
 var app = angular.module(appName);
 
-app.controller('navigationController', ['$scope', '$http', '$route', '$document', '$window', function ($scope, $http, $route, $document, $window) {
+app.controller('navigationController', ['$scope', '$http', '$route', '$document', '$window', '$cacheFactory', '$location', '$timeout', '$rootScope', function ($scope, $http, $route, $document, $window, $cacheFactory, $location, $timeout, $rootScope) {
+
+    // Initialise cacheFactory with cache IId
+    globalCacheStorage = $cacheFactory(prefCacheIId);
+    globalCacheStorage.removeAll();
+
+    $scope.okSaveScroll = true;
+    $scope.scrollPos = {};
+    $scope.routesToTrackPosition = ['/home', '/user/', '/movie/list/', '/people/list'];
+
+    $scope.$on('$locationChangeStart', function (event) {
+        if (new RegExp($scope.routesToTrackPosition.join("|")).test($location.path())) {
+            $scope.okSaveScroll = false;
+        }
+    });
+
+    $scope.$on('$locationChangeSuccess', function (route) {
+        if (new RegExp($scope.routesToTrackPosition.join("|")).test($location.path())) {
+            $timeout(function () {
+                $scope.okSaveScroll = true;
+            });
+        } else {
+            window.scrollTo(0, 0);
+        }
+    });
+
+    $rootScope.$on('checkForScrollPosition', function (event, data) {
+        console.log('checkForScrollPosition');
+        if (new RegExp($scope.routesToTrackPosition.join("|")).test($location.path())) {
+            $timeout(function () {
+                window.scrollTo(0, $scope.scrollPos[$location.path()]);
+                $scope.okSaveScroll = true;
+            });
+        }
+    });
 
     $scope.$on('userLoggedIn', function (event, data) {
         console.log('navigationController userLoggedIn');
@@ -32,7 +66,7 @@ app.controller('navigationController', ['$scope', '$http', '$route', '$document'
     $scope.$on('$routeChangeStart', function (scope, next, current) {
         if (next.$$route) {
             $scope.currentController = next.$$route.controller;
-            if (next.$$route.controller == "movieViewController") {
+            if (next.$$route.controller == "movieViewController" || next.$$route.controller == "userHomeController") {
                 $scope.isTranslucentNavbar = true;
             } else {
                 $scope.isTranslucentNavbar = false;
@@ -43,13 +77,18 @@ app.controller('navigationController', ['$scope', '$http', '$route', '$document'
 
     var timeoutHandler;
     var previousScrollYPos = 0;
-    $document.on('scroll', function () {
+    $document.bind('scroll', function () {
+        if (new RegExp($scope.routesToTrackPosition.join("|")).test($location.path())) {
+            if ($scope.okSaveScroll) {
+                $scope.scrollPos[$location.path()] = $document.scrollTop();
+            }
+        }
         if (timeoutHandler) {
             clearTimeout(timeoutHandler);
         }
         timeoutHandler = setTimeout(function () {
             if ($scope.currentController) {
-                if ($scope.currentController == 'movieViewController') {
+                if ($scope.currentController == 'movieViewController' || $scope.currentController == 'userHomeController') {
                     if ($scope.isTranslucentNavbar) {
                         var scrollYPos = $document.scrollTop();
                         var scrollTillOpaque = 300;
@@ -128,13 +167,7 @@ app.controller('navigationController', ['$scope', '$http', '$route', '$document'
                 userid: localStorage.getItem(prefUserId)
             };
 
-            var config = {
-                headers: {
-                    'Content-Type': 'application/json'
-                }
-            }
-
-            $http.post(hostAddress + '/api/movie/getQuery', data, config)
+            $http.post(hostAddress + '/api/movie/getQuery', data)
                 .then(
                 function (response) {
                     // success callback

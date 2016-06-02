@@ -1,6 +1,6 @@
 <div data-ng-if="movie" style="margin-top: -85px;">
-    <div class="hidden-xs" style="background-color: black; min-height:200px; height: {{backdropHeight}}px; max-height: 700px; overflow: hidden; margin-top: -15px;">
-        <div class="row" style="background-image: url('{{movie.Poster}}'); background-size:cover; -webkit-filter: blur(5px); min-height:200px; height: {{backdropHeight}}px; max-height: 700px; opacity: 0.8;">
+    <div class="hidden-xs" style="background-color: black; min-height:200px; height: {{backdropHeight}}px; max-height: 500px; overflow: hidden; margin-top: -15px;">
+        <div class="row" style="background-image: url('{{movie.Poster}}'); background-size:cover; -webkit-filter: blur(5px); min-height:200px; height: {{backdropHeight}}px; max-height: 500px; opacity: 0.8;">
 
         </div>
         <div class="row no-margin" style="top: -80%; position: relative;">
@@ -67,7 +67,7 @@
                             </div>
                         </div>
                         <ul class="pager no-margin">
-                            <li><a href="">Rate this movie</a></li>
+                            <li><a href="" data-toggle="modal" data-target="#ratingModal">Rate this movie</a></li>
                         </ul>
                     </div>
                     <div class="clearfix"></div>
@@ -181,4 +181,34 @@
         </div>
     </div>
     <div class="col-md-1 col-lg-1"></div>
+</div>
+<!-- Rating Modal -->
+<div class="modal fade" id="ratingModal">
+    <div class="modal-dialog modal-lg">
+        <div class="modal-content">
+            <div class="modal-header">
+                <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
+                <h4 class="modal-title center">{{movie.Title}}</h4>
+            </div>
+            <div class="modal-body">
+                <div class="col-xs-12 center">
+                    <div star-rating rating="userMovieRating" read-only="false" max-rating="10" click="setMovieRating(param)" mouse-hover="hoverMovieRating(param)" mouse-leave="ratingMovieMouseLeave()">
+                    </div>
+                </div>
+                <div class="col-xs-12 center">
+                    <span class="label label-primary">{{ratingHint}}</span>
+                </div>
+                <div class="row form-group">
+                    <div class="col-xs-12">
+                        <h5>Review</h5>
+                        <textarea class="form-control" rows="3" style="resize: vertical;"></textarea>
+                    </div>
+                </div>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+                <button type="button" class="btn btn-primary">Rate</button>
+            </div>
+        </div>
+    </div>
 </div>

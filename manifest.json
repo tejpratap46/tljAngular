@@ -1,10 +1,17 @@
 {
     "lang": "en",
     "background_color": "#ffffff",
+    "theme-color": "#4582ec",
     "name": "The List Job",
     "short_name": "The List Job",
     "display": "standalone",
-    // "start_url": "/index.html",
+    // "orientation": "portrait",
+    "start_url": "/index.html",
+    "gcm_sender_id": "661391343384",
+    "gcm_user_visible_only": true,
+    "permissions": [
+        "gcm"
+    ],
     "icons": [
         {
             "src": "images/48x48.png",

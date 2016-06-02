@@ -1,6 +1,6 @@
 var app = angular.module(appName);
 
-app.registerCtrl('loginController', ['$rootScope', '$scope', '$http', '$sce', function($rootScope, $scope, $http, $sce) {
+app.registerCtrl('loginController', ['$rootScope', '$scope', '$http', function($rootScope, $scope, $http) {
     
     localStorage.removeItem(prefUsername);
     localStorage.removeItem(prefName);
@@ -14,14 +14,8 @@ app.registerCtrl('loginController', ['$rootScope', '$scope', '$http', '$sce', fu
                 "username": $scope.email,
                 "password": $scope.password
             };
-            
-            var config = {
-                headers : {
-                    'Content-Type': 'application/json'
-                }
-            }
 
-            $http.post(hostAddress + '/api/user/login', data, config)
+            $http.post(hostAddress + '/api/user/login', data)
             .then(
             function(response){
                 // success callback

@@ -14,8 +14,8 @@
                 <div class="clearfix"></div>
                 <div>
                     <div class="list-group">
-                        <a href="" style="padding: 0px 20px;" class="list-group-item no-border no-radius" data-ng-repeat="item in sidebarList.userList"
-                        data-ng-if="item.count > 0">
+                        <a href="{{item.href}}" style="padding: 0px 20px;" class="list-group-item no-border no-radius" data-ng-repeat="item in sidebarList.userList"
+                            data-ng-if="item.count > 0">
                             <table>
                                 <tr>
                                     <td>
@@ -51,19 +51,19 @@
         </div>
     </div>
     <div class="col-sm-8 col-md-6 col-lg-6 no-padding" infinite-scroll='loadMore()' infinite-scroll-distance='2'>
-        <div class="well">
-            <form class="form-horizontal" role="form">
-                <h4>Comment about a movie</h4>
-                <div class="form-group" style="padding:14px;">
-                    <textarea class="form-control" placeholder="Use @movieName to tag movie." data-ng-model="movieComment" data-ng-change="movieCommentChange()"></textarea>
+        <div class="thumbnail">
+            <a href="" data-toggle="modal" data-target="#newPostModal">
+                <div class="form-group no-margin" style="padding:8px;">
+                    <table>
+                        <td>
+                            <img src="/images/user.default.png" alt="" class="img-circle" style="margin: 0px; max-width: 50px;">
+                        </td>
+                        <td style="padding-left: 10px;">
+                            <h5>Saw a movie recently?</h5>
+                        </td>
+                    </table>
                 </div>
-                <button class="btn btn-primary pull-right" type="button">Post</button>
-                <ul class="list-inline">
-                    <li><a href=""><i class="glyphicon glyphicon-upload"></i></a></li>
-                    <li><a href=""><i class="glyphicon glyphicon-camera"></i></a></li>
-                    <li><a href=""><i class="glyphicon glyphicon-map-marker"></i></a></li>
-                </ul>
-            </form>
+            </a>
         </div>
         <div class="well" style="padding: 5px;">
             <a class="btn btn-primary btn-block" href="#/people/list">follow people</a>
@@ -73,7 +73,7 @@
                 <table>
                     <td>
                         <a href="{{'#/user/' + post.User._id}}">
-                            <img src="https://cdn0.iconfinder.com/data/icons/user-pictures/100/male-128.png" alt="" class="img-circle" style="margin: 0px; max-width: 50px;">
+                            <img src="/images/user.default.png" alt="" class="img-circle" style="margin: 0px; max-width: 50px;">
                         </a>
                     </td>
                     <td style="padding-left: 10px;">
@@ -153,6 +153,10 @@
                 </form>
             </div>
         </div>
+        <ul class="pager">
+            <li data-ng-if="!isLoadingFeed"><a href="" data-ng-click='$parent.loadMore()'>load more</a></li>
+            <li data-ng-if="isLoadingFeed" class="disabled"><a href=""><i class="fa fa-circle-o-notch fa-spin fa-fw"></i> loading</a></li>
+        </ul>
     </div>
 
     <div class="hidden-xs hidden-sm col-md-3 col-lg-2">
@@ -163,7 +167,7 @@
                         <tr>
                             <td>
                                 <a href="{{'#/user/' + post.User._id}}">
-                                    <img src="https://cdn0.iconfinder.com/data/icons/user-pictures/100/male-128.png" alt="" class="img-circle" style="margin: 0px; max-width: 50px;">
+                                    <img src="/images/user.default.png" alt="" class="img-circle" style="margin: 0px; max-width: 50px;">
                                 </a>
                             </td>
                             <td style="padding-left: 10px;">
@@ -175,7 +179,7 @@
                         <tr>
                             <td>
                                 <a href="{{'#/user/' + post.User._id}}">
-                                    <img src="https://cdn0.iconfinder.com/data/icons/user-pictures/100/male-128.png" alt="" class="img-circle" style="margin: 0px; max-width: 50px;">
+                                    <img src="/images/user.default.png" alt="" class="img-circle" style="margin: 0px; max-width: 50px;">
                                 </a>
                             </td>
                             <td style="padding-left: 10px;">
@@ -187,7 +191,7 @@
                         <tr>
                             <td>
                                 <a href="{{'#/user/' + post.User._id}}">
-                                    <img src="https://cdn0.iconfinder.com/data/icons/user-pictures/100/male-128.png" alt="" class="img-circle" style="margin: 0px; max-width: 50px;">
+                                    <img src="/images/user.default.png" alt="" class="img-circle" style="margin: 0px; max-width: 50px;">
                                 </a>
                             </td>
                             <td style="padding-left: 10px;">
@@ -202,4 +206,32 @@
         </div>
     </div>
     <div class="col-lg-1"></div>
+</div>
+<!-- New Post Modal -->
+<div class="modal fade" id="newPostModal">
+    <div class="modal-dialog modal-lg">
+        <div class="modal-content">
+            <div class="modal-header">
+                <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
+                <table>
+                    <td>
+                        <img src="/images/user.default.png" alt="" class="img-circle" style="margin: 0px; max-width: 50px;">
+                    </td>
+                    <td style="padding-left: 10px;">
+                        <h4><a href="#/user/{{user.userid}}">{{user.username}}</a></h4>
+                    </td>
+                </table>
+            </div>
+            <div class="modal-body no-padding">
+                <div class="form-group no-margin no-padding no-border no-radius">
+                    <textarea tlj-focus-me="true" class="form-control" placeholder="Use @movieName to tag movie." data-ng-model="movieComment"
+                        data-ng-change="movieCommentChange()"></textarea>
+                </div>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+                <button type="button" class="btn btn-primary">Post</button>
+            </div>
+        </div>
+    </div>
 </div>

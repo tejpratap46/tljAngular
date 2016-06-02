@@ -1,14 +1,22 @@
 var app = angular.module(appName);
 
-app.registerCtrl('peopleListController', ['$scope', '$http', '$routeParams', function ($scope, $http, $routeParams) {
+app.registerCtrl('peopleListController', ['$scope', '$http', '$routeParams', '$location', function ($scope, $http, $routeParams, $location) {
     $scope.noDataFound = false;
 
     $scope.peoples = [];
     $scope.isLoading = false;
     var page = 1;
 
+    $scope.loadPeople = loadPeople();
     $scope.loadMore = function () {
-        if ($scope.isLoading == false) {
+        var cachedData = globalCacheStorage.get($location.path());
+        if (cachedData && cachedData.page >= page) {
+            page = cachedData.page + 1;
+            $scope.peoples = cachedData.peoples;
+            $rootScope.$broadcast('checkForScrollPosition', {});
+            $scope.loadPeople = loadPeople();
+            console.log("calling for cache" + page);
+        } else if ($scope.isLoading == false) {
             $scope.loadPeople = loadPeople();
         }
     }
@@ -37,13 +45,7 @@ app.registerCtrl('peopleListController', ['$scope', '$http', '$routeParams', fun
             selectMovieFields: "_id Title",
         };
 
-        var config = {
-            headers: {
-                'Content-Type': 'application/json'
-            }
-        }
-
-        $http.post(hostAddress + '/api/people/getQuery', data, config)
+        $http.post(hostAddress + '/api/people/getQuery', data)
             .then(
             function (response) {
                 // success callback
@@ -55,6 +57,8 @@ app.registerCtrl('peopleListController', ['$scope', '$http', '$routeParams', fun
                         $scope.peoples.push(people);
                     });
                     $scope.peoples.push(data.People);
+                    globalCacheStorage.put($location.path(), { page: page - 1, peoples: $scope.peoples });
+                    console.log(globalCacheStorage.get($location.path()));
                 } else {
                     $scope.noDataFound = true;
                 }
@@ -78,13 +82,7 @@ app.registerCtrl('peopleListController', ['$scope', '$http', '$routeParams', fun
             userid: localStorage.getItem(prefUserId)
         };
 
-        var config = {
-            headers: {
-                'Content-Type': 'application/json'
-            }
-        }
-
-        $http.post(hostAddress + '/api/people/peopleFollow', data, config)
+        $http.post(hostAddress + '/api/people/peopleFollow', data)
             .then(
             function (response) {
                 // success callback

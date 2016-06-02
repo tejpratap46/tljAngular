@@ -1,14 +1,22 @@
 var app = angular.module(appName);
 
-app.registerCtrl('movieListController', ['$scope', '$http', '$routeParams', function($scope, $http, $routeParams) {
+app.registerCtrl('movieListController', ['$scope', '$http', '$routeParams', '$location', function ($scope, $http, $routeParams, $location) {
     $scope.noDataFound = false;
 
     $scope.movies = [];
     $scope.isLoading = false;
     var page = 1;
-
-    $scope.loadMore = function() {
-        if ($scope.isLoading == false) {
+    var canLoadMore = true;
+    
+    $scope.loadMovies = loadMovies();
+    $scope.loadMore = function () {
+        var cachedData = globalCacheStorage.get($location.path());
+        if (cachedData && cachedData.page >= page) {
+            page = cachedData.page + 1;
+            $scope.movies = cachedData.movies;
+            $rootScope.$broadcast('checkForScrollPosition', {});
+            console.log("calling for cache" + page);
+        } else if ($scope.isLoading == false && canLoadMore) {
             $scope.loadMovies = loadMovies();
         }
     }
@@ -18,7 +26,7 @@ app.registerCtrl('movieListController', ['$scope', '$http', '$routeParams', func
 
         var queryFilters = $routeParams.query.split('|');
         var queryFilterJson = {};
-        queryFilters.forEach(function(query) {
+        queryFilters.forEach(function (query) {
             if (query.split(':')[1].indexOf("$$$") > 1) {
                 var subFilter = query.split(':')[1];
                 var subFilterKey = subFilter.split("$$$")[0];
@@ -58,30 +66,29 @@ app.registerCtrl('movieListController', ['$scope', '$http', '$routeParams', func
             userid: localStorage.getItem(prefUserId)
         };
 
-        var config = {
-            headers: {
-                'Content-Type': 'application/json'
-            }
-        }
-
-        $http.post(hostAddress + '/api/movie/getQuery', data, config)
+        $http.post(hostAddress + '/api/movie/getQuery', data)
             .then(
-            function(response) {
+            function (response) {
                 // success callback
                 $scope.isLoading = false;
                 var data = response.data;
                 console.log(data);
                 if (data.Status) {
                     var movies = data.Movies;
-                    movies.forEach(function(object) {
+                    movies.forEach(function (object) {
                         object.Released = moment(object.Released).format('MMMM Do YYYY');
                         $scope.movies.push(object);
                     });
+                    globalCacheStorage.put($location.path(), { page: page - 1, movies: $scope.movies });
+                    console.log(globalCacheStorage.get($location.path()));
+                    if (movies.length == 0) {
+                        canLoadMore = false;
+                    }
                 } else {
                     $scope.noDataFound = true;
                 }
             }
-            , function(error) {
+            , function (error) {
                 // failure callback
                 $scope.isLoading = false;
                 $('.notification').text('Oops! something went wrong').show('fast').delay(3000).hide('fast');
@@ -90,7 +97,7 @@ app.registerCtrl('movieListController', ['$scope', '$http', '$routeParams', func
         /* End Movie */
     }
 
-    $scope.addToWatchlist = function($index) {
+    $scope.addToWatchlist = function ($index) {
         if ($scope.movies[$index].addedToWatchlist) {
             $scope.movies[$index].addedToWatchlist = false;
         } else {
@@ -99,7 +106,7 @@ app.registerCtrl('movieListController', ['$scope', '$http', '$routeParams', func
         $scope.addToList = addToList($index, "Watchlist", "");
     };
 
-    $scope.addToWatched = function($index) {
+    $scope.addToWatched = function ($index) {
         if ($scope.movies[$index].addedToWatched) {
             $scope.movies[$index].addedToWatched = false;
         } else {
@@ -108,7 +115,7 @@ app.registerCtrl('movieListController', ['$scope', '$http', '$routeParams', func
         $scope.addToList = addToList($index, "Watched", "");
     };
 
-    $scope.addToLiked = function($index) {
+    $scope.addToLiked = function ($index) {
         if ($scope.movies[$index].addedToLiked) {
             $scope.movies[$index].addedToLiked = false;
         } else {
@@ -126,15 +133,9 @@ app.registerCtrl('movieListController', ['$scope', '$http', '$routeParams', func
             , "caption": caption
         };
 
-        var config = {
-            headers: {
-                'Content-Type': 'application/json'
-            }
-        }
-
-        $http.post(hostAddress + '/api/list/listAddMovie', data, config)
+        $http.post(hostAddress + '/api/list/listAddMovie', data)
             .then(
-            function(response) {
+            function (response) {
                 // success callback
                 var data = response.data;
                 if (data.Status) {
@@ -147,7 +148,7 @@ app.registerCtrl('movieListController', ['$scope', '$http', '$routeParams', func
                     $('.notification').text(data.Error).show('fast').delay(3000).hide('fast');
                 }
             }
-            , function(error) {
+            , function (error) {
                 // failure callback
                 $('.notification').text('Oops! something went wrong').show('fast').delay(3000).hide('fast');
             }
@@ -155,7 +156,7 @@ app.registerCtrl('movieListController', ['$scope', '$http', '$routeParams', func
     }
 
     // Get Trailer
-    $scope.playTrailer = function(index) {
+    $scope.playTrailer = function (index) {
         var movie = $scope.movies[index];
         var data = {
             "movieid": movie._id,
@@ -163,15 +164,9 @@ app.registerCtrl('movieListController', ['$scope', '$http', '$routeParams', func
             "movieYear": movie.Year
         };
 
-        var config = {
-            headers: {
-                'Content-Type': 'application/json'
-            }
-        }
-
-        $http.post(hostAddress + '/api/movie/getTrailer', data, config)
+        $http.post(hostAddress + '/api/movie/getTrailer', data)
             .then(
-            function(response) {
+            function (response) {
                 // success callback
                 var data = response.data;
                 if (data.Status) {
@@ -180,7 +175,7 @@ app.registerCtrl('movieListController', ['$scope', '$http', '$routeParams', func
                     $('.notification').text(data.Error).show('fast').delay(3000).hide('fast');
                 }
             },
-            function(error) {
+            function (error) {
                 // failure callback
                 $('.notification').text('Oops! something went wrong').show('fast').delay(3000).hide('fast');
             }

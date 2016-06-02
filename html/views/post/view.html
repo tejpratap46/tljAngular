@@ -7,7 +7,7 @@
                     <tr>
                         <td>
                             <a href="{{'#/user/' + post.User._id}}">
-                                <img src="https://cdn0.iconfinder.com/data/icons/user-pictures/100/male-128.png" alt="" class="img-circle" style="margin: 0px; max-width: 50px;">
+                                <img src="/images/user.default.png" alt="" class="img-circle" style="margin: 0px; max-width: 50px;">
                             </a>
                         </td>
                         <td style="padding-left: 10px;">
@@ -37,8 +37,8 @@
                                     </td>
                                 </table>
                             </blockquote>
-                            <div class="col-xs-12 no-padding">
-                                <div data-ng-if="post.Movie.posterAvailable" style="max-height: 220px; overflow: hidden;" data-ng-init="post.Movie.posterAvailable = true">
+                            <div class="col-xs-12 no-padding" data-ng-init="post.Movie.posterAvailable = true">
+                                <div data-ng-if="post.Movie.posterAvailable" style="max-height: 220px; overflow: hidden;">
                                     <!--<img data-ng-src="{{post.Movie.Poster}}" class="full-width">-->
                                     <img data-ng-if="post.Movie.posterAvailable" data-ng-src="{{post.Movie.Poster}}" class="full-width" data-ng-error="post.Movie.posterAvailable = false">
                                 </div>

@@ -2,15 +2,44 @@ var app = angular.module(appName, [
     'ngRoute',
     'angular-loading-bar',
     'infinite-scroll',
-    'ngColorThis'
+    'ngAnimate'
 ]);
 
-app.config(['$routeProvider', '$controllerProvider', 'cfpLoadingBarProvider', '$locationProvider', function ($routeProvider, $controllerProvider, cfpLoadingBarProvider, $locationProvider) {
+app.config(['$routeProvider', '$controllerProvider', 'cfpLoadingBarProvider', '$locationProvider', '$httpProvider', function ($routeProvider, $controllerProvider, cfpLoadingBarProvider, $locationProvider, $httpProvider) {
     // Angular loading bar config
-    cfpLoadingBarProvider.includeSpinner = false;
+    cfpLoadingBarProvider.includeSpinner = true;
 
-    // defined in script.js
-    checkIfLoggedIn();
+    // Set http defaults
+    $httpProvider.defaults.useXDomain = true;
+    $httpProvider.defaults.headers['Content-Type'] = 'application/json';
+    // $httpProvider.defaults.cache = true;
+
+    if ('serviceWorker' in navigator) {
+        // ServiceWorker
+
+        navigator.serviceWorker.register('/service-worker.js', {
+            scope: '/'
+        }).then(function (sw) {
+            // registration worked!
+            console.log('ServiceWorker registration successful with scope: ', sw.scope);
+            // Push Things
+            sw.pushManager.subscribe({ userVisibleOnly: true }).then(function (subscription) {
+                isPushEnabled = true;
+                console.log("subscription: ", subscription);
+                console.log("subscription.endpoint: ", subscription.endpoint);
+
+                // TODO: Send the subscription subscription.endpoint
+                // to your server and save it to send a push message
+                // at a later date
+                // return sendSubscriptionToServer(subscription);
+                return;
+            });
+        }).catch(function (err) {
+            // registration failed :(
+            console.log('ServiceWorker registration failed: ', err);
+        });
+    }
+
     // code to lazy load controllers, used from : http://stackoverflow.com/questions/25168593/angularjs-lazy-loading-controllers-and-content/28199498#28199498
     app.registerCtrl = $controllerProvider.register;
 
@@ -90,11 +119,16 @@ app.config(['$routeProvider', '$controllerProvider', 'cfpLoadingBarProvider', '$
             controller: 'peopleListController',
             resolve: loader(['js/controllers/people/peopleListController.js'])
         })
+        .when('/user/:userId/:listName?', {
+            templateUrl: 'html/views/user/home.html',
+            controller: 'userHomeController',
+            resolve: loader(['js/controllers/user/userHomeController.js'])
+        })
         .otherwise({
             redirectTo: '/'
         });
-        
-        // Router without '#', update base url in index.html
+
+    // Router without '#', update base url in index.html
     // $locationProvider.html5Mode({
     //     enabled: true,
     //     requireBase: false
@@ -108,10 +142,10 @@ app.directive('tljFocusMe', function ($timeout) {
             scope.$watch('trigger', function (value) {
                 if (value === true) {
                     //console.log('trigger',value);
-                    //$timeout(function() {
-                    element[0].focus();
-                    scope.trigger = false;
-                    //});
+                    $timeout(function () {
+                        element[0].focus();
+                        scope.trigger = false;
+                    });
                 }
             });
         }
@@ -154,10 +188,18 @@ app.directive('starRating', function () {
         restrict: 'EA',
         template:
         "<div style='display: inline-block; margin: 0px; padding: 0px; cursor:pointer;' ng-repeat='idx in maxRatings track by $index'> \
-                    <img ng-src='{{((hoverValue + _rating) <= $index) && \"http://www.codeproject.com/script/ratings/images/star-empty-lg.png\" || \"http://www.codeproject.com/script/ratings/images/star-fill-lg.png\"}}' \
+                    <span data-ng-if='(hoverValue + _rating) <= $index' class='btn btn-default round' \
                     ng-Click='isolatedClick($index + 1)' \
                     ng-mouseenter='isolatedMouseHover($index + 1)' \
-                    ng-mouseleave='isolatedMouseLeave($index + 1)'></img> \
+                    ng-mouseleave='isolatedMouseLeave($index + 1)'> \
+                        <span class='glyphicon glyphicon-flash'></span> \
+                    </span> \
+                    <span data-ng-if='(hoverValue + _rating) > $index' class='btn btn-primary round' \
+                    ng-Click='isolatedClick($index + 1)' \
+                    ng-mouseenter='isolatedMouseHover($index + 1)' \
+                    ng-mouseleave='isolatedMouseLeave($index + 1)'> \
+                        <span class='glyphicon glyphicon-flash'></span> \
+                    </span> \
             </div>",
         compile: function (element, attrs) {
             if (!attrs.maxRating || (Number(attrs.maxRating) <= 0)) {
@@ -205,3 +247,36 @@ app.directive('starRating', function () {
         }
     };
 });
+
+// app.directive('autoScroll', function ($document, $timeout, $location) {
+//     return {
+//         restrict: 'EA',
+//         link: function (scope, element, attrs) {
+//             scope.okSaveScroll = true;
+
+//             scope.scrollPos = {};
+
+//             $document.bind('scroll', function () {
+//                 if (scope.okSaveScroll) {
+//                     scope.scrollPos[$location.path()] = $(window).scrollTop();
+//                 }
+//             });
+
+//             scope.scrollClear = function (path) {
+//                 scope.scrollPos[path] = 0;
+//             };
+
+//             scope.$on('$locationChangeSuccess', function (route) {
+//                 $timeout(function () {
+//                     $(window).scrollTop(scope.scrollPos[$location.path()] ? scope.scrollPos[$location.path()] : 0);
+//                     scope.okSaveScroll = true;
+//                     console.log(scope.scrollPos[$location.path()]);
+//                 }, 100);
+//             });
+
+//             scope.$on('$locationChangeStart', function (event) {
+//                 scope.okSaveScroll = false;
+//             });
+//         }
+//     };
+// });
